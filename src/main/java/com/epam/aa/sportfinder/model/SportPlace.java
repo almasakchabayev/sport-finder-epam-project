@@ -1,20 +1,31 @@
 package com.epam.aa.sportfinder.model;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 public class SportPlace extends BaseEntity {
+    //features
     private String size;
-    private boolean indoor; // if false outdoor
+    private Integer capacity;
+    //TODO: make fixed values;
     private String floorCoverage;
-    private int capacity;
+    private boolean indoor;
+
+    //Infrastructure
     private boolean changingRoom;
-    private boolean bathRoom;
-    private boolean lighting;
+    private boolean shower;
+    private boolean toilet;
+    private boolean lightening;
+    private Integer tribuneCapacity;
     private String otherInfrastructureFeatures;
-    private String description;
+
     private double pricePerHour;
-    private Address address; // if a company has sport places in different locations
-    private SportPlacesAdmin admin;
-    private List<Sport> sports;
+
+    private String description;
+    private Address address;
+    //TODO: fixed values like sport coverage
+    private List<String> sports;
+
+    private ZonedDateTime openFrom;
+    private ZonedDateTime openTo;
 }

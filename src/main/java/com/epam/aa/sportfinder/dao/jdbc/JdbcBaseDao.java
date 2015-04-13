@@ -19,10 +19,10 @@ public abstract class JdbcBaseDao<T extends BaseEntity> implements GenericDao<T>
         ResultSet rs = null;
 
         try {
-            String stm = "INSERT INTO address(first_name, last_name, birth_date) " +
+            String stm = "INSERT INTO address(uuid, country, city, address_line_1, address_line_2, zipcode) " +
                     "VALUES(?, ?, ?) RETURNING id;";
             pst = connection.prepareStatement(stm);
-            pst.setString(1, customer.getFirstName());
+            pst.setString(1, entity.getFirstName());
             pst.setString(2, customer.getLastName());
             //TODO: relationship to contactinfo
 //            if (customer.getContactInfo() != null) {

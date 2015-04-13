@@ -7,6 +7,4 @@ public interface GenericDao<T extends BaseEntity> {
     T create(T entity) throws DaoException;
     void update(T entity) throws DaoException;
     void delete(T entity) throws DaoException;
-
-
 }

@@ -10,6 +10,7 @@ import java.util.Stack;
 
 public class SaxHandler extends DefaultHandler {
     private ContactInfo contactInfo= new ContactInfo();
+    //Deque
     private Stack<String> elementStack = new Stack<>();
 
     @Override

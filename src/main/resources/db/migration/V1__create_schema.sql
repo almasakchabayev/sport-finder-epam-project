@@ -1,6 +1,6 @@
 CREATE TABLE address (
                 id SERIAL PRIMARY KEY,
-                uuid
+                uuid UUID,
                 deleted BOOLEAN DEFAULT FALSE,
                 country TEXT,
                 city TEXT,
