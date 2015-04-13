@@ -1,7 +1,5 @@
 package com.epam.aa.sportfinder.dao;
 
-import java.sql.Connection;
-
 public interface DaoManager {
     <T> T execute(DaoCommand<T> daoCommand);
     <T> T transaction(DaoCommand<T> daoCommand);
@@ -10,5 +8,5 @@ public interface DaoManager {
     }
 
     // add more Daos here
-    SportPlaceDao getSportPlaceDao();
+    AddressDao getAddressDao();
 }

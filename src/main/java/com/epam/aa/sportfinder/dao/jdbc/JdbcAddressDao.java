@@ -1,14 +1,14 @@
 package com.epam.aa.sportfinder.dao.jdbc;
 
 import com.epam.aa.sportfinder.dao.DaoException;
-import com.epam.aa.sportfinder.dao.SportPlaceDao;
+import com.epam.aa.sportfinder.dao.AddressDao;
 import com.epam.aa.sportfinder.model.SportPlace;
 
 import java.sql.Connection;
 
-public class JdbcSportPlaceDao extends JdbcBaseDao<SportPlace> implements SportPlaceDao{
+public class JdbcAddressDao extends JdbcBaseDao<SportPlace> implements AddressDao {
 
-    public JdbcSportPlaceDao(Connection connection) {
+    public JdbcAddressDao(Connection connection) {
         super(connection);
     }
 

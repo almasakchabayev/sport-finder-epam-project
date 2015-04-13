@@ -3,7 +3,7 @@ package com.epam.aa.sportfinder.dao.jdbc;
 import com.epam.aa.sportfinder.dao.DaoCommand;
 import com.epam.aa.sportfinder.dao.DaoException;
 import com.epam.aa.sportfinder.dao.DaoManager;
-import com.epam.aa.sportfinder.dao.SportPlaceDao;
+import com.epam.aa.sportfinder.dao.AddressDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +14,11 @@ public class JdbcDaoManager implements DaoManager {
     private static final Logger logger = LoggerFactory.getLogger(JdbcDaoManager.class);
 
     private Connection connection;
-    private SportPlaceDao sportPlaceDao;
+    private AddressDao addressDao;
+
+    public JdbcDaoManager(Connection connection) {
+        this.connection = connection;
+    }
 
     @Override
     public <T> T execute(DaoCommand<T> daoCommand) {
@@ -63,10 +67,10 @@ public class JdbcDaoManager implements DaoManager {
     }
 
     @Override
-    public SportPlaceDao getSportPlaceDao() {
-        if (sportPlaceDao == null) {
-            return new JdbcSportPlaceDao(connection);
+    public AddressDao getAddressDao() {
+        if (addressDao == null) {
+            return new JdbcAddressDao(connection);
         }
-        return sportPlaceDao;
+        return addressDao;
     }
 }
