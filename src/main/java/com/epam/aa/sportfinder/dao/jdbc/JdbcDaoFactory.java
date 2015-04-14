@@ -20,6 +20,7 @@ public class JdbcDaoFactory extends DaoFactory {
 
         Flyway flyway = new Flyway();
         flyway.setDataSource(ds);
+        flyway.setValidateOnMigrate(true);
         flyway.migrate();
 
         return ds;

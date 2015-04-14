@@ -3,15 +3,19 @@ package com.epam.aa.sportfinder.model;
 import java.util.UUID;
 
 public class BaseEntity {
-    private Long id;
+    private Integer id;
     private UUID uuid;
     private boolean deleted;
 
-    public Long getId() {
+    public BaseEntity() {
+        this.uuid = UUID.randomUUID();
+    }
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
