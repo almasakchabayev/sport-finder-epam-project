@@ -18,6 +18,9 @@ public class JdbcAddressDao extends JdbcBaseDao<SportPlace> implements AddressDa
     public static final String SQL_INSERT = "INSERT INTO Address(" +
             "uuid, country, city, addressLine1, addressLine2, zipcode) " +
             "VALUES(?, ?, ?, ?, ?, ?);";
+    private static final String SQL_UPDATE =
+            "UPDATE Address SET country = ?, city = ?, " +
+                    "addressLine1 = ?, addressLine2 = ?, zipcode = ?  WHERE id = ?;";
 
 
     public JdbcAddressDao(Connection connection) {
@@ -53,12 +56,33 @@ public class JdbcAddressDao extends JdbcBaseDao<SportPlace> implements AddressDa
 
             pst.executeUpdate();
         } catch (SQLException e) {
-            throw new DaoException("Failed to save address to database", e);
+            throw new DaoException("Saving address failed", e);
         }
     }
 
     @Override
-    public void update(Address entity) {
+    public void update(Address address) {
+        if (address.getId() == null) {
+            throw new DaoException(new IllegalArgumentException(
+                    "Address is not created yet, the address ID is null."));
+        }
+
+        try (PreparedStatement pst = getConnection().prepareStatement(SQL_UPDATE)){
+            pst.setString(1, address.getCountry());
+            pst.setString(2, address.getCity());
+            pst.setString(3, address.getAddressLine1());
+            pst.setString(4, address.getAddressLine2());
+            pst.setString(5, address.getZipcode());
+            pst.setObject(6, address.getId());
+
+            int affectedRows = pst.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new DaoException("Updating address failed, no rows affected.");
+            }
+        } catch (SQLException e) {
+            throw new DaoException("Updating address failed", e);
+        }
 
     }
 

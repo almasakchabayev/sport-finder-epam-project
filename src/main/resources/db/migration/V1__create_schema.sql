@@ -1,21 +1,50 @@
 CREATE TABLE Address (
-                id SERIAL PRIMARY KEY,
-                uuid UUID,
-                deleted BOOLEAN DEFAULT FALSE,
-                country TEXT,
-                city TEXT,
-                addressLine1 TEXT,
-                addressLine2 TEXT,
-                zipcode TEXT
+  id SERIAL NOT NULL PRIMARY KEY,
+  uuid UUID UNIQUE,
+  deleted BOOLEAN DEFAULT FALSE,
+  country TEXT,
+  city TEXT,
+  addressLine1 TEXT,
+  addressLine2 TEXT,
+  zipcode TEXT
 );
--- CREATE TABLE Company (
---                 id SERIAL PRIMARY KEY,
---                 uuid UUID,
---                 deleted BOOLEAN DEFAULT FALSE,
---                 name TEXT,
---                 address_id INT
--- );
--- ALTER TABLE Company
---         add constraint FK3EBA06E37BE2CBE
---         foreign key (project)
---         references Project;
+CREATE TABLE FloorCoverage (
+  id SERIAL NOT NULL PRIMARY KEY ,
+  uuid UUID UNIQUE,
+  deleted BOOLEAN DEFAULT FALSE,
+  name TEXT UNIQUE
+);
+CREATE TABLE Sport (
+  id SERIAL NOT NULL PRIMARY KEY,
+  uuid UUID UNIQUE,
+  deleted BOOLEAN DEFAULT FALSE,
+  name TEXT UNIQUE
+);
+CREATE TABLE SportPlace (
+  id SERIAL NOT NULL PRIMARY KEY,
+  uuid UUID UNIQUE,
+  deleted BOOLEAN DEFAULT FALSE,
+  capacity INT,
+  floorCoverage INT,
+  indoor BOOLEAN,
+  changingRoom BOOLEAN,
+  shower BOOLEAN,
+  lightening BOOLEAN,
+  tribuneCapacity INT,
+  otherInfrastructureFeatures TEXT,
+  pricePerHour NUMERIC(21, 4),
+  description TEXT,
+  address INT
+);
+CREATE TABLE SportPlace_Sport (
+  sportPlace_id INT NOT NULL,
+  sport_id INT NOT NULL
+);
+ALTER TABLE SportPlace
+    ADD CONSTRAINT SportPlace_FloorCoverage_fkey
+    FOREIGN KEY (floorCoverage)
+    REFERENCES  FloorCoverage;
+ALTER TABLE SportPlace
+    ADD CONSTRAINT SportPlace_Address_fkey
+    FOREIGN KEY (address)
+    REFERENCES  Address;

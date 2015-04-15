@@ -1,7 +1,6 @@
 package com.epam.aa.sportfinder.config;
 
 
-import com.epam.aa.sportfinder.parser.ParserException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,7 +8,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Properties;
-import java.util.Random;
 
 public class AppProperties {
     private static final Logger logger = LoggerFactory.getLogger(AppProperties.class);
