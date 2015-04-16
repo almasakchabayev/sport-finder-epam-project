@@ -26,14 +26,7 @@ public class Query {
     }
 
     public static <T extends BaseEntity> Query getQuery(T entity, int type) {
-        Query query;
-        if (type == 1) query = getInsertQuery(entity);
-        else throw new DaoException("The Query type is invalid");
-        return query;
-    }
-
-    private static <T extends BaseEntity> Query getInsertQuery(T entity) {
-        PropertyDescriptor[] propertyDescriptors = null;
+        PropertyDescriptor[] propertyDescriptors;
         try {
             propertyDescriptors = Introspector.getBeanInfo(entity.getClass()).getPropertyDescriptors();
         } catch (IntrospectionException e) {
@@ -43,7 +36,7 @@ public class Query {
         if (propertyDescriptors.length == 0) {
             throw new DaoException("Entity does not have any bean properties");
         }
-        Query query = new Query(Query.INSERT);
+        Query query = new Query(type);
         try {
             for (PropertyDescriptor pd : propertyDescriptors) {
                 if (pd.getReadMethod() != null && !"class".equals(pd.getName())) {
@@ -62,6 +55,13 @@ public class Query {
 
 
     public String getSqlQuery() {
+        if (type == INSERT) return getInsertSqlQuery();
+        if (type == UPDATE) return getUpdateSqlQuery();
+        // cannot happen
+        throw new DaoException("Query has no type");
+    }
+
+    public String getInsertSqlQuery() {
         StringBuilder queryBuilder = new StringBuilder();
         queryBuilder.append("INSERT INTO ");
         queryBuilder.append(clazz.getSimpleName());
@@ -83,6 +83,23 @@ public class Query {
         return queryBuilder.toString();
     }
 
+    public String getUpdateSqlQuery() {
+        StringBuilder queryBuilder = new StringBuilder();
+        queryBuilder.append("UPDATE ");
+        queryBuilder.append(clazz.getSimpleName());
+        queryBuilder.append(" SET ");
+
+        String prefix = "";
+        for (PropertyDescriptor pd : propertyDescriptors) {
+            queryBuilder.append(prefix);
+            prefix = ", ";
+            queryBuilder.append(pd.getName());
+            queryBuilder.append(" = ?");
+        }
+        queryBuilder.append("  WHERE id = ?");
+        return queryBuilder.toString();
+    }
+
     public void addPropertyDescriptor(PropertyDescriptor pd) {
         propertyDescriptors.add(pd);
     }
@@ -94,4 +111,5 @@ public class Query {
     public List<PropertyDescriptor> getPropertyDescriptors() {
         return propertyDescriptors;
     }
+
 }

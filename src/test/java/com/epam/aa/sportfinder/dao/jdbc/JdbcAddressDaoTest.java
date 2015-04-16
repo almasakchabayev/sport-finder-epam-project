@@ -152,7 +152,7 @@ public class JdbcAddressDaoTest extends GlobalTestDataSource {
     @Test
     public void testFind() throws Exception {
         JdbcAddressDao dao = new JdbcAddressDao(getDataSource().getConnection());
-        Address address = dao.find(1);
+        Address address = dao.findById(1);
         assertEquals(1, address.getId().intValue());
         assertEquals("USA", address.getCountry());
         assertEquals("New York", address.getCity());

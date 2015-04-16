@@ -28,7 +28,7 @@ public class JdbcAddressDao extends JdbcBaseDao<Address> implements AddressDao {
     }
 
     @Override
-    public Address find(Integer id) {
+    public Address findById(Integer id) {
         Address address = null;
         try (PreparedStatement pst = getConnection().prepareStatement(SQL_FIND_BY_ID)){
             pst.setObject(1, id);
@@ -39,7 +39,7 @@ public class JdbcAddressDao extends JdbcBaseDao<Address> implements AddressDao {
                 }
             }
         } catch (SQLException e) {
-            throw new DaoException("Failed to find element by id", e);
+            throw new DaoException("Failed to findById element by id", e);
         }
         return address;
     }
