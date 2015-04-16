@@ -38,9 +38,8 @@ public class JdbcAddressDaoTest extends GlobalTestDataSource {
 
         Address addressWithSameUuid = new Address();
         addressWithSameUuid.setUuid(address.getUuid());
-        JdbcAddressDao dao2 = new JdbcAddressDao(connection);
 
-        dao2.insert(addressWithSameUuid);
+        dao.insert(addressWithSameUuid);
         connection.close();
     }
 
@@ -165,8 +164,33 @@ public class JdbcAddressDaoTest extends GlobalTestDataSource {
         assertEquals(address.isDeleted(), addressFromDatabase.isDeleted());
     }
 
+    @Test(expected = DaoException.class)
+    public void testFindByIdFailsIfIdIsNull() throws Exception {
+        Connection connection = getDataSource().getConnection();
+        JdbcAddressDao dao = new JdbcAddressDao(connection);
+        Address dummyAddress = new Address();
+        Address address = dao.findById(dummyAddress.getId());
+        connection.close();
+    }
+
+    @Test(expected = DaoException.class)
+    public void testFindByIdFailsIfIdIsNegative() throws Exception {
+        Connection connection = getDataSource().getConnection();
+        JdbcAddressDao dao = new JdbcAddressDao(connection);
+        Address address = dao.findById(-1);
+        connection.close();
+    }
+
+    @Test(expected = DaoException.class)
+    public void testFindByIdFailsIfElementCouldNotBeFounded() throws Exception {
+        Connection connection = getDataSource().getConnection();
+        JdbcAddressDao dao = new JdbcAddressDao(connection);
+        Address address = dao.findById(100000000);
+        connection.close();
+    }
+
     @Test
-    public void testFindById() throws Exception {
+    public void testFindByIdSuccessIfValidId() throws Exception {
         Connection connection = getDataSource().getConnection();
         JdbcAddressDao dao = new JdbcAddressDao(connection);
         Address address = dao.findById(1);

@@ -54,6 +54,7 @@ public class QueryConstructor {
         return queryBuilder.toString();
     }
 
+    //TODO: is it possible to do move find method from Daos to JdbcAbstractDao with this method?
     public static String getFindByIdQuery(Class<? extends BaseEntity> clazz) {
         PropertyDescriptor[] propertyDescriptors;
         try {

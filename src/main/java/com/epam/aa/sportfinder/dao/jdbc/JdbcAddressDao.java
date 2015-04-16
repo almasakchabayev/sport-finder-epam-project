@@ -23,17 +23,18 @@ public class JdbcAddressDao extends JdbcBaseDao<Address> implements AddressDao {
 
     @Override
     public Address findById(Integer id) {
-        Address address = null;
+        Address address;
+        if (id == null) throw new DaoException(new NullPointerException("Cannot find elementby id, id is null"));
+        if (id < 1) throw new DaoException(new IllegalArgumentException("Cannot find elementby id, id cannot be less than 1"));
         try (PreparedStatement pst = getConnection().prepareStatement(SQL_FIND_BY_ID)){
             pst.setObject(1, id);
 
             try (ResultSet rs = pst.executeQuery()) {
-                if (rs.next()) {
-                    address = map(rs);
-                }
+                if (rs.next()) address = map(rs);
+                else throw new DaoException("Could not find element by id " + id);
             }
         } catch (SQLException e) {
-            throw new DaoException("Failed to find element by id", e);
+            throw new DaoException("Could not find element by id " + id, e);
         }
         return address;
     }

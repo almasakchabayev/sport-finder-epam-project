@@ -1,6 +1,6 @@
 package com.epam.aa.sportfinder.model;
 
-public class FloorCoverage {
+public class FloorCoverage extends BaseEntity {
     private String name;
 
     public String getName() {
@@ -8,6 +8,6 @@ public class FloorCoverage {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = name.toLowerCase();
     }
 }
