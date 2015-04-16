@@ -16,12 +16,8 @@ public class JdbcAddressDao extends JdbcBaseDao<Address> implements AddressDao {
     private static final String SQL_FIND_BY_ID =
             "SELECT id, uuid, deleted, country, city, addressLine1, addressLine2, zipcode " +
                     "FROM Address WHERE id = ?";
-    public static final String SQL_INSERT =
-            "INSERT INTO Address(" +
-                    "uuid, country, city, addressLine1, addressLine2, zipcode) " +
-                    "VALUES(?, ?, ?, ?, ?, ?)";
     private static final String SQL_UPDATE =
-            "UPDATE Address SET country = ?, city = ?, " +
+            "UPDATE Address SET uuid = ?, country = ?, city = ?, " +
                     "addressLine1 = ?, addressLine2 = ?, zipcode = ?  WHERE id = ?";
     private static final String SQL_DELETE =
             "UPDATE Address SET deleted = FALSE WHERE id = ?";
@@ -56,13 +52,13 @@ public class JdbcAddressDao extends JdbcBaseDao<Address> implements AddressDao {
         }
 
         try (PreparedStatement pst = getConnection().prepareStatement(SQL_UPDATE)){
-            pst.setString(1, address.getCountry());
-            pst.setString(2, address.getCity());
-            pst.setString(3, address.getAddressLine1());
-            pst.setString(4, address.getAddressLine2());
-            pst.setString(5, address.getZipcode());
-            ///TODO: understand what to di with UUID
-            pst.setInt(6, address.getId());
+            pst.setObject(1, address.getUuid());
+            pst.setString(2, address.getCountry());
+            pst.setString(3, address.getCity());
+            pst.setString(4, address.getAddressLine1());
+            pst.setString(5, address.getAddressLine2());
+            pst.setString(6, address.getZipcode());
+            pst.setInt(7, address.getId());
 
             int affectedRows = pst.executeUpdate();
 
