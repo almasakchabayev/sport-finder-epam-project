@@ -44,32 +44,32 @@ public class JdbcAddressDao extends JdbcBaseDao<Address> implements AddressDao {
         return address;
     }
 
-    @Override
-    public void update(Address address) {
-        if (address.getId() == null) {
-            throw new DaoException(new IllegalArgumentException(
-                    "Address is not created yet, the address ID is null."));
-        }
-
-        try (PreparedStatement pst = getConnection().prepareStatement(SQL_UPDATE)){
-            pst.setObject(1, address.getUuid());
-            pst.setString(2, address.getCountry());
-            pst.setString(3, address.getCity());
-            pst.setString(4, address.getAddressLine1());
-            pst.setString(5, address.getAddressLine2());
-            pst.setString(6, address.getZipcode());
-            pst.setInt(7, address.getId());
-
-            int affectedRows = pst.executeUpdate();
-
-            if (affectedRows == 0) {
-                //TODO: log warn
-                throw new DaoException("Updating address failed, no rows affected.");
-            }
-        } catch (SQLException e) {
-            throw new DaoException("Updating address failed", e);
-        }
-    }
+//    @Override
+//    public void update(Address address) {
+//        if (address.getId() == null) {
+//            throw new DaoException(new IllegalArgumentException(
+//                    "Address is not created yet, the address ID is null."));
+//        }
+//
+//        try (PreparedStatement pst = getConnection().prepareStatement(SQL_UPDATE)){
+//            pst.setObject(1, address.getUuid());
+//            pst.setString(2, address.getCountry());
+//            pst.setString(3, address.getCity());
+//            pst.setString(4, address.getAddressLine1());
+//            pst.setString(5, address.getAddressLine2());
+//            pst.setString(6, address.getZipcode());
+//            pst.setInt(7, address.getId());
+//
+//            int affectedRows = pst.executeUpdate();
+//
+//            if (affectedRows == 0) {
+//                //TODO: log warn
+//                throw new DaoException("Updating address failed, no rows affected.");
+//            }
+//        } catch (SQLException e) {
+//            throw new DaoException("Updating address failed", e);
+//        }
+//    }
 
     @Override
     public void delete(Address address) {

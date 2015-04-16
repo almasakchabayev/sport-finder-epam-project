@@ -1,6 +1,7 @@
 package com.epam.aa.sportfinder.dao.jdbc;
 
 import com.epam.aa.sportfinder.dao.DaoException;
+import com.epam.aa.sportfinder.model.Address;
 import com.epam.aa.sportfinder.model.BaseEntity;
 
 import java.beans.IntrospectionException;
@@ -20,7 +21,7 @@ public class Query {
     private Class<? extends BaseEntity> clazz;
     private int type;
 
-    public Query(int type) {
+    private Query(int type) {
         this.propertyDescriptors = new ArrayList<>();
         this.type = type;
     }
@@ -91,6 +92,7 @@ public class Query {
 
         String prefix = "";
         for (PropertyDescriptor pd : propertyDescriptors) {
+            if (pd.getName().equals("id")) continue;
             queryBuilder.append(prefix);
             prefix = ", ";
             queryBuilder.append(pd.getName());
