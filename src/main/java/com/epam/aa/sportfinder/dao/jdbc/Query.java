@@ -31,6 +31,7 @@ public class Query {
         else throw new DaoException("The Query type is invalid");
         return query;
     }
+
     private static <T extends BaseEntity> Query getInsertQuery(T entity) {
         PropertyDescriptor[] propertyDescriptors = null;
         try {

@@ -48,26 +48,6 @@ public class JdbcAddressDao extends JdbcBaseDao<Address> implements AddressDao {
         return address;
     }
 
-//    @Override
-//    public void insert(Address address) {
-//        if (address.getId() != null) throw new DaoException("Insertion failed, id is not null");
-//        try (PreparedStatement pst = getConnection().prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS)){
-//            pst.setObject(1, address.getUuid());
-//            pst.setString(2, address.getCountry());
-//            pst.setString(3, address.getCity());
-//            pst.setString(4, address.getAddressLine1());
-//            pst.setString(5, address.getAddressLine2());
-//            pst.setString(6, address.getZipcode());
-//
-//            pst.executeUpdate();
-//            try (ResultSet rs = pst.getGeneratedKeys()) {
-//                if (rs.next()) address.setId(rs.getInt(1));
-//            }
-//        } catch (SQLException e) {
-//            throw new DaoException("Saving address failed", e);
-//        }
-//    }
-
     @Override
     public void update(Address address) {
         if (address.getId() == null) {
