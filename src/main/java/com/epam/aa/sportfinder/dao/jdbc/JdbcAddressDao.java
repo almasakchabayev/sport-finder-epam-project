@@ -18,7 +18,7 @@ public class JdbcAddressDao extends JdbcBaseDao<Address> implements AddressDao {
                     "FROM Address WHERE id = ?";
 
     private static final String SQL_DELETE =
-            "UPDATE Address SET deleted = FALSE WHERE id = ?";
+            "UPDATE Address SET deleted = TRUE WHERE id = ?";
 
 
     public JdbcAddressDao(Connection connection) {
@@ -52,7 +52,11 @@ public class JdbcAddressDao extends JdbcBaseDao<Address> implements AddressDao {
         try (PreparedStatement pst = getConnection().prepareStatement(SQL_DELETE)){
             pst.setInt(1, address.getId());
 
-            pst.executeUpdate();
+            int affectedRows = pst.executeUpdate();
+            if (affectedRows == 0) {
+                throw new DaoException("Update failed, no rows affected.");
+            }
+            address.setDeleted(true);
         } catch (SQLException e) {
             throw new DaoException("Deleting address failed", e);
         }

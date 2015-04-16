@@ -148,11 +148,45 @@ public class JdbcAddressDaoTest extends GlobalTestDataSource {
         assertEquals(address.getZipcode(), addressFromDatabase.getZipcode());
     }
 
+    @Test
+    public void testDeleteInDbAndAssignTrueToObject() throws Exception {
+        Connection connection = getDataSource().getConnection();
+        JdbcAddressDao dao = new JdbcAddressDao(connection);
+        Address address = new Address();
+        address.setId(1);
+        dao.delete(address);
+
+        PreparedStatement pst = connection.prepareStatement("SELECT id, uuid, deleted, country, city, addressLine1, addressLine2, zipcode " +
+                "FROM Address WHERE id = ?");
+        pst.setInt(1, address.getId());
+        ResultSet resultSet = pst.executeQuery();
+        Address addressFromDatabase = new Address();
+
+        if (resultSet.next()) {
+            addressFromDatabase.setId(resultSet.getInt("id"));
+            addressFromDatabase.setUuid((UUID) resultSet.getObject("uuid"));
+            addressFromDatabase.setDeleted(resultSet.getBoolean("deleted"));
+            addressFromDatabase.setCountry(resultSet.getString("country"));
+            addressFromDatabase.setCity(resultSet.getString("city"));
+            addressFromDatabase.setAddressLine1(resultSet.getString("addressLine1"));
+            addressFromDatabase.setAddressLine2(resultSet.getString("addressLine2"));
+            addressFromDatabase.setZipcode(resultSet.getString("zipcode"));
+        }
+        resultSet.close();
+        pst.close();
+        connection.close();
+
+        assertEquals(addressFromDatabase.isDeleted(), true);
+        assertEquals(address.isDeleted(), addressFromDatabase.isDeleted());
+    }
 
     @Test
     public void testFind() throws Exception {
-        JdbcAddressDao dao = new JdbcAddressDao(getDataSource().getConnection());
+        Connection connection = getDataSource().getConnection();
+        JdbcAddressDao dao = new JdbcAddressDao(connection);
         Address address = dao.findById(1);
+        connection.close();
+
         assertEquals(1, address.getId().intValue());
         assertEquals("USA", address.getCountry());
         assertEquals("New York", address.getCity());
@@ -162,11 +196,4 @@ public class JdbcAddressDaoTest extends GlobalTestDataSource {
     }
 
 
-    @Test
-    public void testDelete() throws Exception {
-        JdbcAddressDao dao = new JdbcAddressDao(getDataSource().getConnection());
-        Address address = new Address();
-        address.setId(1);
-        dao.delete(address);
-    }
 }

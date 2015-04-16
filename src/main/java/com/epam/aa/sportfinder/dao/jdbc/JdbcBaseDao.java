@@ -39,6 +39,7 @@ public abstract class JdbcBaseDao<T extends BaseEntity> implements GenericDao<T>
             pst.executeUpdate();
             try (ResultSet rs = pst.getGeneratedKeys()) {
                 if (rs.next()) entity.setId(rs.getInt(1));
+                else throw new DaoException("Id was not generated");
             }
         } catch (SQLException | IllegalAccessException | InvocationTargetException e) {
             throw new DaoException("Updating address failed", e);
@@ -69,7 +70,6 @@ public abstract class JdbcBaseDao<T extends BaseEntity> implements GenericDao<T>
             int affectedRows = pst.executeUpdate();
 
             if (affectedRows == 0) {
-                //TODO: log warn, when can happen?
                 throw new DaoException("Update failed, no rows affected.");
             }
         } catch (SQLException | IllegalAccessException | InvocationTargetException | IntrospectionException e) {
