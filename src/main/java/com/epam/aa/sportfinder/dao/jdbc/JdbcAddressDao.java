@@ -33,7 +33,7 @@ public class JdbcAddressDao extends JdbcBaseDao<Address> implements AddressDao {
                 }
             }
         } catch (SQLException e) {
-            throw new DaoException("Failed to findById element by id", e);
+            throw new DaoException("Failed to find element by id", e);
         }
         return address;
     }

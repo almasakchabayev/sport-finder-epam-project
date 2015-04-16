@@ -77,15 +77,7 @@ public class JdbcAddressDaoTest extends GlobalTestDataSource {
         st.close();
         connection.close();
 
-
-        assertEquals(address.getId(), addressFromDatabase.getId());
-        assertEquals(address.getUuid(), addressFromDatabase.getUuid());
-        assertEquals(address.isDeleted(), address.isDeleted());
-        assertEquals(address.getCountry(), addressFromDatabase.getCountry());
-        assertEquals(address.getCity(), addressFromDatabase.getCity());
-        assertEquals(address.getAddressLine1(), addressFromDatabase.getAddressLine1());
-        assertEquals(address.getAddressLine2(), addressFromDatabase.getAddressLine2());
-        assertEquals(address.getZipcode(), addressFromDatabase.getZipcode());
+        assertAddressesEqual(address, addressFromDatabase);
     }
 
     @Test(expected = DaoException.class)
@@ -138,14 +130,7 @@ public class JdbcAddressDaoTest extends GlobalTestDataSource {
         pst.close();
         connection.close();
 
-        assertEquals(address.getId(), addressFromDatabase.getId());
-        assertEquals(address.getUuid(), addressFromDatabase.getUuid());
-        assertEquals(address.isDeleted(), address.isDeleted());
-        assertEquals(address.getCountry(), addressFromDatabase.getCountry());
-        assertEquals(address.getCity(), addressFromDatabase.getCity());
-        assertEquals(address.getAddressLine1(), addressFromDatabase.getAddressLine1());
-        assertEquals(address.getAddressLine2(), addressFromDatabase.getAddressLine2());
-        assertEquals(address.getZipcode(), addressFromDatabase.getZipcode());
+        assertAddressesEqual(address, addressFromDatabase);
     }
 
     @Test
@@ -181,19 +166,41 @@ public class JdbcAddressDaoTest extends GlobalTestDataSource {
     }
 
     @Test
-    public void testFind() throws Exception {
+    public void testFindById() throws Exception {
         Connection connection = getDataSource().getConnection();
         JdbcAddressDao dao = new JdbcAddressDao(connection);
         Address address = dao.findById(1);
+
+        PreparedStatement pst = connection.prepareStatement("SELECT id, uuid, deleted, country, city, addressLine1, addressLine2, zipcode " +
+                "FROM Address WHERE id = ?");
+        pst.setInt(1, address.getId());
+        ResultSet resultSet = pst.executeQuery();
+        Address addressFromDatabase = new Address();
+
+        if (resultSet.next()) {
+            addressFromDatabase.setId(resultSet.getInt("id"));
+            addressFromDatabase.setUuid((UUID) resultSet.getObject("uuid"));
+            addressFromDatabase.setDeleted(resultSet.getBoolean("deleted"));
+            addressFromDatabase.setCountry(resultSet.getString("country"));
+            addressFromDatabase.setCity(resultSet.getString("city"));
+            addressFromDatabase.setAddressLine1(resultSet.getString("addressLine1"));
+            addressFromDatabase.setAddressLine2(resultSet.getString("addressLine2"));
+            addressFromDatabase.setZipcode(resultSet.getString("zipcode"));
+        }
+
         connection.close();
 
-        assertEquals(1, address.getId().intValue());
-        assertEquals("USA", address.getCountry());
-        assertEquals("New York", address.getCity());
-        assertEquals("350 Fifth Avenue", address.getAddressLine1());
-        assertEquals("34th floor", address.getAddressLine2());
-        assertEquals("NY 10118", address.getZipcode());
+        assertAddressesEqual(address, addressFromDatabase);
     }
 
-
+    public void assertAddressesEqual(Address address, Address addressFromDatabase) {
+        assertEquals(address.getId(), addressFromDatabase.getId());
+        assertEquals(address.getUuid(), addressFromDatabase.getUuid());
+        assertEquals(address.isDeleted(), address.isDeleted());
+        assertEquals(address.getCountry(), addressFromDatabase.getCountry());
+        assertEquals(address.getCity(), addressFromDatabase.getCity());
+        assertEquals(address.getAddressLine1(), addressFromDatabase.getAddressLine1());
+        assertEquals(address.getAddressLine2(), addressFromDatabase.getAddressLine2());
+        assertEquals(address.getZipcode(), addressFromDatabase.getZipcode());
+    }
 }

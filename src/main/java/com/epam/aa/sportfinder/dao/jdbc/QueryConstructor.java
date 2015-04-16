@@ -1,7 +1,6 @@
 package com.epam.aa.sportfinder.dao.jdbc;
 
 import com.epam.aa.sportfinder.dao.DaoException;
-import com.epam.aa.sportfinder.model.Address;
 import com.epam.aa.sportfinder.model.BaseEntity;
 
 import java.beans.IntrospectionException;
@@ -19,7 +18,7 @@ public class QueryConstructor {
         this.propertyDescriptors = new ArrayList<>();
     }
 
-    public static <T extends BaseEntity> QueryConstructor createQueryConstructer(T entity) {
+    public static <T extends BaseEntity> QueryConstructor createQueryConstructor(T entity) {
         PropertyDescriptor[] propertyDescriptors;
         try {
             propertyDescriptors = Introspector.getBeanInfo(entity.getClass()).getPropertyDescriptors();
@@ -55,6 +54,39 @@ public class QueryConstructor {
         return queryBuilder.toString();
     }
 
+    public static String getFindByIdQuery(Class<? extends BaseEntity> clazz) {
+        PropertyDescriptor[] propertyDescriptors;
+        try {
+            propertyDescriptors = Introspector.getBeanInfo(clazz).getPropertyDescriptors();
+        } catch (IntrospectionException e) {
+            throw new DaoException(e);
+        }
+
+        if (propertyDescriptors.length == 0) {
+            throw new DaoException("Entity does not have any bean properties");
+        }
+
+        List<PropertyDescriptor> pdsForUse = new ArrayList<>();
+        for (PropertyDescriptor pd : propertyDescriptors) {
+            if (pd.getReadMethod() != null && !"class".equals(pd.getName())) {
+                pdsForUse.add(pd);
+            }
+        }
+        StringBuilder queryBuilder = new StringBuilder();
+        queryBuilder.append("SELECT ");
+
+        String prefix = "";
+        for (PropertyDescriptor pd : pdsForUse) {
+            queryBuilder.append(prefix);
+            prefix = ", ";
+            queryBuilder.append(pd.getName());
+        }
+        queryBuilder.append(" FROM ");
+        queryBuilder.append(clazz.getSimpleName());
+        queryBuilder.append(" WHERE id = ?");
+        return queryBuilder.toString();
+    }
+
     public String getInsertSqlQuery() {
         StringBuilder queryBuilder = new StringBuilder();
         queryBuilder.append("INSERT INTO ");
@@ -63,6 +95,7 @@ public class QueryConstructor {
 
         StringBuilder valuesBuilder = new StringBuilder();
         valuesBuilder.append("VALUES(");
+
         String prefix = "";
         for (PropertyDescriptor pd : propertyDescriptors) {
             queryBuilder.append(prefix);
