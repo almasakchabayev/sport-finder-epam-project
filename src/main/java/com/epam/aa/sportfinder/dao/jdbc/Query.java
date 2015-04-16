@@ -19,14 +19,12 @@ public class Query {
 
     private List<PropertyDescriptor> propertyDescriptors;
     private Class<? extends BaseEntity> clazz;
-    private int type;
 
-    private Query(int type) {
+    private Query() {
         this.propertyDescriptors = new ArrayList<>();
-        this.type = type;
     }
 
-    public static <T extends BaseEntity> Query getQuery(T entity, int type) {
+    public static <T extends BaseEntity> Query getQuery(T entity) {
         PropertyDescriptor[] propertyDescriptors;
         try {
             propertyDescriptors = Introspector.getBeanInfo(entity.getClass()).getPropertyDescriptors();
@@ -37,7 +35,7 @@ public class Query {
         if (propertyDescriptors.length == 0) {
             throw new DaoException("Entity does not have any bean properties");
         }
-        Query query = new Query(type);
+        Query query = new Query();
         try {
             for (PropertyDescriptor pd : propertyDescriptors) {
                 if (pd.getReadMethod() != null && !"class".equals(pd.getName())) {
@@ -52,14 +50,6 @@ public class Query {
         query.setClazz(entity.getClass());
 
         return query;
-    }
-
-
-    public String getSqlQuery() {
-        if (type == INSERT) return getInsertSqlQuery();
-        if (type == UPDATE) return getUpdateSqlQuery();
-        // cannot happen
-        throw new DaoException("Query has no type");
     }
 
     public String getInsertSqlQuery() {
