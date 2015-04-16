@@ -11,20 +11,15 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Query {
-    public static final int INSERT = 1;
-    public static final int UPDATE = 2;
-    public static final int DELETE = 3;
-    public static final int FIND = 4;
-
+public class QueryConstructor {
     private List<PropertyDescriptor> propertyDescriptors;
     private Class<? extends BaseEntity> clazz;
 
-    private Query() {
+    private QueryConstructor() {
         this.propertyDescriptors = new ArrayList<>();
     }
 
-    public static <T extends BaseEntity> Query getQuery(T entity) {
+    public static <T extends BaseEntity> QueryConstructor createQueryConstructer(T entity) {
         PropertyDescriptor[] propertyDescriptors;
         try {
             propertyDescriptors = Introspector.getBeanInfo(entity.getClass()).getPropertyDescriptors();
@@ -35,21 +30,29 @@ public class Query {
         if (propertyDescriptors.length == 0) {
             throw new DaoException("Entity does not have any bean properties");
         }
-        Query query = new Query();
+        QueryConstructor queryConstructor = new QueryConstructor();
         try {
             for (PropertyDescriptor pd : propertyDescriptors) {
                 if (pd.getReadMethod() != null && !"class".equals(pd.getName())) {
                     if (pd.getReadMethod().invoke(entity) != null) {
-                        query.addPropertyDescriptor(pd);
+                        queryConstructor.addPropertyDescriptor(pd);
                     }
                 }
             }
         } catch (InvocationTargetException | IllegalAccessException e) {
             throw new DaoException(e);
         }
-        query.setClazz(entity.getClass());
+        queryConstructor.setClazz(entity.getClass());
 
-        return query;
+        return queryConstructor;
+    }
+
+    public static <T extends BaseEntity> String getDeleteQuery(T entity) {
+        StringBuilder queryBuilder = new StringBuilder();
+        queryBuilder.append("UPDATE ");
+        queryBuilder.append(entity.getClass().getSimpleName());
+        queryBuilder.append(" SET deleted = TRUE WHERE id = ?");
+        return queryBuilder.toString();
     }
 
     public String getInsertSqlQuery() {
@@ -103,5 +106,4 @@ public class Query {
     public List<PropertyDescriptor> getPropertyDescriptors() {
         return propertyDescriptors;
     }
-
 }

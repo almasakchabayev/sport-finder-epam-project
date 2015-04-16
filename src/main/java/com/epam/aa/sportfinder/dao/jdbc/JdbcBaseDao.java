@@ -2,7 +2,6 @@ package com.epam.aa.sportfinder.dao.jdbc;
 
 import com.epam.aa.sportfinder.dao.DaoException;
 import com.epam.aa.sportfinder.dao.GenericDao;
-import com.epam.aa.sportfinder.model.Address;
 import com.epam.aa.sportfinder.model.BaseEntity;
 
 import java.beans.IntrospectionException;
@@ -24,14 +23,14 @@ public abstract class JdbcBaseDao<T extends BaseEntity> implements GenericDao<T>
 
     @Override
     public void insert(T entity) {
-        if (entity.getId() != null) throw new DaoException("Insertion failed, entity's id is not null");
+        if (entity.getId() != null) throw new DaoException("Insertion failed, id is not null");
 
-        Query query = Query.getQuery(entity);
-        try (PreparedStatement pst = getConnection().prepareStatement(query.getInsertSqlQuery(),
+        QueryConstructor queryConstructor = QueryConstructor.createQueryConstructer(entity);
+        try (PreparedStatement pst = getConnection().prepareStatement(queryConstructor.getInsertSqlQuery(),
                 Statement.RETURN_GENERATED_KEYS)){
 
 
-            List<PropertyDescriptor> pds = query.getPropertyDescriptors();
+            List<PropertyDescriptor> pds = queryConstructor.getPropertyDescriptors();
 
 
             for (PropertyDescriptor pd : pds) {
@@ -44,21 +43,20 @@ public abstract class JdbcBaseDao<T extends BaseEntity> implements GenericDao<T>
                 else throw new DaoException("Id was not generated");
             }
         } catch (SQLException | IllegalAccessException | InvocationTargetException e) {
-            throw new DaoException("Updating address failed", e);
+            throw new DaoException("Updating failed", e);
         }
     }
 
     @Override
     public void update(T entity) {
         if (entity.getId() == null) {
-            throw new DaoException(new NullPointerException(
-                    "Update failed, id is null"));
+            throw new DaoException("Update failed, id is null", new NullPointerException());
         }
 
-        Query query = Query.getQuery(entity);
-        try (PreparedStatement pst = getConnection().prepareStatement(query.getUpdateSqlQuery())){
+        QueryConstructor queryConstructor = QueryConstructor.createQueryConstructer(entity);
+        try (PreparedStatement pst = getConnection().prepareStatement(queryConstructor.getUpdateSqlQuery())){
 
-            List<PropertyDescriptor> pds = query.getPropertyDescriptors();
+            List<PropertyDescriptor> pds = queryConstructor.getPropertyDescriptors();
             PropertyDescriptor propertyDescriptor = new PropertyDescriptor("id", entity.getClass());
             pds.remove(propertyDescriptor);
 
@@ -75,28 +73,26 @@ public abstract class JdbcBaseDao<T extends BaseEntity> implements GenericDao<T>
                 throw new DaoException("Update failed, no rows affected.");
             }
         } catch (SQLException | IllegalAccessException | InvocationTargetException | IntrospectionException e) {
-            throw new DaoException("Updating address failed", e);
+            throw new DaoException("Updating failed", e);
         }
     }
 
-//    @Override
-//    public void delete(T entity) {
-//        if (entity.getId() == null) {
-//            throw new DaoException(new IllegalArgumentException(
-//                    "Deletion failure, id not defined"));
-//        }
-//
-//        Query query = Query.getQuery(entity, Query.UPDATE);
-//        try (PreparedStatement pst = getConnection().prepareStatement(SQL_DELETE)){
-//            pst.setInt(1, address.getId());
-//
-//            int affectedRows = pst.executeUpdate();
-//            if (affectedRows == 0) {
-//                throw new DaoException("Update failed, no rows affected.");
-//            }
-//            address.setDeleted(true);
-//        } catch (SQLException e) {
-//            throw new DaoException("Deleting address failed", e);
-//        }
-//    }
+    @Override
+    public void delete(T entity) {
+        if (entity.getId() == null) {
+            throw new DaoException("Deletion failed, id is null", new NullPointerException());
+        }
+        String deleteQuery = QueryConstructor.getDeleteQuery(entity);
+        try (PreparedStatement pst = getConnection().prepareStatement(deleteQuery)){
+            pst.setInt(1, entity.getId());
+
+            int affectedRows = pst.executeUpdate();
+            if (affectedRows == 0) {
+                throw new DaoException("Deletion failed, no rows affected.");
+            }
+            entity.setDeleted(true);
+        } catch (SQLException e) {
+            throw new DaoException("Deletion failed", e);
+        }
+    }
 }

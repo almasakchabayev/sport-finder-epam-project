@@ -42,25 +42,25 @@ public class JdbcAddressDao extends JdbcBaseDao<Address> implements AddressDao {
         return address;
     }
 
-    @Override
-    public void delete(Address address) {
-        if (address.getId() == null) {
-            throw new DaoException(new IllegalArgumentException(
-                    "Address without id cannot be deleted"));
-        }
-
-        try (PreparedStatement pst = getConnection().prepareStatement(SQL_DELETE)){
-            pst.setInt(1, address.getId());
-
-            int affectedRows = pst.executeUpdate();
-            if (affectedRows == 0) {
-                throw new DaoException("Update failed, no rows affected.");
-            }
-            address.setDeleted(true);
-        } catch (SQLException e) {
-            throw new DaoException("Deleting address failed", e);
-        }
-    }
+//    @Override
+//    public void delete(Address address) {
+//        if (address.getId() == null) {
+//            throw new DaoException(new IllegalArgumentException(
+//                    "Address without id cannot be deleted"));
+//        }
+//
+//        try (PreparedStatement pst = getConnection().prepareStatement(SQL_DELETE)){
+//            pst.setInt(1, address.getId());
+//
+//            int affectedRows = pst.executeUpdate();
+//            if (affectedRows == 0) {
+//                throw new DaoException("Update failed, no rows affected.");
+//            }
+//            address.setDeleted(true);
+//        } catch (SQLException e) {
+//            throw new DaoException("Deleting address failed", e);
+//        }
+//    }
 
     private static Address map(ResultSet resultSet) throws SQLException {
         Address address = new Address();
