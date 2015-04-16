@@ -18,3 +18,11 @@ INSERT INTO FloorCoverage(
   uuid, name
 ) VALUES(
   uuid_in(md5(((now() + interval '1 day') + interval '1 day')::text)::cstring), 'natural grass');
+INSERT INTO Sport(
+  uuid, name
+) VALUES(
+  uuid_in(md5((now() + interval '1 day')::text)::cstring), 'football');
+INSERT INTO Sport(
+  uuid, name
+) VALUES(
+  uuid_in(md5(((now() + interval '1 day') + interval '1 day')::text)::cstring), 'basketball');

@@ -8,6 +8,7 @@ public class FloorCoverage extends BaseEntity {
     }
 
     public void setName(String name) {
-        this.name = name.toLowerCase();
+        if (name != null) name = name.toLowerCase();
+        this.name = name;
     }
 }

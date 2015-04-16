@@ -204,11 +204,11 @@ public class JdbcFloorCoverageDaoTest extends GlobalTestDataSource {
         assertFloorCoveragesEqual(floorCoverage, floorCoverageFromDatabase);
     }
 
-    public void assertFloorCoveragesEqual(FloorCoverage floorCoverage, FloorCoverage FloorCoverageFromDatabase) {
-        assertEquals(floorCoverage.getId(), FloorCoverageFromDatabase.getId());
-        assertEquals(floorCoverage.getUuid(), FloorCoverageFromDatabase.getUuid());
+    public void assertFloorCoveragesEqual(FloorCoverage floorCoverage, FloorCoverage floorCoverageFromDatabase) {
+        assertEquals(floorCoverage.getId(), floorCoverageFromDatabase.getId());
+        assertEquals(floorCoverage.getUuid(), floorCoverageFromDatabase.getUuid());
         assertEquals(floorCoverage.isDeleted(), floorCoverage.isDeleted());
-        assertEquals(floorCoverage.getName(), FloorCoverageFromDatabase.getName());
+        assertEquals(floorCoverage.getName(), floorCoverageFromDatabase.getName());
 
     }
 }

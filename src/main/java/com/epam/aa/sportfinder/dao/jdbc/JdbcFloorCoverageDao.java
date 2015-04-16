@@ -28,8 +28,8 @@ public class JdbcFloorCoverageDao extends JdbcBaseDao<FloorCoverage> implements 
     @Override
     public FloorCoverage findById(Integer id) {
         FloorCoverage floorCoverage;
-        if (id == null) throw new DaoException(new NullPointerException("Cannot find elementby id, id is null"));
-        if (id < 1) throw new DaoException(new IllegalArgumentException("Cannot find elementby id, id cannot be less than 1"));
+        if (id == null) throw new DaoException(new NullPointerException("Could not find element by id, id is null"));
+        if (id < 1) throw new DaoException(new IllegalArgumentException("Could not find element by id, id cannot be less than 1"));
         try (PreparedStatement pst = getConnection().prepareStatement(SQL_FIND_BY_ID)){
             pst.setInt(1, id);
 
