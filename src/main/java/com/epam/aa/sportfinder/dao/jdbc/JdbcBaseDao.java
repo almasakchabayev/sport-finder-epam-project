@@ -4,12 +4,10 @@ import com.epam.aa.sportfinder.dao.DaoException;
 import com.epam.aa.sportfinder.dao.GenericDao;
 import com.epam.aa.sportfinder.model.BaseEntity;
 
-import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.*;
 import java.util.List;
-import java.util.Map;
 
 public abstract class JdbcBaseDao<T extends BaseEntity> implements GenericDao<T> {
     private final Connection connection;
@@ -96,9 +94,5 @@ public abstract class JdbcBaseDao<T extends BaseEntity> implements GenericDao<T>
         } catch (SQLException e) {
             throw new DaoException("Deletion failed", e);
         }
-    }
-
-    private String getTableName(Class<T> clazz) {
-        return clazz.getSimpleName();
     }
 }
