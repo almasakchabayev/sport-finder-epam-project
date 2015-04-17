@@ -14,4 +14,5 @@ public interface DaoManager {
 
     // TODO:generic getter
 
+
 }
