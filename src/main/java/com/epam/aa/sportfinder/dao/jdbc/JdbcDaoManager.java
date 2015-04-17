@@ -80,8 +80,8 @@ public class JdbcDaoManager implements DaoManager {
         } catch (ClassNotFoundException e) {
             throw new DaoException("There is no JdbcDao matching " + entityClassName, e);
         } catch (NoSuchMethodException e) {
-            throw new DaoException("Dao class corresponding to  " +
-                    entityClassName + "does not have constructor that accepts connection", e);
+            throw new DaoException("Dao class corresponding to " +
+                    entityClassName + " does not have constructor that accepts connection", e);
         } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
             throw new DaoException("Could not instantiate dao for " + entityClassName, e);
         }

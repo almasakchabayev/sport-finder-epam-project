@@ -51,6 +51,9 @@ public class Query {
         if (type.equals(Type.UPDATE))
             result = constructUpdateSqlQuery();
 
+        if (type.equals(Type.FIND_BY_ID))
+            result = constructFindByIdQuery();
+
         return result;
     }
 
@@ -104,12 +107,28 @@ public class Query {
         return queryBuilder.toString();
     }
 
+    public String constructFindByIdQuery() {
+        StringBuilder queryBuilder = new StringBuilder();
+        queryBuilder.append("SELECT ");
+
+        String prefix = "";
+        for (PropertyDescriptor pd : daoBean.getPropertyDescriptors()) {
+            queryBuilder.append(prefix);
+            prefix = ", ";
+            queryBuilder.append(pd.getName());
+        }
+        queryBuilder.append(" FROM ");
+        queryBuilder.append(daoBean.getClazz().getSimpleName());
+        queryBuilder.append(" WHERE id = ?");
+        return queryBuilder.toString();
+    }
+
     private static void addQuery(Class<? extends BaseEntity> clazz, Type type, Query query) {
         queries.put(clazz, type, query);
     }
 
 
     public enum Type {
-        INSERT, UPDATE, DELETE
+        INSERT, UPDATE, DELETE, FIND_BY_ID
     }
 }
