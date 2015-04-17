@@ -13,7 +13,7 @@ import java.sql.SQLException;
 
 public class JdbcDaoFactory extends DaoFactory {
     private static JdbcDaoFactory instance = new JdbcDaoFactory();
-    private final DataSource dataSource = initJdbc();
+    private final DataSource dataSource = initDataSource();
 
     private JdbcDaoFactory() {
     }
@@ -22,15 +22,21 @@ public class JdbcDaoFactory extends DaoFactory {
         return instance;
     }
 
-    private DataSource initJdbc() {
+    private DataSource initDataSource() {
         HikariConfig config = new HikariConfig(AppProperties.HIKARI_PROPERTIES_PATH);
         DataSource ds = new HikariDataSource(config);
 
-        Flyway flyway = new Flyway();
-        flyway.setDataSource(ds);
-        flyway.migrate();
+        applyMigrations(ds);
 
         return ds;
+    }
+
+    private void applyMigrations(DataSource ds) {
+        Flyway flyway = new Flyway();
+        flyway.setDataSource(ds);
+        if (AppProperties.getFlywayProperty("clean").equals("true"))
+            flyway.clean();
+        flyway.migrate();
     }
 
     @Override
@@ -45,13 +51,4 @@ public class JdbcDaoFactory extends DaoFactory {
     public DataSource getDataSource() {
         return dataSource;
     }
-
-    public static void main(String[] args) {
-        Package aPackage = JdbcAddressDao.class.getPackage();
-        String name = aPackage.getName();
-
-
-        System.out.println(name);
-    }
-
 }

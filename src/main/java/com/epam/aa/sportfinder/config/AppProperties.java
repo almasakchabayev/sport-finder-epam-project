@@ -18,6 +18,26 @@ public class AppProperties {
     private static final Properties DAO_PROPERTIES = loadDaoProperties();
     private static final String HIKARI_PROPERTIES_FILE = "/hikari.properties";
     public static final String HIKARI_PROPERTIES_PATH = getHikariPropertiesPath();
+    private static final String FLYWAY_PROPERTIES_FILE = "/flyway.properties";
+    private static final Properties FLYWAY_PROPERTIES = loadFlywayProperties();
+
+    private static Properties loadFlywayProperties() {
+        InputStream in = AppProperties.class.getResourceAsStream(FLYWAY_PROPERTIES_FILE);
+        if (in == null) {
+            throw new ConfigurationException(
+                    "DaoProperties file '" + FLYWAY_PROPERTIES_FILE + "' is missing in classpath.");
+        }
+        Properties result;
+        try {
+            result = new Properties();
+            result.load(in);
+            in.close();
+        } catch (IOException e) {
+            throw new ConfigurationException(
+                    "Cannot load properties file '" + FLYWAY_PROPERTIES_FILE + "'.", e);
+        }
+        return result;
+    }
 
     private static String getHikariPropertiesPath() {
         URL resource = AppProperties.class.getResource(HIKARI_PROPERTIES_FILE);
@@ -80,10 +100,19 @@ public class AppProperties {
         if (property == null || property.trim().length() == 0) {
             throw new ConfigurationException(
                     "Required property '" + key + "'"
-                            + " is missing in properties file '" + PARSER_PROPERTIES + "'.");
+                            + " is missing in properties file '" + DAO_PROPERTIES + "'.");
         }
         return property;
     }
 
+    public static String getFlywayProperty(String key) {
+        String property = FLYWAY_PROPERTIES.getProperty(key);
+        if (property == null || property.trim().length() == 0) {
+            throw new ConfigurationException(
+                    "Required property '" + key + "'"
+                            + " is missing in properties file '" + FLYWAY_PROPERTIES + "'.");
+        }
+        return property;
+    }
 
 }
