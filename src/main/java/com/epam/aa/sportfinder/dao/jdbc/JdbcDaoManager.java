@@ -1,9 +1,12 @@
 package com.epam.aa.sportfinder.dao.jdbc;
 
 import com.epam.aa.sportfinder.dao.*;
+import com.epam.aa.sportfinder.model.BaseEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -65,26 +68,48 @@ public class JdbcDaoManager implements DaoManager {
         }
     }
 
-    @Override
-    public AddressDao getAddressDao() {
-        if (addressDao == null) {
-            addressDao = new JdbcAddressDao(connection);
-        }
-        return addressDao;
-    }
+//    @Override
+//    public AddressDao getAddressDao() {
+//        if (addressDao == null) {
+//            addressDao = new JdbcAddressDao(connection);
+//        }
+//        return addressDao;
+//    }
+//
+//    @Override
+//    public FloorCoverageDao getFloorCoverageDao() {
+//        if (floorCoverageDao == null) {
+//            floorCoverageDao = new JdbcFloorCoverageDao(connection);
+//        }
+//        return floorCoverageDao;
+//    }
+//
+//    @Override
+//    public SportDao getSportDao() {
+//        if (sportDao == null)
+//            sportDao = new JdbcSportDao(connection);
+//        return sportDao;
+//    }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public FloorCoverageDao getFloorCoverageDao() {
-        if (floorCoverageDao == null) {
-            floorCoverageDao = new JdbcFloorCoverageDao(connection);
-        }
-        return floorCoverageDao;
-    }
+    public <T extends GenericDao> T getDao(Class<? extends BaseEntity> clazz) {
+        String entityClassName = clazz.getSimpleName();
+        String jdbcPackageName = this.getClass().getPackage().getName();
+        String daoClassName = jdbcPackageName + ".Jdbc" + entityClassName + "Dao";
 
-    @Override
-    public SportDao getSportDao() {
-        if (sportDao == null)
-            sportDao = new JdbcSportDao(connection);
-        return sportDao;
+        try {
+            Class<?> daoClass = Class.forName(daoClassName);
+            Constructor<?> constructor = daoClass.getConstructor(Connection.class);
+            T instance = (T) constructor.newInstance(connection);
+            return instance;
+        } catch (ClassNotFoundException e) {
+            throw new DaoException("There is no JdbcDao matching " + entityClassName, e);
+        } catch (NoSuchMethodException e) {
+            throw new DaoException("Dao class corresponding to  " +
+                    entityClassName + "does not have constructor that accepts connection", e);
+        } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
+            throw new DaoException("Could not instantiate dao for " + entityClassName, e);
+        }
     }
 }

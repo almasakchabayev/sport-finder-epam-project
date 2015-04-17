@@ -1,5 +1,7 @@
 package com.epam.aa.sportfinder.dao;
 
+import com.epam.aa.sportfinder.model.BaseEntity;
+
 public interface DaoManager {
     <T> T execute(DaoCommand<T> daoCommand);
     <T> T transaction(DaoCommand<T> daoCommand);
@@ -8,11 +10,11 @@ public interface DaoManager {
     }
 
     // add more Daos here
-    AddressDao getAddressDao();
-    FloorCoverageDao getFloorCoverageDao();
-    SportDao getSportDao();
+//    AddressDao getAddressDao();
+//    FloorCoverageDao getFloorCoverageDao();
+//    SportDao getSportDao();
 
     // TODO:generic getter
-
+    <T extends GenericDao> T getDao(Class<? extends BaseEntity> clazz);
 
 }

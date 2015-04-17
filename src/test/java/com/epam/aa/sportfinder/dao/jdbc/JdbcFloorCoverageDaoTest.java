@@ -20,7 +20,7 @@ public class JdbcFloorCoverageDaoTest extends TestConfig {
     @Test(expected = DaoException.class)
     public void testInsertFailsIfIdNotNull() throws Exception {
         DaoManager daoManager = getDaoManager();
-        FloorCoverageDao dao = daoManager.getFloorCoverageDao();
+        FloorCoverageDao dao = daoManager.getDao(FloorCoverage.class);
 
         FloorCoverage floorCoverage = new FloorCoverage();
         floorCoverage.setId(1);
@@ -31,7 +31,7 @@ public class JdbcFloorCoverageDaoTest extends TestConfig {
     @Test(expected = DaoException.class)
     public void testInsertFailsIfNameAlreadyExists() throws Exception {
         DaoManager daoManager = getDaoManager();
-        FloorCoverageDao dao = daoManager.getFloorCoverageDao();
+        FloorCoverageDao dao = daoManager.getDao(FloorCoverage.class);
 
         FloorCoverage floorCoverage = new FloorCoverage();
         floorCoverage.setName("unique");
@@ -46,7 +46,7 @@ public class JdbcFloorCoverageDaoTest extends TestConfig {
     @Test(expected = DaoException.class)
     public void testInsertFailsIfUuidAlreadyExists() throws Exception {
         DaoManager daoManager = getDaoManager();
-        FloorCoverageDao dao = daoManager.getFloorCoverageDao();
+        FloorCoverageDao dao = daoManager.getDao(FloorCoverage.class);
 
         FloorCoverage floorCoverage = new FloorCoverage();
         dao.insert(floorCoverage);
@@ -60,7 +60,7 @@ public class JdbcFloorCoverageDaoTest extends TestConfig {
     @Test
     public void testInsertSuccessWithoutIdAndUuid() throws Exception {
         DaoManager daoManager = getDaoManager();
-        FloorCoverageDao dao = daoManager.getFloorCoverageDao();
+        FloorCoverageDao dao = daoManager.getDao(FloorCoverage.class);
 
         Connection connection = getDataSource().getConnection();
 
@@ -90,7 +90,7 @@ public class JdbcFloorCoverageDaoTest extends TestConfig {
     @Test(expected = DaoException.class)
     public void testUpdateFailsIfIdIsNull() throws Exception {
         DaoManager daoManager = getDaoManager();
-        FloorCoverageDao dao = daoManager.getFloorCoverageDao();
+        FloorCoverageDao dao = daoManager.getDao(FloorCoverage.class);
 
         FloorCoverage floorCoverage = new FloorCoverage();
         floorCoverage.setName("parket");
@@ -101,7 +101,7 @@ public class JdbcFloorCoverageDaoTest extends TestConfig {
     @Test
     public void testUpdateSuccessIfIdNotNull() throws Exception {
         DaoManager daoManager = getDaoManager();
-        FloorCoverageDao dao = daoManager.getFloorCoverageDao();
+        FloorCoverageDao dao = daoManager.getDao(FloorCoverage.class);
 
         Connection connection = getDataSource().getConnection();
 
@@ -133,7 +133,7 @@ public class JdbcFloorCoverageDaoTest extends TestConfig {
     @Test
     public void testDeleteInDbAndAssignTrueToObject() throws Exception {
         DaoManager daoManager = getDaoManager();
-        FloorCoverageDao dao = daoManager.getFloorCoverageDao();
+        FloorCoverageDao dao = daoManager.getDao(FloorCoverage.class);
 
         Connection connection = getDataSource().getConnection();
 
@@ -164,7 +164,7 @@ public class JdbcFloorCoverageDaoTest extends TestConfig {
     @Test(expected = DaoException.class)
     public void testFindByIdFailsIfIdIsNull() throws Exception {
         DaoManager daoManager = getDaoManager();
-        FloorCoverageDao dao = daoManager.getFloorCoverageDao();
+        FloorCoverageDao dao = daoManager.getDao(FloorCoverage.class);
 
         FloorCoverage dummyfloorCoverage = new FloorCoverage();
         FloorCoverage floorCoverage = dao.findById(dummyfloorCoverage.getId());
@@ -173,7 +173,7 @@ public class JdbcFloorCoverageDaoTest extends TestConfig {
     @Test(expected = DaoException.class)
     public void testFindByIdFailsIfIdIsNegative() throws Exception {
         DaoManager daoManager = getDaoManager();
-        FloorCoverageDao dao = daoManager.getFloorCoverageDao();
+        FloorCoverageDao dao = daoManager.getDao(FloorCoverage.class);
 
         FloorCoverage floorCoverage = dao.findById(-1);
     }
@@ -181,14 +181,14 @@ public class JdbcFloorCoverageDaoTest extends TestConfig {
     @Test(expected = DaoException.class)
     public void testFindByIdFailsIfElementCouldNotBeFounded() throws Exception {
         DaoManager daoManager = getDaoManager();
-        FloorCoverageDao dao = daoManager.getFloorCoverageDao();
+        FloorCoverageDao dao = daoManager.getDao(FloorCoverage.class);
         FloorCoverage floorCoverage = dao.findById(100000000);
     }
 
     @Test
     public void testFindByIdSuccessIfValidId() throws Exception {
         DaoManager daoManager = getDaoManager();
-        FloorCoverageDao dao = daoManager.getFloorCoverageDao();
+        FloorCoverageDao dao = daoManager.getDao(FloorCoverage.class);
 
         Connection connection = getDataSource().getConnection();
         FloorCoverage floorCoverage = dao.findById(1);

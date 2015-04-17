@@ -47,4 +47,13 @@ public class JdbcDaoFactory extends DaoFactory {
     public DataSource getDataSource() {
         return dataSource;
     }
+
+    public static void main(String[] args) {
+        Package aPackage = JdbcAddressDao.class.getPackage();
+        String name = aPackage.getName();
+
+
+        System.out.println(name);
+    }
+
 }

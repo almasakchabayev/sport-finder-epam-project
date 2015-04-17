@@ -20,7 +20,7 @@ public class JdbcSportDaoTest extends TestConfig {
     @Test(expected = DaoException.class)
     public void testInsertFailsIfIdNotNull() throws Exception {
         DaoManager daoManager = getDaoManager();
-        SportDao dao = daoManager.getSportDao();
+        SportDao dao = daoManager.getDao(Sport.class);
 
         Sport sport = new Sport();
         sport.setId(1);
@@ -31,7 +31,7 @@ public class JdbcSportDaoTest extends TestConfig {
     @Test(expected = DaoException.class)
     public void testInsertFailsIfNameAlreadyExists() throws Exception {
         DaoManager daoManager = getDaoManager();
-        SportDao dao = daoManager.getSportDao();
+        SportDao dao = daoManager.getDao(Sport.class);
 
         Sport sport = new Sport();
         sport.setName("unique");
@@ -46,7 +46,7 @@ public class JdbcSportDaoTest extends TestConfig {
     @Test(expected = DaoException.class)
     public void testInsertFailsIfUuidAlreadyExists() throws Exception {
         DaoManager daoManager = getDaoManager();
-        SportDao dao = daoManager.getSportDao();
+        SportDao dao = daoManager.getDao(Sport.class);
 
         Sport sport = new Sport();
         dao.insert(sport);
@@ -60,7 +60,7 @@ public class JdbcSportDaoTest extends TestConfig {
     @Test
     public void testInsertSuccessWithoutIdAndUuid() throws Exception {
         DaoManager daoManager = getDaoManager();
-        SportDao dao = daoManager.getSportDao();
+        SportDao dao = daoManager.getDao(Sport.class);
 
         Connection connection = getDataSource().getConnection();
 
@@ -90,7 +90,7 @@ public class JdbcSportDaoTest extends TestConfig {
     @Test(expected = DaoException.class)
     public void testUpdateFailsIfIdIsNull() throws Exception {
         DaoManager daoManager = getDaoManager();
-        SportDao dao = daoManager.getSportDao();
+        SportDao dao = daoManager.getDao(Sport.class);
 
         Sport sport = new Sport();
         sport.setName("parket");
@@ -101,7 +101,7 @@ public class JdbcSportDaoTest extends TestConfig {
     @Test
     public void testUpdateSuccessIfIdNotNull() throws Exception {
         DaoManager daoManager = getDaoManager();
-        SportDao dao = daoManager.getSportDao();
+        SportDao dao = daoManager.getDao(Sport.class);
 
         Connection connection = getDataSource().getConnection();
 
@@ -133,7 +133,7 @@ public class JdbcSportDaoTest extends TestConfig {
     @Test
     public void testDeleteInDbAndAssignTrueToObject() throws Exception {
         DaoManager daoManager = getDaoManager();
-        SportDao dao = daoManager.getSportDao();
+        SportDao dao = daoManager.getDao(Sport.class);
 
         Connection connection = getDataSource().getConnection();
         Sport sport = new Sport();
@@ -163,7 +163,7 @@ public class JdbcSportDaoTest extends TestConfig {
     @Test(expected = DaoException.class)
     public void testFindByIdFailsIfIdIsNull() throws Exception {
         DaoManager daoManager = getDaoManager();
-        SportDao dao = daoManager.getSportDao();
+        SportDao dao = daoManager.getDao(Sport.class);
 
         Sport dummysport = new Sport();
         Sport sport = dao.findById(dummysport.getId());
@@ -172,7 +172,7 @@ public class JdbcSportDaoTest extends TestConfig {
     @Test(expected = DaoException.class)
     public void testFindByIdFailsIfIdIsNegative() throws Exception {
         DaoManager daoManager = getDaoManager();
-        SportDao dao = daoManager.getSportDao();
+        SportDao dao = daoManager.getDao(Sport.class);
 
         Sport sport = dao.findById(-1);
     }
@@ -180,7 +180,7 @@ public class JdbcSportDaoTest extends TestConfig {
     @Test(expected = DaoException.class)
     public void testFindByIdFailsIfElementCouldNotBeFounded() throws Exception {
         DaoManager daoManager = getDaoManager();
-        SportDao dao = daoManager.getSportDao();
+        SportDao dao = daoManager.getDao(Sport.class);
 
         Sport sport = dao.findById(100000000);
     }
@@ -188,7 +188,7 @@ public class JdbcSportDaoTest extends TestConfig {
     @Test
     public void testFindByIdSuccessIfValidId() throws Exception {
         DaoManager daoManager = getDaoManager();
-        SportDao dao = daoManager.getSportDao();
+        SportDao dao = daoManager.getDao(Sport.class);
 
         Connection connection = getDataSource().getConnection();
         Sport sport = dao.findById(1);

@@ -21,7 +21,7 @@ public class JdbcAddressDaoTest extends TestConfig {
     @Test(expected = DaoException.class)
     public void testInsertFailsIfIdNotNull() throws Exception {
         DaoManager daoManager = getDaoManager();
-        AddressDao dao = daoManager.getAddressDao();
+        AddressDao dao = daoManager.getDao(Address.class);
 
         Address address = new Address();
         address.setId(1);
@@ -32,7 +32,7 @@ public class JdbcAddressDaoTest extends TestConfig {
     @Test(expected = DaoException.class)
     public void testInsertFailsIfUuidAlreadyExists() throws Exception {
         DaoManager daoManager = getDaoManager();
-        AddressDao dao = daoManager.getAddressDao();
+        AddressDao dao = daoManager.getDao(Address.class);
 
         Address address = new Address();
         dao.insert(address);
@@ -46,7 +46,7 @@ public class JdbcAddressDaoTest extends TestConfig {
     @Test
     public void testInsertSuccessWithoutIdAndUuid() throws Exception {
         DaoManager daoManager = getDaoManager();
-        AddressDao dao = daoManager.getAddressDao();
+        AddressDao dao = daoManager.getDao(Address.class);
         Connection connection = getDataSource().getConnection();
 
         Address address = new Address();
@@ -83,7 +83,7 @@ public class JdbcAddressDaoTest extends TestConfig {
     @Test(expected = DaoException.class)
     public void testUpdateFailsIfIdIsNull() throws Exception {
         DaoManager daoManager = getDaoManager();
-        AddressDao dao = daoManager.getAddressDao();
+        AddressDao dao = daoManager.getDao(Address.class);
 
         Address address = new Address();
         address.setCountry("UK");
@@ -98,7 +98,7 @@ public class JdbcAddressDaoTest extends TestConfig {
     @Test
     public void testUpdateSuccessIfIdNotNull() throws Exception {
         DaoManager daoManager = getDaoManager();
-        AddressDao dao = daoManager.getAddressDao();
+        AddressDao dao = daoManager.getDao(Address.class);
         Connection connection = getDataSource().getConnection();
         Address address = new Address();
         address.setId(2);
@@ -136,7 +136,7 @@ public class JdbcAddressDaoTest extends TestConfig {
     @Test
     public void testDeleteInDbAndAssignTrueToObject() throws Exception {
         DaoManager daoManager = getDaoManager();
-        AddressDao dao = daoManager.getAddressDao();
+        AddressDao dao = daoManager.getDao(Address.class);
         Connection connection = getDataSource().getConnection();
         Address address = new Address();
         address.setId(1);
@@ -169,7 +169,7 @@ public class JdbcAddressDaoTest extends TestConfig {
     @Test(expected = DaoException.class)
     public void testFindByIdFailsIfIdIsNull() throws Exception {
         DaoManager daoManager = getDaoManager();
-        AddressDao dao = daoManager.getAddressDao();
+        AddressDao dao = daoManager.getDao(Address.class);
         Address dummyAddress = new Address();
         Address address = dao.findById(dummyAddress.getId());
     }
@@ -177,7 +177,7 @@ public class JdbcAddressDaoTest extends TestConfig {
     @Test(expected = DaoException.class)
     public void testFindByIdFailsIfIdIsNegative() throws Exception {
         DaoManager daoManager = getDaoManager();
-        AddressDao dao = daoManager.getAddressDao();
+        AddressDao dao = daoManager.getDao(Address.class);
 
         Address address = dao.findById(-1);
     }
@@ -185,7 +185,7 @@ public class JdbcAddressDaoTest extends TestConfig {
     @Test(expected = DaoException.class)
     public void testFindByIdFailsIfElementCouldNotBeFounded() throws Exception {
         DaoManager daoManager = getDaoManager();
-        AddressDao dao = daoManager.getAddressDao();
+        AddressDao dao = daoManager.getDao(Address.class);
 
         Address address = dao.findById(100000000);
     }
@@ -193,7 +193,7 @@ public class JdbcAddressDaoTest extends TestConfig {
     @Test
     public void testFindByIdSuccessIfValidId() throws Exception {
         DaoManager daoManager = getDaoManager();
-        AddressDao dao = daoManager.getAddressDao();
+        AddressDao dao = daoManager.getDao(Address.class);
 
         Connection connection = getDataSource().getConnection();
         Address address = dao.findById(1);
