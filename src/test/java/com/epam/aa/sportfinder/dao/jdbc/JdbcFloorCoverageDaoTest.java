@@ -1,6 +1,8 @@
 package com.epam.aa.sportfinder.dao.jdbc;
 
 import com.epam.aa.sportfinder.dao.DaoException;
+import com.epam.aa.sportfinder.dao.DaoManager;
+import com.epam.aa.sportfinder.dao.FloorCoverageDao;
 import com.epam.aa.sportfinder.model.FloorCoverage;
 import org.junit.Test;
 
@@ -17,20 +19,19 @@ public class JdbcFloorCoverageDaoTest extends GlobalTestDataSource {
 
     @Test(expected = DaoException.class)
     public void testInsertFailsIfIdNotNull() throws Exception {
-        Connection connection = getDataSource().getConnection();
-        JdbcFloorCoverageDao dao = new JdbcFloorCoverageDao(connection);
+        DaoManager daoManager = getDaoManager();
+        FloorCoverageDao dao = daoManager.getFloorCoverageDao();
 
         FloorCoverage floorCoverage = new FloorCoverage();
         floorCoverage.setId(1);
 
         dao.insert(floorCoverage);
-        connection.close();
     }
 
     @Test(expected = DaoException.class)
     public void testInsertFailsIfNameAlreadyExists() throws Exception {
-        Connection connection = getDataSource().getConnection();
-        JdbcFloorCoverageDao dao = new JdbcFloorCoverageDao(connection);
+        DaoManager daoManager = getDaoManager();
+        FloorCoverageDao dao = daoManager.getFloorCoverageDao();
 
         FloorCoverage floorCoverage = new FloorCoverage();
         floorCoverage.setName("unique");
@@ -40,13 +41,12 @@ public class JdbcFloorCoverageDaoTest extends GlobalTestDataSource {
         floorCoverageWithSameName.setName(floorCoverage.getName());
 
         dao.insert(floorCoverageWithSameName);
-        connection.close();
     }
 
     @Test(expected = DaoException.class)
     public void testInsertFailsIfUuidAlreadyExists() throws Exception {
-        Connection connection = getDataSource().getConnection();
-        JdbcFloorCoverageDao dao = new JdbcFloorCoverageDao(connection);
+        DaoManager daoManager = getDaoManager();
+        FloorCoverageDao dao = daoManager.getFloorCoverageDao();
 
         FloorCoverage floorCoverage = new FloorCoverage();
         dao.insert(floorCoverage);
@@ -55,13 +55,14 @@ public class JdbcFloorCoverageDaoTest extends GlobalTestDataSource {
         floorCoverageWithSameUuid.setUuid(floorCoverage.getUuid());
 
         dao.insert(floorCoverageWithSameUuid);
-        connection.close();
     }
 
     @Test
     public void testInsertSuccessWithoutIdAndUuid() throws Exception {
+        DaoManager daoManager = getDaoManager();
+        FloorCoverageDao dao = daoManager.getFloorCoverageDao();
+
         Connection connection = getDataSource().getConnection();
-        JdbcFloorCoverageDao dao = new JdbcFloorCoverageDao(connection);
 
         FloorCoverage floorCoverage = new FloorCoverage();
         floorCoverage.setName("sand");
@@ -88,20 +89,21 @@ public class JdbcFloorCoverageDaoTest extends GlobalTestDataSource {
 
     @Test(expected = DaoException.class)
     public void testUpdateFailsIfIdIsNull() throws Exception {
-        Connection connection = getDataSource().getConnection();
-        JdbcFloorCoverageDao dao = new JdbcFloorCoverageDao(connection);
+        DaoManager daoManager = getDaoManager();
+        FloorCoverageDao dao = daoManager.getFloorCoverageDao();
 
         FloorCoverage floorCoverage = new FloorCoverage();
         floorCoverage.setName("parket");
 
         dao.update(floorCoverage);
-        connection.close();
     }
 
     @Test
     public void testUpdateSuccessIfIdNotNull() throws Exception {
+        DaoManager daoManager = getDaoManager();
+        FloorCoverageDao dao = daoManager.getFloorCoverageDao();
+
         Connection connection = getDataSource().getConnection();
-        JdbcFloorCoverageDao dao = new JdbcFloorCoverageDao(connection);
 
         FloorCoverage floorCoverage = new FloorCoverage();
         floorCoverage.setId(2);
@@ -130,8 +132,11 @@ public class JdbcFloorCoverageDaoTest extends GlobalTestDataSource {
 
     @Test
     public void testDeleteInDbAndAssignTrueToObject() throws Exception {
+        DaoManager daoManager = getDaoManager();
+        FloorCoverageDao dao = daoManager.getFloorCoverageDao();
+
         Connection connection = getDataSource().getConnection();
-        JdbcFloorCoverageDao dao = new JdbcFloorCoverageDao(connection);
+
         FloorCoverage floorCoverage = new FloorCoverage();
         floorCoverage.setId(1);
         dao.delete(floorCoverage);
@@ -158,33 +163,34 @@ public class JdbcFloorCoverageDaoTest extends GlobalTestDataSource {
 
     @Test(expected = DaoException.class)
     public void testFindByIdFailsIfIdIsNull() throws Exception {
-        Connection connection = getDataSource().getConnection();
-        JdbcFloorCoverageDao dao = new JdbcFloorCoverageDao(connection);
+        DaoManager daoManager = getDaoManager();
+        FloorCoverageDao dao = daoManager.getFloorCoverageDao();
+
         FloorCoverage dummyfloorCoverage = new FloorCoverage();
         FloorCoverage floorCoverage = dao.findById(dummyfloorCoverage.getId());
-        connection.close();
     }
 
     @Test(expected = DaoException.class)
     public void testFindByIdFailsIfIdIsNegative() throws Exception {
-        Connection connection = getDataSource().getConnection();
-        JdbcFloorCoverageDao dao = new JdbcFloorCoverageDao(connection);
+        DaoManager daoManager = getDaoManager();
+        FloorCoverageDao dao = daoManager.getFloorCoverageDao();
+
         FloorCoverage floorCoverage = dao.findById(-1);
-        connection.close();
     }
 
     @Test(expected = DaoException.class)
     public void testFindByIdFailsIfElementCouldNotBeFounded() throws Exception {
-        Connection connection = getDataSource().getConnection();
-        JdbcFloorCoverageDao dao = new JdbcFloorCoverageDao(connection);
+        DaoManager daoManager = getDaoManager();
+        FloorCoverageDao dao = daoManager.getFloorCoverageDao();
         FloorCoverage floorCoverage = dao.findById(100000000);
-        connection.close();
     }
 
     @Test
     public void testFindByIdSuccessIfValidId() throws Exception {
+        DaoManager daoManager = getDaoManager();
+        FloorCoverageDao dao = daoManager.getFloorCoverageDao();
+
         Connection connection = getDataSource().getConnection();
-        JdbcFloorCoverageDao dao = new JdbcFloorCoverageDao(connection);
         FloorCoverage floorCoverage = dao.findById(1);
 
         PreparedStatement pst = connection.prepareStatement("SELECT id, uuid, deleted, name " +

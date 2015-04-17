@@ -18,7 +18,7 @@ public class AppContextListener implements ServletContextListener {
 
     private void initDaoFactory() {
         String daoProperty = AppProperties.getDaoProperty("dao.factory");
-        DaoFactory.setImpl(daoProperty);
+        DaoFactory.setDefaultType(daoProperty);
         logger.info("DaoFactory is successfully initialized with implementation {}", daoProperty);
     }
 

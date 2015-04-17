@@ -16,7 +16,12 @@ public class Sport extends BaseEntity {
     }
 
     public void setName(String name) {
-        if (name != null) name = name.toLowerCase();
-        this.name = name;
+        if (name == null) name = "";
+        this.name = name.toLowerCase();
+    }
+
+    public static void main(String[] args) {
+        Sport sport = new Sport();
+        sport.setName(null);
     }
 }

@@ -24,6 +24,7 @@ CREATE TABLE SportPlace (
   id SERIAL NOT NULL PRIMARY KEY,
   uuid UUID UNIQUE,
   deleted BOOLEAN DEFAULT FALSE,
+  size TEXT,
   capacity INT,
   floorCoverage INT,
   indoor BOOLEAN,

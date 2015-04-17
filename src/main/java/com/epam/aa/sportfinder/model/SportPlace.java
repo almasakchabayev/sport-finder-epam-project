@@ -30,4 +30,99 @@ public class SportPlace extends BaseEntity {
     }
 
 
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
+    }
+
+    public Integer getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(Integer capacity) {
+        this.capacity = capacity;
+    }
+
+    public FloorCoverage getFloorCoverage() {
+        return floorCoverage;
+    }
+
+    public void setFloorCoverage(FloorCoverage floorCoverage) {
+        this.floorCoverage = floorCoverage;
+    }
+
+    public boolean isIndoor() {
+        return indoor;
+    }
+
+    public void setIndoor(boolean indoor) {
+        this.indoor = indoor;
+    }
+
+    public boolean isChangingRoom() {
+        return changingRoom;
+    }
+
+    public void setChangingRoom(boolean changingRoom) {
+        this.changingRoom = changingRoom;
+    }
+
+    public boolean isShower() {
+        return shower;
+    }
+
+    public void setShower(boolean shower) {
+        this.shower = shower;
+    }
+
+    public boolean isLightening() {
+        return lightening;
+    }
+
+    public void setLightening(boolean lightening) {
+        this.lightening = lightening;
+    }
+
+    public Integer getTribuneCapacity() {
+        return tribuneCapacity;
+    }
+
+    public void setTribuneCapacity(Integer tribuneCapacity) {
+        this.tribuneCapacity = tribuneCapacity;
+    }
+
+    public String getOtherInfrastructureFeatures() {
+        return otherInfrastructureFeatures;
+    }
+
+    public void setOtherInfrastructureFeatures(String otherInfrastructureFeatures) {
+        this.otherInfrastructureFeatures = otherInfrastructureFeatures;
+    }
+
+    public BigDecimal getPricePerHour() {
+        return pricePerHour;
+    }
+
+    public void setPricePerHour(BigDecimal pricePerHour) {
+        this.pricePerHour = pricePerHour;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 }

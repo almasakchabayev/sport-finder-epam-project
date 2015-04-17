@@ -1,9 +1,7 @@
 package com.epam.aa.sportfinder.dao.jdbc;
 
-import com.epam.aa.sportfinder.dao.AddressDao;
 import com.epam.aa.sportfinder.dao.DaoException;
 import com.epam.aa.sportfinder.dao.FloorCoverageDao;
-import com.epam.aa.sportfinder.model.Address;
 import com.epam.aa.sportfinder.model.FloorCoverage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

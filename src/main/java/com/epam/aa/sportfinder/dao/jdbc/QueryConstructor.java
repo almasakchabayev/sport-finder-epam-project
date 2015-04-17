@@ -1,7 +1,9 @@
 package com.epam.aa.sportfinder.dao.jdbc;
 
 import com.epam.aa.sportfinder.dao.DaoException;
+import com.epam.aa.sportfinder.model.Address;
 import com.epam.aa.sportfinder.model.BaseEntity;
+import com.epam.aa.sportfinder.model.SportPlace;
 
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -33,7 +35,8 @@ public class QueryConstructor {
         try {
             for (PropertyDescriptor pd : propertyDescriptors) {
                 if (pd.getReadMethod() != null && !"class".equals(pd.getName())) {
-                    if (pd.getReadMethod().invoke(entity) != null) {
+                    Object invoke = pd.getReadMethod().invoke(entity);
+                    if (invoke != null && !(invoke instanceof BaseEntity)) {
                         queryConstructor.addPropertyDescriptor(pd);
                     }
                 }
@@ -139,5 +142,18 @@ public class QueryConstructor {
 
     public List<PropertyDescriptor> getPropertyDescriptors() {
         return propertyDescriptors;
+    }
+
+    public static void main(String[] args) {
+        SportPlace sportPlace = new SportPlace();
+        sportPlace.setId(1);
+        sportPlace.setCapacity(10);
+        sportPlace.setChangingRoom(true);
+        sportPlace.setDescription("Awesome sportplace");
+        sportPlace.setIndoor(true);
+        sportPlace.setAddress(new Address());
+
+        QueryConstructor queryConstructor = QueryConstructor.createQueryConstructor(sportPlace);
+        System.out.println(queryConstructor.getInsertSqlQuery());
     }
 }

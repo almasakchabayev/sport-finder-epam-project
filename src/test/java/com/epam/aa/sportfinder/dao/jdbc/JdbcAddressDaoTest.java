@@ -1,6 +1,9 @@
 package com.epam.aa.sportfinder.dao.jdbc;
 
+import com.epam.aa.sportfinder.dao.AddressDao;
 import com.epam.aa.sportfinder.dao.DaoException;
+import com.epam.aa.sportfinder.dao.DaoFactory;
+import com.epam.aa.sportfinder.dao.DaoManager;
 import com.epam.aa.sportfinder.model.Address;
 import org.junit.Test;
 
@@ -18,20 +21,19 @@ public class JdbcAddressDaoTest extends GlobalTestDataSource {
 
     @Test(expected = DaoException.class)
     public void testInsertFailsIfIdNotNull() throws Exception {
-        Connection connection = getDataSource().getConnection();
-        JdbcAddressDao dao = new JdbcAddressDao(connection);
+        DaoManager daoManager = getDaoManager();
+        AddressDao dao = daoManager.getAddressDao();
 
         Address address = new Address();
         address.setId(1);
 
         dao.insert(address);
-        connection.close();
     }
 
     @Test(expected = DaoException.class)
     public void testInsertFailsIfUuidAlreadyExists() throws Exception {
-        Connection connection = getDataSource().getConnection();
-        JdbcAddressDao dao = new JdbcAddressDao(connection);
+        DaoManager daoManager = getDaoManager();
+        AddressDao dao = daoManager.getAddressDao();
 
         Address address = new Address();
         dao.insert(address);
@@ -40,13 +42,13 @@ public class JdbcAddressDaoTest extends GlobalTestDataSource {
         addressWithSameUuid.setUuid(address.getUuid());
 
         dao.insert(addressWithSameUuid);
-        connection.close();
     }
 
     @Test
     public void testInsertSuccessWithoutIdAndUuid() throws Exception {
+        DaoManager daoManager = getDaoManager();
+        AddressDao dao = daoManager.getAddressDao();
         Connection connection = getDataSource().getConnection();
-        JdbcAddressDao dao = new JdbcAddressDao(getDataSource().getConnection());
 
         Address address = new Address();
         address.setCountry("Kazakhstan");
@@ -81,8 +83,8 @@ public class JdbcAddressDaoTest extends GlobalTestDataSource {
 
     @Test(expected = DaoException.class)
     public void testUpdateFailsIfIdIsNull() throws Exception {
-        Connection connection = getDataSource().getConnection();
-        JdbcAddressDao dao = new JdbcAddressDao(getDataSource().getConnection());
+        DaoManager daoManager = getDaoManager();
+        AddressDao dao = daoManager.getAddressDao();
 
         Address address = new Address();
         address.setCountry("UK");
@@ -92,13 +94,13 @@ public class JdbcAddressDaoTest extends GlobalTestDataSource {
         address.setZipcode("CV47AL");
 
         dao.update(address);
-        connection.close();
     }
 
     @Test
     public void testUpdateSuccessIfIdNotNull() throws Exception {
+        DaoManager daoManager = getDaoManager();
+        AddressDao dao = daoManager.getAddressDao();
         Connection connection = getDataSource().getConnection();
-        JdbcAddressDao dao = new JdbcAddressDao(connection);
         Address address = new Address();
         address.setId(2);
         address.setCountry("UK");
@@ -134,8 +136,9 @@ public class JdbcAddressDaoTest extends GlobalTestDataSource {
 
     @Test
     public void testDeleteInDbAndAssignTrueToObject() throws Exception {
+        DaoManager daoManager = getDaoManager();
+        AddressDao dao = daoManager.getAddressDao();
         Connection connection = getDataSource().getConnection();
-        JdbcAddressDao dao = new JdbcAddressDao(connection);
         Address address = new Address();
         address.setId(1);
         dao.delete(address);
@@ -166,33 +169,34 @@ public class JdbcAddressDaoTest extends GlobalTestDataSource {
 
     @Test(expected = DaoException.class)
     public void testFindByIdFailsIfIdIsNull() throws Exception {
-        Connection connection = getDataSource().getConnection();
-        JdbcAddressDao dao = new JdbcAddressDao(connection);
+        DaoManager daoManager = getDaoManager();
+        AddressDao dao = daoManager.getAddressDao();
         Address dummyAddress = new Address();
         Address address = dao.findById(dummyAddress.getId());
-        connection.close();
     }
 
     @Test(expected = DaoException.class)
     public void testFindByIdFailsIfIdIsNegative() throws Exception {
-        Connection connection = getDataSource().getConnection();
-        JdbcAddressDao dao = new JdbcAddressDao(connection);
+        DaoManager daoManager = getDaoManager();
+        AddressDao dao = daoManager.getAddressDao();
+
         Address address = dao.findById(-1);
-        connection.close();
     }
 
     @Test(expected = DaoException.class)
     public void testFindByIdFailsIfElementCouldNotBeFounded() throws Exception {
-        Connection connection = getDataSource().getConnection();
-        JdbcAddressDao dao = new JdbcAddressDao(connection);
+        DaoManager daoManager = getDaoManager();
+        AddressDao dao = daoManager.getAddressDao();
+
         Address address = dao.findById(100000000);
-        connection.close();
     }
 
     @Test
     public void testFindByIdSuccessIfValidId() throws Exception {
+        DaoManager daoManager = getDaoManager();
+        AddressDao dao = daoManager.getAddressDao();
+
         Connection connection = getDataSource().getConnection();
-        JdbcAddressDao dao = new JdbcAddressDao(connection);
         Address address = dao.findById(1);
 
         PreparedStatement pst = connection.prepareStatement("SELECT id, uuid, deleted, country, city, addressLine1, addressLine2, zipcode " +

@@ -1,9 +1,6 @@
 package com.epam.aa.sportfinder.dao.jdbc;
 
-import com.epam.aa.sportfinder.dao.DaoCommand;
-import com.epam.aa.sportfinder.dao.DaoException;
-import com.epam.aa.sportfinder.dao.DaoManager;
-import com.epam.aa.sportfinder.dao.AddressDao;
+import com.epam.aa.sportfinder.dao.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,8 +10,11 @@ import java.sql.SQLException;
 public class JdbcDaoManager implements DaoManager {
     private static final Logger logger = LoggerFactory.getLogger(JdbcDaoManager.class);
 
-    private Connection connection;
+    //TODO: final
+    private final Connection connection;
     private AddressDao addressDao;
+    private FloorCoverageDao floorCoverageDao;
+    private SportDao sportDao;
 
     public JdbcDaoManager(Connection connection) {
         this.connection = connection;
@@ -50,13 +50,12 @@ public class JdbcDaoManager implements DaoManager {
             try {
                 connection.rollback();
                 //TODO: add more meaningfull log
-                logger.warn("Connection has been rolled back, when processing daoCommand");
+                logger.error("Transaction has been rolled back, when processing daoCommand {}", daoCommand);
             } catch (SQLException e1) {
-                throw new DaoException("Could not commit rollback transaction", e1);
+                throw new DaoException("Could not rollback transaction", e1);
             }
-            throw new DaoException("Could not commit daoCommand", e);
+            throw new DaoException("Transaction failed", e);
         } finally {
-            //TODO: how can I not exception here? as it can override exception in catch block
             try {
                 connection.setAutoCommit(true);
                 logger.debug("transaction executed properly");
@@ -69,8 +68,23 @@ public class JdbcDaoManager implements DaoManager {
     @Override
     public AddressDao getAddressDao() {
         if (addressDao == null) {
-            return new JdbcAddressDao(connection);
+            addressDao = new JdbcAddressDao(connection);
         }
         return addressDao;
+    }
+
+    @Override
+    public FloorCoverageDao getFloorCoverageDao() {
+        if (floorCoverageDao == null) {
+            floorCoverageDao = new JdbcFloorCoverageDao(connection);
+        }
+        return floorCoverageDao;
+    }
+
+    @Override
+    public SportDao getSportDao() {
+        if (sportDao == null)
+            sportDao = new JdbcSportDao(connection);
+        return sportDao;
     }
 }

@@ -11,7 +11,9 @@ import java.sql.*;
 import java.util.List;
 
 public abstract class JdbcBaseDao<T extends BaseEntity> implements GenericDao<T> {
-    private Connection connection;
+//    private static Map<Class, String> insertQueries;
+
+    private final Connection connection;
 
     public JdbcBaseDao(Connection connection) {
         this.connection = connection;
@@ -95,4 +97,9 @@ public abstract class JdbcBaseDao<T extends BaseEntity> implements GenericDao<T>
             throw new DaoException("Deletion failed", e);
         }
     }
+
+    private String getTableName(Class<T> clazz) {
+        return clazz.getSimpleName();
+    }
+
 }

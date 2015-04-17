@@ -1,6 +1,8 @@
 package com.epam.aa.sportfinder.dao.jdbc;
 
 import com.epam.aa.sportfinder.dao.DaoException;
+import com.epam.aa.sportfinder.dao.DaoManager;
+import com.epam.aa.sportfinder.dao.SportDao;
 import com.epam.aa.sportfinder.model.Sport;
 import org.junit.Test;
 
@@ -17,20 +19,19 @@ public class JdbcSportDaoTest extends GlobalTestDataSource {
 
     @Test(expected = DaoException.class)
     public void testInsertFailsIfIdNotNull() throws Exception {
-        Connection connection = getDataSource().getConnection();
-        JdbcSportDao dao = new JdbcSportDao(connection);
+        DaoManager daoManager = getDaoManager();
+        SportDao dao = daoManager.getSportDao();
 
         Sport sport = new Sport();
         sport.setId(1);
 
         dao.insert(sport);
-        connection.close();
     }
 
     @Test(expected = DaoException.class)
     public void testInsertFailsIfNameAlreadyExists() throws Exception {
-        Connection connection = getDataSource().getConnection();
-        JdbcSportDao dao = new JdbcSportDao(connection);
+        DaoManager daoManager = getDaoManager();
+        SportDao dao = daoManager.getSportDao();
 
         Sport sport = new Sport();
         sport.setName("unique");
@@ -40,13 +41,12 @@ public class JdbcSportDaoTest extends GlobalTestDataSource {
         sportWithSameName.setName(sport.getName());
 
         dao.insert(sportWithSameName);
-        connection.close();
     }
 
     @Test(expected = DaoException.class)
     public void testInsertFailsIfUuidAlreadyExists() throws Exception {
-        Connection connection = getDataSource().getConnection();
-        JdbcSportDao dao = new JdbcSportDao(connection);
+        DaoManager daoManager = getDaoManager();
+        SportDao dao = daoManager.getSportDao();
 
         Sport sport = new Sport();
         dao.insert(sport);
@@ -55,13 +55,14 @@ public class JdbcSportDaoTest extends GlobalTestDataSource {
         sportWithSameUuid.setUuid(sport.getUuid());
 
         dao.insert(sportWithSameUuid);
-        connection.close();
     }
 
     @Test
     public void testInsertSuccessWithoutIdAndUuid() throws Exception {
+        DaoManager daoManager = getDaoManager();
+        SportDao dao = daoManager.getSportDao();
+
         Connection connection = getDataSource().getConnection();
-        JdbcSportDao dao = new JdbcSportDao(connection);
 
         Sport sport = new Sport();
         sport.setName("sand");
@@ -88,20 +89,21 @@ public class JdbcSportDaoTest extends GlobalTestDataSource {
 
     @Test(expected = DaoException.class)
     public void testUpdateFailsIfIdIsNull() throws Exception {
-        Connection connection = getDataSource().getConnection();
-        JdbcSportDao dao = new JdbcSportDao(connection);
+        DaoManager daoManager = getDaoManager();
+        SportDao dao = daoManager.getSportDao();
 
         Sport sport = new Sport();
         sport.setName("parket");
 
         dao.update(sport);
-        connection.close();
     }
 
     @Test
     public void testUpdateSuccessIfIdNotNull() throws Exception {
+        DaoManager daoManager = getDaoManager();
+        SportDao dao = daoManager.getSportDao();
+
         Connection connection = getDataSource().getConnection();
-        JdbcSportDao dao = new JdbcSportDao(connection);
 
         Sport sport = new Sport();
         sport.setId(2);
@@ -130,8 +132,10 @@ public class JdbcSportDaoTest extends GlobalTestDataSource {
 
     @Test
     public void testDeleteInDbAndAssignTrueToObject() throws Exception {
+        DaoManager daoManager = getDaoManager();
+        SportDao dao = daoManager.getSportDao();
+
         Connection connection = getDataSource().getConnection();
-        JdbcSportDao dao = new JdbcSportDao(connection);
         Sport sport = new Sport();
         sport.setId(1);
         dao.delete(sport);
@@ -158,33 +162,35 @@ public class JdbcSportDaoTest extends GlobalTestDataSource {
 
     @Test(expected = DaoException.class)
     public void testFindByIdFailsIfIdIsNull() throws Exception {
-        Connection connection = getDataSource().getConnection();
-        JdbcSportDao dao = new JdbcSportDao(connection);
+        DaoManager daoManager = getDaoManager();
+        SportDao dao = daoManager.getSportDao();
+
         Sport dummysport = new Sport();
         Sport sport = dao.findById(dummysport.getId());
-        connection.close();
     }
 
     @Test(expected = DaoException.class)
     public void testFindByIdFailsIfIdIsNegative() throws Exception {
-        Connection connection = getDataSource().getConnection();
-        JdbcSportDao dao = new JdbcSportDao(connection);
+        DaoManager daoManager = getDaoManager();
+        SportDao dao = daoManager.getSportDao();
+
         Sport sport = dao.findById(-1);
-        connection.close();
     }
 
     @Test(expected = DaoException.class)
     public void testFindByIdFailsIfElementCouldNotBeFounded() throws Exception {
-        Connection connection = getDataSource().getConnection();
-        JdbcSportDao dao = new JdbcSportDao(connection);
+        DaoManager daoManager = getDaoManager();
+        SportDao dao = daoManager.getSportDao();
+
         Sport sport = dao.findById(100000000);
-        connection.close();
     }
 
     @Test
     public void testFindByIdSuccessIfValidId() throws Exception {
+        DaoManager daoManager = getDaoManager();
+        SportDao dao = daoManager.getSportDao();
+
         Connection connection = getDataSource().getConnection();
-        JdbcSportDao dao = new JdbcSportDao(connection);
         Sport sport = dao.findById(1);
 
         PreparedStatement pst = connection.prepareStatement("SELECT id, uuid, deleted, name " +

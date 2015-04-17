@@ -12,14 +12,24 @@ import javax.sql.DataSource;
 import java.sql.SQLException;
 
 public class JdbcDaoFactory extends DaoFactory {
-    private static final DataSource dataSource = initJdbc();
+    private static JdbcDaoFactory instance = new JdbcDaoFactory();
+    private final DataSource dataSource = initJdbc();
 
-    private static DataSource initJdbc() {
+    private JdbcDaoFactory() {
+    }
+
+    public static JdbcDaoFactory getInstance() {
+        return instance;
+    }
+
+    private DataSource initJdbc() {
         HikariConfig config = new HikariConfig(AppProperties.HIKARI_PROPERTIES_PATH);
         DataSource ds = new HikariDataSource(config);
 
         Flyway flyway = new Flyway();
         flyway.setDataSource(ds);
+        //TODO: only for test
+        flyway.clean();
         flyway.migrate();
 
         return ds;
@@ -32,5 +42,9 @@ public class JdbcDaoFactory extends DaoFactory {
         } catch (SQLException e) {
             throw new DaoException("Could not get connection from dataSource", e);
         }
+    }
+
+    public DataSource getDataSource() {
+        return dataSource;
     }
 }

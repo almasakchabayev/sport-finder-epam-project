@@ -9,4 +9,9 @@ public interface DaoManager {
 
     // add more Daos here
     AddressDao getAddressDao();
+    FloorCoverageDao getFloorCoverageDao();
+    SportDao getSportDao();
+
+    // TODO:generic getter
+
 }
