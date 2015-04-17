@@ -1,5 +1,7 @@
 package com.epam.aa.sportfinder.model;
 
+import java.beans.Transient;
+
 public class Address extends BaseEntity {
     private String country;
     private String city;

@@ -9,10 +9,9 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.*;
 import java.util.List;
+import java.util.Map;
 
 public abstract class JdbcBaseDao<T extends BaseEntity> implements GenericDao<T> {
-//    private static Map<Class, String> insertQueries;
-
     private final Connection connection;
 
     public JdbcBaseDao(Connection connection) {
@@ -27,12 +26,13 @@ public abstract class JdbcBaseDao<T extends BaseEntity> implements GenericDao<T>
     public void insert(T entity) {
         if (entity.getId() != null) throw new DaoException("Insertion failed, id is not null");
 
-        QueryConstructor queryConstructor = QueryConstructor.createQueryConstructor(entity);
-        try (PreparedStatement pst = getConnection().prepareStatement(queryConstructor.getInsertSqlQuery(),
+//        QueryConstructor queryConstructor = QueryConstructor.createQueryConstructor(entity);
+        Query query = Query.getQuery(entity.getClass(), Query.Type.INSERT);
+        try (PreparedStatement pst = getConnection().prepareStatement(query.getQueryString(),
                 Statement.RETURN_GENERATED_KEYS)){
 
 
-            List<PropertyDescriptor> pds = queryConstructor.getPropertyDescriptors();
+            List<PropertyDescriptor> pds = query.getDaoBean().getPropertyDescriptorsWithoutId();
 
 
             for (PropertyDescriptor pd : pds) {
@@ -55,12 +55,11 @@ public abstract class JdbcBaseDao<T extends BaseEntity> implements GenericDao<T>
             throw new DaoException("Update failed, id is null", new NullPointerException());
         }
 
-        QueryConstructor queryConstructor = QueryConstructor.createQueryConstructor(entity);
-        try (PreparedStatement pst = getConnection().prepareStatement(queryConstructor.getUpdateSqlQuery())){
+//        QueryConstructor queryConstructor = QueryConstructor.createQueryConstructor(entity);
+        Query query = Query.getQuery(entity.getClass(), Query.Type.UPDATE);
+        try (PreparedStatement pst = getConnection().prepareStatement(query.getQueryString())){
 
-            List<PropertyDescriptor> pds = queryConstructor.getPropertyDescriptors();
-            PropertyDescriptor propertyDescriptor = new PropertyDescriptor("id", entity.getClass());
-            pds.remove(propertyDescriptor);
+            List<PropertyDescriptor> pds = query.getDaoBean().getPropertyDescriptorsWithoutId();
 
             int count = 1;
             for (PropertyDescriptor pd : pds) {
@@ -74,7 +73,7 @@ public abstract class JdbcBaseDao<T extends BaseEntity> implements GenericDao<T>
             if (affectedRows == 0) {
                 throw new DaoException("Update failed, no rows affected.");
             }
-        } catch (SQLException | IllegalAccessException | InvocationTargetException | IntrospectionException e) {
+        } catch (SQLException | IllegalAccessException | InvocationTargetException e) {
             throw new DaoException("Updating failed", e);
         }
     }
@@ -84,8 +83,9 @@ public abstract class JdbcBaseDao<T extends BaseEntity> implements GenericDao<T>
         if (entity.getId() == null) {
             throw new DaoException("Deletion failed, id is null", new NullPointerException());
         }
-        String deleteQuery = QueryConstructor.getDeleteQuery(entity);
-        try (PreparedStatement pst = getConnection().prepareStatement(deleteQuery)){
+//        String deleteQuery = QueryConstructor.getDeleteQuery(entity);
+        Query query = Query.getQuery(entity.getClass(), Query.Type.DELETE);
+        try (PreparedStatement pst = getConnection().prepareStatement(query.getQueryString())){
             pst.setInt(1, entity.getId());
 
             int affectedRows = pst.executeUpdate();
@@ -101,5 +101,4 @@ public abstract class JdbcBaseDao<T extends BaseEntity> implements GenericDao<T>
     private String getTableName(Class<T> clazz) {
         return clazz.getSimpleName();
     }
-
 }

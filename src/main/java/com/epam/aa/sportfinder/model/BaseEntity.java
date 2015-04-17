@@ -1,5 +1,6 @@
 package com.epam.aa.sportfinder.model;
 
+import java.beans.Transient;
 import java.util.UUID;
 
 public class BaseEntity {
