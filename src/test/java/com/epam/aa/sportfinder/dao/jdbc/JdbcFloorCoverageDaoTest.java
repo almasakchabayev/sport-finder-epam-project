@@ -14,7 +14,7 @@ import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 
-public class JdbcFloorCoverageDaoTest extends GlobalTestDataSource {
+public class JdbcFloorCoverageDaoTest extends TestConfig {
 
 
     @Test(expected = DaoException.class)

@@ -7,7 +7,7 @@ import org.flywaydb.core.Flyway;
 
 import javax.sql.DataSource;
 
-public abstract class GlobalTestDataSource {
+public abstract class TestConfig {
     public static final DaoFactory DAO_FACTORY = DaoFactory.getInstance(DaoFactory.Type.JDBC);
 
     public static DataSource getDataSource() {

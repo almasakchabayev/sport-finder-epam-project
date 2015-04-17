@@ -2,7 +2,6 @@ package com.epam.aa.sportfinder.dao.jdbc;
 
 import com.epam.aa.sportfinder.dao.AddressDao;
 import com.epam.aa.sportfinder.dao.DaoException;
-import com.epam.aa.sportfinder.dao.DaoFactory;
 import com.epam.aa.sportfinder.dao.DaoManager;
 import com.epam.aa.sportfinder.model.Address;
 import org.junit.Test;
@@ -16,7 +15,7 @@ import java.util.UUID;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-public class JdbcAddressDaoTest extends GlobalTestDataSource {
+public class JdbcAddressDaoTest extends TestConfig {
 
 
     @Test(expected = DaoException.class)

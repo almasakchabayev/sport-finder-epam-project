@@ -14,7 +14,7 @@ import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 
-public class JdbcSportDaoTest extends GlobalTestDataSource {
+public class JdbcSportDaoTest extends TestConfig {
 
 
     @Test(expected = DaoException.class)
