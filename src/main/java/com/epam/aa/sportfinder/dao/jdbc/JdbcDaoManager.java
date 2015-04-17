@@ -15,9 +15,6 @@ public class JdbcDaoManager implements DaoManager {
 
     //TODO: final
     private final Connection connection;
-    private AddressDao addressDao;
-    private FloorCoverageDao floorCoverageDao;
-    private SportDao sportDao;
 
     public JdbcDaoManager(Connection connection) {
         this.connection = connection;
@@ -67,29 +64,6 @@ public class JdbcDaoManager implements DaoManager {
             }
         }
     }
-
-//    @Override
-//    public AddressDao getAddressDao() {
-//        if (addressDao == null) {
-//            addressDao = new JdbcAddressDao(connection);
-//        }
-//        return addressDao;
-//    }
-//
-//    @Override
-//    public FloorCoverageDao getFloorCoverageDao() {
-//        if (floorCoverageDao == null) {
-//            floorCoverageDao = new JdbcFloorCoverageDao(connection);
-//        }
-//        return floorCoverageDao;
-//    }
-//
-//    @Override
-//    public SportDao getSportDao() {
-//        if (sportDao == null)
-//            sportDao = new JdbcSportDao(connection);
-//        return sportDao;
-//    }
 
     @SuppressWarnings("unchecked")
     @Override

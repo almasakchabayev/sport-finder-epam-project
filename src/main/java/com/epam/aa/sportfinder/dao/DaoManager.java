@@ -9,12 +9,6 @@ public interface DaoManager {
         return execute(daoManager -> daoManager.transaction(daoCommand));
     }
 
-    // add more Daos here
-//    AddressDao getAddressDao();
-//    FloorCoverageDao getFloorCoverageDao();
-//    SportDao getSportDao();
-
-    // TODO:generic getter
     <T extends GenericDao> T getDao(Class<? extends BaseEntity> clazz);
 
 }
