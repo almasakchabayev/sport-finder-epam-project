@@ -1,5 +1,6 @@
 package com.epam.aa.sportfinder.model;
 
+import java.beans.Transient;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -46,6 +47,7 @@ public class SportPlace extends BaseEntity {
         this.capacity = capacity;
     }
 
+    @Transient
     public FloorCoverage getFloorCoverage() {
         return floorCoverage;
     }
@@ -118,11 +120,21 @@ public class SportPlace extends BaseEntity {
         this.description = description;
     }
 
+    @Transient
     public Address getAddress() {
         return address;
     }
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    @Transient
+    public List<Sport> getSports() {
+        return sports;
+    }
+
+    public void setSports(List<Sport> sports) {
+        this.sports = sports;
     }
 }

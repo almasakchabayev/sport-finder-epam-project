@@ -223,7 +223,7 @@ public class JdbcAddressDaoTest extends TestConfig {
     public void assertAddressesEqual(Address address, Address addressFromDatabase) {
         assertEquals(address.getId(), addressFromDatabase.getId());
         assertEquals(address.getUuid(), addressFromDatabase.getUuid());
-        assertEquals(address.isDeleted(), address.isDeleted());
+        assertEquals(address.isDeleted(), addressFromDatabase.isDeleted());
         assertEquals(address.getCountry(), addressFromDatabase.getCountry());
         assertEquals(address.getCity(), addressFromDatabase.getCity());
         assertEquals(address.getAddressLine1(), addressFromDatabase.getAddressLine1());

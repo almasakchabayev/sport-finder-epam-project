@@ -213,7 +213,7 @@ public class JdbcSportDaoTest extends TestConfig {
     public void assertSportsEqual(Sport sport, Sport sportFromDatabase) {
         assertEquals(sport.getId(), sportFromDatabase.getId());
         assertEquals(sport.getUuid(), sportFromDatabase.getUuid());
-        assertEquals(sport.isDeleted(), sport.isDeleted());
+        assertEquals(sport.isDeleted(), sportFromDatabase.isDeleted());
         assertEquals(sport.getName(), sportFromDatabase.getName());
 
     }

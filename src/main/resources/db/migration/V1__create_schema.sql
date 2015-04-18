@@ -33,7 +33,7 @@ CREATE TABLE SportPlace (
   lightening BOOLEAN,
   tribuneCapacity INT,
   otherInfrastructureFeatures TEXT,
-  pricePerHour NUMERIC(21, 4),
+  pricePerHour NUMERIC(21, 2),
   description TEXT,
   address INT
 );

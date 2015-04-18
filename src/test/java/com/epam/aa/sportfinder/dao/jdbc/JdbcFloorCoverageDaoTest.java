@@ -213,7 +213,7 @@ public class JdbcFloorCoverageDaoTest extends TestConfig {
     public void assertFloorCoveragesEqual(FloorCoverage floorCoverage, FloorCoverage floorCoverageFromDatabase) {
         assertEquals(floorCoverage.getId(), floorCoverageFromDatabase.getId());
         assertEquals(floorCoverage.getUuid(), floorCoverageFromDatabase.getUuid());
-        assertEquals(floorCoverage.isDeleted(), floorCoverage.isDeleted());
+        assertEquals(floorCoverage.isDeleted(), floorCoverageFromDatabase.isDeleted());
         assertEquals(floorCoverage.getName(), floorCoverageFromDatabase.getName());
 
     }
