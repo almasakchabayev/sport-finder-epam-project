@@ -1,12 +1,14 @@
 package com.epam.aa.sportfinder.dao.jdbc;
 
 import com.epam.aa.sportfinder.dao.DaoException;
-import com.epam.aa.sportfinder.model.BaseEntity;
+import com.epam.aa.sportfinder.model.*;
 
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.beans.Transient;
+import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -74,5 +76,36 @@ public class DaoBean {
 
     public Class<? extends BaseEntity> getClazz() {
         return clazz;
+    }
+
+    public static void main(String[] args) throws InvocationTargetException, IllegalAccessException {
+        SportPlace sportPlace = new SportPlace();
+        sportPlace.setIndoor(true);
+        sportPlace.setDescription("Traditional SportPlace");
+        sportPlace.setChangingRoom(true);
+        sportPlace.setCapacity(40);
+        Address address = new Address();
+//        address.setId(1);
+        sportPlace.setAddress(address);
+        FloorCoverage floorCoverage = new FloorCoverage();
+        floorCoverage.setId(2);
+        sportPlace.setFloorCoverage(floorCoverage);
+        sportPlace.setLightening(false);
+        sportPlace.setOtherInfrastructureFeatures("there are balls for rent");
+        sportPlace.setPricePerHour(BigDecimal.valueOf(9000.00));
+        sportPlace.setSize("60x60");
+        sportPlace.setShower(false);
+        DaoBean daoBean = DaoBean.getDaoBean(SportPlace.class);
+        List<PropertyDescriptor> propertyDescriptors = daoBean.getPropertyDescriptors();
+        for (PropertyDescriptor pd : propertyDescriptors) {
+            if (BaseEntity.class.isAssignableFrom(pd.getPropertyType())) {
+                Object invoke1 = pd.getReadMethod().invoke(sportPlace);
+                BaseEntity invoke = (BaseEntity) invoke1;
+                System.out.println(invoke.getId());
+            }
+
+//            System.out.println(BaseEntity.class.isAssignableFrom(pd.getPropertyType()));
+        }
+
     }
 }

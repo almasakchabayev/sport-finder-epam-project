@@ -47,7 +47,7 @@ public class SportPlace extends BaseEntity {
         this.capacity = capacity;
     }
 
-    @Transient
+//    @Transient
     public FloorCoverage getFloorCoverage() {
         return floorCoverage;
     }
@@ -120,7 +120,7 @@ public class SportPlace extends BaseEntity {
         this.description = description;
     }
 
-    @Transient
+//    @Transient
     public Address getAddress() {
         return address;
     }

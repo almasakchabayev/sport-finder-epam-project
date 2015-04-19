@@ -59,7 +59,8 @@ public abstract class JdbcBaseDao<T extends BaseEntity> implements GenericDao<T>
 
 
             for (PropertyDescriptor pd : pds) {
-                pst.setObject(pds.indexOf(pd) + 1, pd.getReadMethod().invoke(entity));
+                int parameterIndex = pds.indexOf(pd) + 1;
+                fillPreparedStatement(entity, pst, pd, parameterIndex);
             }
 
             pst.executeUpdate();
@@ -85,7 +86,8 @@ public abstract class JdbcBaseDao<T extends BaseEntity> implements GenericDao<T>
 
             int count = 1;
             for (PropertyDescriptor pd : pds) {
-                pst.setObject(pds.indexOf(pd) + 1, pd.getReadMethod().invoke(entity));
+                int parameterIndex = pds.indexOf(pd) + 1;
+                fillPreparedStatement(entity, pst, pd, parameterIndex);
                 count++;
             }
             pst.setInt(count, entity.getId());
@@ -131,4 +133,34 @@ public abstract class JdbcBaseDao<T extends BaseEntity> implements GenericDao<T>
         }
         return result;
     }
+
+    private void fillPreparedStatement(T entity, PreparedStatement pst, PropertyDescriptor pd, int parameterIndex) throws IllegalAccessException, InvocationTargetException, SQLException {
+        Object invoke = pd.getReadMethod().invoke(entity);
+
+        // If invoke is not an entity
+        if (!BaseEntity.class.isAssignableFrom(pd.getPropertyType())) {
+            pst.setObject(parameterIndex, pd.getReadMethod().invoke(entity));
+            return;
+        }
+
+        // If invoke is an entity but is null
+        if (invoke == null) {
+            throw new DaoException("insert or update on table " + entity.getClass().getSimpleName()
+                    + "violates foreign key constraint");
+        }
+
+        // if invoke not null cast to BaseEntity
+        BaseEntity baseEntity =  (BaseEntity) invoke;
+        Integer id = baseEntity.getId();
+
+        if (id == null) {
+            throw new DaoException("insert or update on table " + entity.getClass().getSimpleName()
+                    + "violates foreign key constraint");
+        }
+
+        // if everything is fine
+        pst.setInt(parameterIndex, id);
+    }
+
+
 }

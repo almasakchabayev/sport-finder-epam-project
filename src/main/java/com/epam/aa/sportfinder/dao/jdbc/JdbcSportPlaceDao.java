@@ -16,4 +16,10 @@ public class JdbcSportPlaceDao extends JdbcBaseDao<SportPlace> implements SportP
     public JdbcSportPlaceDao(Connection connection) {
         super(connection);
     }
+
+//    public SportPlace insertAddress(SportPlace sportPlace) {
+//        if (sportPlace.getAddress() == null)
+//            throw new DaoException("Insertion failure, address is null");
+//
+//    }
 }
