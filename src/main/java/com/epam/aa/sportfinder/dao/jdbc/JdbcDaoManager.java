@@ -13,7 +13,6 @@ import java.sql.SQLException;
 public class JdbcDaoManager implements DaoManager {
     private static final Logger logger = LoggerFactory.getLogger(JdbcDaoManager.class);
 
-    //TODO: final
     private final Connection connection;
 
     public JdbcDaoManager(Connection connection) {
@@ -67,6 +66,7 @@ public class JdbcDaoManager implements DaoManager {
 
     @SuppressWarnings("unchecked")
     @Override
+    //TODO: create a Map and store Daos
     public <T extends GenericDao> T getDao(Class<? extends BaseEntity> clazz) {
         String entityClassName = clazz.getSimpleName();
         String jdbcPackageName = this.getClass().getPackage().getName();

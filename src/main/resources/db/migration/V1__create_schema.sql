@@ -38,8 +38,9 @@ CREATE TABLE SportPlace (
   address INT
 );
 CREATE TABLE SportPlace_Sport (
+  sport_id INT NOT NULL,
   sportPlace_id INT NOT NULL,
-  sport_id INT NOT NULL
+  PRIMARY KEY (sport_id, sportPlace_id)
 );
 ALTER TABLE SportPlace
     ADD CONSTRAINT SportPlace_FloorCoverage_fkey
@@ -49,3 +50,11 @@ ALTER TABLE SportPlace
     ADD CONSTRAINT SportPlace_Address_fkey
     FOREIGN KEY (address)
     REFERENCES  Address;
+ALTER TABLE SportPlace_Sport
+   ADD CONSTRAINT SportPlace_Sport_Sport_fkey
+   FOREIGN KEY (sport_id)
+   REFERENCES  Sport;
+ALTER TABLE SportPlace_Sport
+    ADD CONSTRAINT SportPlace_Sport_SportPlace_fkey
+    FOREIGN KEY (sportPlace_id)
+    REFERENCES  SportPlace;

@@ -14,6 +14,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
@@ -207,6 +208,97 @@ public class JdbcSportPlaceDaoTest extends TestConfig {
         assertSportPlacesEqualFromDaoPerspective(sportPlace, sportPlaceFromDatabase);
     }
 
+    @Test
+    public void testInsertSuccessWithSports() throws Exception {
+        DaoManager daoManager = getDaoManager();
+        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+
+        Connection connection = getDataSource().getConnection();
+
+        SportPlace sportPlace = new SportPlace();
+        sportPlace.setIndoor(true);
+        sportPlace.setDescription("Traditional SportPlace");
+        sportPlace.setChangingRoom(true);
+        sportPlace.setCapacity(40);
+        Address address = new Address();
+        address.setId(1);
+        sportPlace.setAddress(address);
+        FloorCoverage floorCoverage = new FloorCoverage();
+        floorCoverage.setId(2);
+        sportPlace.setFloorCoverage(floorCoverage);
+        sportPlace.setLightening(false);
+        sportPlace.setOtherInfrastructureFeatures("there are balls for rent");
+        sportPlace.setPricePerHour(BigDecimal.valueOf(9000.00));
+        sportPlace.setSize("60x60");
+        sportPlace.setShower(false);
+        ArrayList<Sport> sportArrayList = new ArrayList<>();
+        Sport sport1 = new Sport();
+        sport1.setId(1);
+        sportArrayList.add(sport1);
+        Sport sport2 = new Sport();
+        sport2.setId(2);
+        sportArrayList.add(sport2);
+        sportPlace.setSports(sportArrayList);
+        sportPlace.setTribuneCapacity(5000);
+
+        dao.insertWithSports(sportPlace);
+
+        Statement st = connection.createStatement();
+        ResultSet resultSet = st.executeQuery("SELECT id, uuid, deleted, size, floorcoverage,  " +
+                "capacity, indoor, changingRoom, shower, lightening, tribuneCapacity, " +
+                "otherInfrastructureFeatures, pricePerHour, description, address " +
+                "FROM SportPlace ORDER BY id DESC LIMIT 1");
+        SportPlace sportPlaceFromDatabase = new SportPlace();
+
+        if (resultSet.next()) {
+            sportPlaceFromDatabase.setId(resultSet.getInt("id"));
+            sportPlaceFromDatabase.setUuid((UUID) resultSet.getObject("uuid"));
+            sportPlaceFromDatabase.setDeleted(resultSet.getBoolean("deleted"));
+            sportPlaceFromDatabase.setIndoor(resultSet.getBoolean("indoor"));
+            sportPlaceFromDatabase.setDescription(resultSet.getString("description"));
+            sportPlaceFromDatabase.setChangingRoom(resultSet.getBoolean("changingRoom"));
+            sportPlaceFromDatabase.setCapacity(resultSet.getInt("capacity"));
+
+            Address addressFromDatabase = new Address();
+            Integer addressId = (Integer) resultSet.getObject("address");
+            addressFromDatabase.setId(addressId);
+            sportPlaceFromDatabase.setAddress(addressFromDatabase);
+
+            FloorCoverage floorCoverageFromDatabase = new FloorCoverage();
+            Integer floorCoverageId = (Integer) resultSet.getObject("floorCoverage");
+            floorCoverageFromDatabase.setId(floorCoverageId);
+            sportPlaceFromDatabase.setFloorCoverage(floorCoverageFromDatabase);
+
+            sportPlaceFromDatabase.setLightening(resultSet.getBoolean("lightening"));
+            sportPlaceFromDatabase.setOtherInfrastructureFeatures(resultSet.getString("otherInfrastructureFeatures"));
+            sportPlaceFromDatabase.setPricePerHour((BigDecimal) resultSet.getObject("pricePerHour"));
+            sportPlaceFromDatabase.setSize(resultSet.getString("size"));
+            sportPlaceFromDatabase.setShower(resultSet.getBoolean("shower"));
+            sportPlaceFromDatabase.setTribuneCapacity(resultSet.getInt("tribuneCapacity"));
+
+        }
+        resultSet.close();
+        st.close();
+
+        Statement st2 = connection.createStatement();
+        ResultSet resultSet2 = st2.executeQuery("SELECT sport_id, sportPlace_id " +
+                "FROM SportPlace_Sport WHERE sportPlace_id = " + sportPlace.getId());
+
+
+        ArrayList<Sport> sportsFromDatabase = new ArrayList<>();
+        while (resultSet2.next()) {
+            Sport sport = new Sport();
+            sport.setId(resultSet2.getInt("sport_id"));
+            sportsFromDatabase.add(sport);
+        }
+        sportPlaceFromDatabase.setSports(sportsFromDatabase);
+
+        resultSet.close();
+        connection.close();
+
+        assertSportPlacesEqualFromDaoPerspective(sportPlace, sportPlaceFromDatabase);
+    }
+
 //    @Test(expected = DaoException.class)
 //    public void testUpdateFailsIfIdIsNull() throws Exception {
 //        DaoManager daoManager = getDaoManager();
@@ -347,7 +439,15 @@ public class JdbcSportPlaceDaoTest extends TestConfig {
         assertEquals(sportPlace.getPricePerHour().compareTo(sportPlaceFromDatabase.getPricePerHour()), 0);
         assertEquals(sportPlace.getSize(), sportPlaceFromDatabase.getSize());
         assertEquals(sportPlace.isShower(), sportPlaceFromDatabase.isShower());
-        assertEquals(sportPlace.getSports(), sportPlaceFromDatabase.getSports());
+
+        List<Sport> sportsFromDataBase = sportPlaceFromDatabase.getSports();
+        List<Sport> sports = sportPlace.getSports();
+        if (sports != null && sportsFromDataBase != null) {
+            assertEquals(sports.size(), sportsFromDataBase.size());
+            for (int i = 0; i < sports.size(); i++) {
+                assertEquals(sports.get(i).getId(), sportsFromDataBase.get(i).getId());
+            }
+        }
         assertEquals(sportPlace.getTribuneCapacity(), sportPlaceFromDatabase.getTribuneCapacity());
 
     }

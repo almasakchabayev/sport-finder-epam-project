@@ -69,7 +69,7 @@ public abstract class JdbcBaseDao<T extends BaseEntity> implements GenericDao<T>
                 else throw new DaoException("Id was not generated");
             }
         } catch (SQLException | IllegalAccessException | InvocationTargetException e) {
-            throw new DaoException("Updating failed", e);
+            throw new DaoException("Insertion failed", e);
         }
         return entity;
     }
@@ -134,7 +134,7 @@ public abstract class JdbcBaseDao<T extends BaseEntity> implements GenericDao<T>
         return result;
     }
 
-    private void fillPreparedStatement(T entity, PreparedStatement pst, PropertyDescriptor pd, int parameterIndex) throws IllegalAccessException, InvocationTargetException, SQLException {
+    protected void fillPreparedStatement(T entity, PreparedStatement pst, PropertyDescriptor pd, int parameterIndex) throws IllegalAccessException, InvocationTargetException, SQLException {
         Object invoke = pd.getReadMethod().invoke(entity);
 
         // If invoke is not an entity
