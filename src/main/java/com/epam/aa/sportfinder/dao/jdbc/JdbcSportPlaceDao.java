@@ -24,11 +24,10 @@ public class JdbcSportPlaceDao extends JdbcBaseDao<SportPlace> implements SportP
     }
 
     // TODO: Need a transaction fot that
-    public SportPlace insertWithSports(SportPlace sportPlace) {
+    public SportPlace insertCorrespondingSports(SportPlace sportPlace) {
         if (sportPlace.getSports() == null)
             throw new DaoException("List of Sports is null, cannot be inserted");
 
-        sportPlace = insert(sportPlace);
         String sql = getSqlForJoinTable(sportPlace);
 
         try (Statement st = getConnection().createStatement()){
