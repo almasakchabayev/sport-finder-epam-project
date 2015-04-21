@@ -9,7 +9,7 @@ CREATE TABLE Address (
   zipcode TEXT
 );
 CREATE TABLE FloorCoverage (
-  id SERIAL NOT NULL PRIMARY KEY ,
+  id SERIAL NOT NULL PRIMARY KEY,
   uuid UUID UNIQUE,
   deleted BOOLEAN DEFAULT FALSE,
   name TEXT UNIQUE
@@ -41,6 +41,12 @@ CREATE TABLE SportPlace_Sport (
   sport_id INT NOT NULL,
   sportPlace_id INT NOT NULL,
   PRIMARY KEY (sport_id, sportPlace_id)
+);
+CREATE TABLE PhoneNumber (
+  id SERIAL NOT NULL PRIMARY KEY,
+  uuid UUID UNIQUE,
+  deleted BOOLEAN DEFAULT FALSE,
+  number TEXT
 );
 ALTER TABLE SportPlace
     ADD CONSTRAINT SportPlace_FloorCoverage_fkey

@@ -18,12 +18,10 @@ import java.util.List;
 import java.util.UUID;
 
 public class JdbcSportPlaceDao extends JdbcBaseDao<SportPlace> implements SportPlaceDao {
-    //TODO: delete constructors
     public JdbcSportPlaceDao(Connection connection) {
         super(connection);
     }
 
-    // TODO: Need a transaction fot that
     public SportPlace insertCorrespondingSports(SportPlace sportPlace) throws DaoException {
         if (sportPlace.getSports() == null)
             throw new DaoException("List of Sports is null, cannot be inserted");

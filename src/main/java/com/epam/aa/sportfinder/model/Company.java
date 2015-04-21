@@ -6,7 +6,7 @@ import java.util.List;
 public class Company extends BaseEntity {
     private String name;
     private Address address;
-    private List<String> phoneNumbers;
+    private List<PhoneNumber> phoneNumbers;
     private List<SportPlace> sportPlaces;
     private List<Manager> managers;
 
@@ -32,13 +32,6 @@ public class Company extends BaseEntity {
         this.address = address;
     }
 
-    public List<String> getPhoneNumbers() {
-        return phoneNumbers;
-    }
-
-    public void setPhoneNumbers(List<String> phoneNumbers) {
-        this.phoneNumbers = phoneNumbers;
-    }
 
     public List<SportPlace> getSportPlaces() {
         return sportPlaces;
@@ -54,5 +47,13 @@ public class Company extends BaseEntity {
 
     public void setManagers(List<Manager> managers) {
         this.managers = managers;
+    }
+
+    public List<PhoneNumber> getPhoneNumbers() {
+        return phoneNumbers;
+    }
+
+    public void setPhoneNumbers(List<PhoneNumber> phoneNumbers) {
+        this.phoneNumbers = phoneNumbers;
     }
 }

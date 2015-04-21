@@ -49,4 +49,13 @@ INSERT INTO SportPlace(
 INSERT INTO SportPlace_Sport(
   sport_id, sportPlace_id
 ) VALUES (2, 2);
-
+INSERT INTO PhoneNumber(
+  uuid, number
+) VALUES(
+  uuid_in(md5(now()::text)::cstring), '87017511143'
+);
+INSERT INTO PhoneNumber(
+  uuid, number
+) VALUES(
+  uuid_in(md5((now() + interval '1 day')::text)::cstring), '87017556550'
+);
