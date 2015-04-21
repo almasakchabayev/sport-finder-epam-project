@@ -1,5 +1,6 @@
 package com.epam.aa.sportfinder.model;
 
+import java.beans.Transient;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +34,7 @@ public class Company extends BaseEntity {
     }
 
 
+    @Transient
     public List<SportPlace> getSportPlaces() {
         return sportPlaces;
     }
@@ -41,6 +43,7 @@ public class Company extends BaseEntity {
         this.sportPlaces = sportPlaces;
     }
 
+    @Transient
     public List<Manager> getManagers() {
         return managers;
     }
@@ -49,11 +52,24 @@ public class Company extends BaseEntity {
         this.managers = managers;
     }
 
+    @Transient
     public List<PhoneNumber> getPhoneNumbers() {
         return phoneNumbers;
     }
 
     public void setPhoneNumbers(List<PhoneNumber> phoneNumbers) {
         this.phoneNumbers = phoneNumbers;
+    }
+
+    public boolean containsPhoneNumber(PhoneNumber phoneNumber) {
+        return phoneNumbers.contains(phoneNumber);
+    }
+
+    public void removePhoneNumber(PhoneNumber phoneNumber) {
+        phoneNumbers.remove(phoneNumber);
+    }
+
+    public void addPhoneNumber(PhoneNumber phoneNumber) {
+        phoneNumbers.add(phoneNumber);
     }
 }

@@ -3,10 +3,7 @@ package com.epam.aa.sportfinder.dao.jdbc;
 import com.epam.aa.sportfinder.dao.DaoException;
 import com.epam.aa.sportfinder.dao.DaoManager;
 import com.epam.aa.sportfinder.dao.SportPlaceDao;
-import com.epam.aa.sportfinder.model.Address;
-import com.epam.aa.sportfinder.model.FloorCoverage;
-import com.epam.aa.sportfinder.model.Sport;
-import com.epam.aa.sportfinder.model.SportPlace;
+import com.epam.aa.sportfinder.model.*;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -17,6 +14,7 @@ import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 
+// TODO: add Company related tests
 public class JdbcSportPlaceDaoTest extends TestConfig {
 
 
@@ -129,7 +127,7 @@ public class JdbcSportPlaceDaoTest extends TestConfig {
     }
 
     @Test
-    public void testInsertSuccessWithSports() throws Exception {
+    public void testInsertSportsSuccess() throws Exception {
         DaoManager daoManager = getDaoManager();
         SportPlaceDao dao = daoManager.getDao(SportPlace.class);
 
@@ -160,6 +158,7 @@ public class JdbcSportPlaceDaoTest extends TestConfig {
         }
 
         resultSet.close();
+        st.close();
         connection.close();
 
         List<Sport> sports = sportPlace.getSports();
@@ -315,6 +314,7 @@ public class JdbcSportPlaceDaoTest extends TestConfig {
         }
 
         resultSet.close();
+        st.close();
         connection.close();
 
         assertEquals(true, sportIdsFromDatabase.contains(1));
@@ -368,10 +368,15 @@ public class JdbcSportPlaceDaoTest extends TestConfig {
         }
 
         resultSet.close();
+        st.close();
         connection.close();
 
         assertEquals(false, sportIdsFromDatabase.contains(2));
-    }
+        List<Sport> sports = sportPlace.getSports();
+        assertEquals(sports.size(), sportIdsFromDatabase.size());
+        for (int i = 0; i < sports.size(); i++) {
+            assertEquals(sports.get(i).getId(), sportIdsFromDatabase.get(i));
+        }    }
 
 
     @Test
@@ -449,6 +454,8 @@ public class JdbcSportPlaceDaoTest extends TestConfig {
         if (resultSet.next())
             sportPlaceFromDatabase = getSportPlaceFromResultSet(resultSet);
 
+        resultSet.close();
+        pst.close();
         connection.close();
 
         assertSportPlacesEqual(sportPlace, sportPlaceFromDatabase);
@@ -482,6 +489,8 @@ public class JdbcSportPlaceDaoTest extends TestConfig {
         while (resultSet.next())
             IdsFromDatabase.add(resultSet.getInt("sport_id"));
 
+        resultSet.close();
+        pst.close();
         connection.close();
 
         assertEquals(correspondingSportIds, IdsFromDatabase);
@@ -521,6 +530,9 @@ public class JdbcSportPlaceDaoTest extends TestConfig {
         sportPlace.setDescription("Traditional SportPlace");
         sportPlace.setChangingRoom(true);
         sportPlace.setCapacity(40);
+        Company company = new Company();
+        company.setId(1);
+        sportPlace.setCompany(company);
         Address address = new Address();
         address.setId(1);
         sportPlace.setAddress(address);

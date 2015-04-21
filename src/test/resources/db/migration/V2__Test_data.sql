@@ -32,23 +32,6 @@ INSERT INTO Sport(
 ) VALUES(
   uuid_in(md5(((now() + interval '1 day') + interval '1 day')::text)::cstring), 'basketball'
 );
-INSERT INTO SportPlace(
-  uuid, size, floorCoverage, capacity, indoor, changingRoom, shower, lightening, tribuneCapacity,
-  otherInfrastructureFeatures, pricePerHour, description, address
-) VALUES(
-  uuid_in(md5(now()::text)::cstring), '55x45', 1, 10, true, true, true, true, 1000, 'There is a parking for 100 cars',
-    8000.00, 'Good air, well-placed', 1
-);
-INSERT INTO SportPlace(
-  uuid, size, floorCoverage, capacity, indoor, changingRoom, shower, lightening, tribuneCapacity,
-  otherInfrastructureFeatures, pricePerHour, description, address
-) VALUES(
-  uuid_in(md5((now() + interval '1 day')::text)::cstring), '250 square meters', 2, 20, false, false, true, true, 0, 'There is a no parking',
-  5000.00, 'Why not try', 2
-);
-INSERT INTO SportPlace_Sport(
-  sport_id, sportPlace_id
-) VALUES (2, 2);
 INSERT INTO PhoneNumber(
   uuid, number
 ) VALUES(
@@ -59,3 +42,33 @@ INSERT INTO PhoneNumber(
 ) VALUES(
   uuid_in(md5((now() + interval '1 day')::text)::cstring), '87017556550'
 );
+INSERT INTO Company(
+  uuid, name, address
+) VALUES(
+  uuid_in(md5((now() + interval '1 day')::text)::cstring), 'Football Ltd', 1
+);
+INSERT INTO Company(
+  uuid, name, address
+) VALUES(
+  uuid_in(md5(now()::text)::cstring), 'Basketball Ltd', 2
+);
+INSERT INTO SportPlace(
+  uuid, size, floorCoverage, capacity, indoor, changingRoom, shower, lightening, tribuneCapacity,
+  otherInfrastructureFeatures, pricePerHour, description, address, company
+) VALUES(
+  uuid_in(md5(now()::text)::cstring), '55x45', 1, 10, true, true, true, true, 1000, 'There is a parking for 100 cars',
+    8000.00, 'Good air, well-placed', 1, 1
+);
+INSERT INTO SportPlace(
+  uuid, size, floorCoverage, capacity, indoor, changingRoom, shower, lightening, tribuneCapacity,
+  otherInfrastructureFeatures, pricePerHour, description, address, company
+) VALUES(
+  uuid_in(md5((now() + interval '1 day')::text)::cstring), '250 square meters', 2, 20, false, false, true, true, 0, 'There is a no parking',
+  5000.00, 'Why not try', 2, 2
+);
+INSERT INTO SportPlace_Sport(
+  sport_id, sportPlace_id
+) VALUES (2, 2);
+INSERT INTO Company_PhoneNumber(
+  company_id, PhoneNumber_id
+) VALUES (2, 2);
