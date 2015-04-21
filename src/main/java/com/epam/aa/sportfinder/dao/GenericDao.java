@@ -4,8 +4,8 @@ import com.epam.aa.sportfinder.model.BaseEntity;
 
 public interface GenericDao<T extends BaseEntity> {
     //TODO: throw Exception explicitly
-    T findById(Integer id);
-    T insert(T t);
-    void update(T t);
-    T delete(T t);
+    T findById(Integer id) throws DaoException;
+    T insert(T t) throws DaoException;
+    void update(T t) throws DaoException;
+    T delete(T t) throws DaoException;
 }

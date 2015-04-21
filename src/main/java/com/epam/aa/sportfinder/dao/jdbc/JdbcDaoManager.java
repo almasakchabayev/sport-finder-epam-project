@@ -20,7 +20,7 @@ public class JdbcDaoManager implements DaoManager {
     }
 
     @Override
-    public <T> T execute(DaoCommand<T> daoCommand) {
+    public <T> T execute(DaoCommand<T> daoCommand) throws DaoException {
         try {
             T result = daoCommand.execute(this);
             return result;
@@ -35,7 +35,7 @@ public class JdbcDaoManager implements DaoManager {
     }
 
     @Override
-    public <T> T transaction(DaoCommand<T> daoCommand) {
+    public <T> T transaction(DaoCommand<T> daoCommand) throws DaoException {
         try {
             connection.setAutoCommit(false);
         } catch (SQLException e) {
@@ -67,7 +67,7 @@ public class JdbcDaoManager implements DaoManager {
     @SuppressWarnings("unchecked")
     @Override
     //TODO: create a Map and store Daos
-    public <T extends GenericDao> T getDao(Class<? extends BaseEntity> clazz) {
+    public <T extends GenericDao> T getDao(Class<? extends BaseEntity> clazz) throws DaoException {
         String entityClassName = clazz.getSimpleName();
         String jdbcPackageName = this.getClass().getPackage().getName();
         String daoClassName = jdbcPackageName + ".Jdbc" + entityClassName + "Dao";

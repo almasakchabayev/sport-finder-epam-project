@@ -25,7 +25,7 @@ public abstract class JdbcBaseDao<T extends BaseEntity> implements GenericDao<T>
     }
 
     @Override
-    public T findById(Integer id) {
+    public T findById(Integer id) throws DaoException{
         if (id == null)
             throw new DaoException("Could not find element by id, id is null", new NullPointerException());
         if (id < 1)
@@ -47,7 +47,7 @@ public abstract class JdbcBaseDao<T extends BaseEntity> implements GenericDao<T>
     }
 
     @Override
-    public T insert(T entity) {
+    public T insert(T entity) throws DaoException {
         if (entity.getId() != null) throw new DaoException("Insertion failed, id is not null");
 
         Query query = Query.getQuery(entity.getClass(), Query.Type.INSERT);
@@ -75,7 +75,7 @@ public abstract class JdbcBaseDao<T extends BaseEntity> implements GenericDao<T>
     }
 
     @Override
-    public void update(T entity) {
+    public void update(T entity) throws DaoException{
         if (entity.getId() == null)
             throw new DaoException("Update failed, id is null", new NullPointerException());
 
@@ -103,7 +103,7 @@ public abstract class JdbcBaseDao<T extends BaseEntity> implements GenericDao<T>
     }
 
     @Override
-    public T delete(T entity) {
+    public T delete(T entity) throws DaoException {
         if (entity.getId() == null)
             throw new DaoException("Deletion failed, id is null", new NullPointerException());
         Query query = Query.getQuery(entity.getClass(), Query.Type.DELETE);

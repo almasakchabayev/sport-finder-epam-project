@@ -24,7 +24,7 @@ public class JdbcSportPlaceDao extends JdbcBaseDao<SportPlace> implements SportP
     }
 
     // TODO: Need a transaction fot that
-    public SportPlace insertCorrespondingSports(SportPlace sportPlace) {
+    public SportPlace insertCorrespondingSports(SportPlace sportPlace) throws DaoException {
         if (sportPlace.getSports() == null)
             throw new DaoException("List of Sports is null, cannot be inserted");
 
