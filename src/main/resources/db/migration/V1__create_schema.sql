@@ -56,7 +56,7 @@ CREATE TABLE Manager (
   deleted BOOLEAN DEFAULT FALSE,
   firstName TEXT,
   lastName TEXT,
-  email TEXT,
+  email TEXT UNIQUE,
   password TEXT,
   company INT
 );
