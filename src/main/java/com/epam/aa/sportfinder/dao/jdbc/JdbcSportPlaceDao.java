@@ -38,6 +38,50 @@ public class JdbcSportPlaceDao extends JdbcBaseDao<SportPlace> implements SportP
         return sportPlace;
     }
 
+    @Override
+    public SportPlace removeSportFromCorrespondingSports(SportPlace sportPlace, Sport sport) throws DaoException {
+        if(sportPlace.getId() == null || sport.getId() == null)
+            throw new DaoException("Could not remove sport, id is null");
+
+        if (sportPlace.getSports() == null)
+            throw new DaoException("List of Sports is null, cannot be removed");
+
+        String sql = "DELETE FROM SportPlace_Sport WHERE sportPlace_id = " + sportPlace.getId() +
+                " AND sport_id = " + sport.getId() + ";";
+        try (Statement st = getConnection().createStatement()){
+            st.execute(sql);
+        } catch (SQLException e) {
+            throw new DaoException("Removal failed", e);
+        }
+        if (sportPlace.containsSport(sport))
+            sportPlace.removeSport(sport);
+        return sportPlace;
+
+    }
+
+    @Override
+    public SportPlace addSportToCorrespondingSports(SportPlace sportPlace, Sport sport) throws DaoException {
+        if(sportPlace.getId() == null || sport.getId() == null)
+            throw new DaoException("Could not add sport, id is null");
+
+        String sql = "INSERT INTO SportPlace_Sport " +
+                "(sport_id, sportPlace_id) VALUES (" +
+                sport.getId() + ", " +sportPlace.getId() +");";
+
+        try (Statement st = getConnection().createStatement()){
+            st.execute(sql);
+        } catch (SQLException e) {
+            throw new DaoException("Insertion failed", e);
+        }
+
+        if (sportPlace.getSports() == null)
+            sportPlace.setSports(new ArrayList<>());
+
+        sportPlace.addSport(sport);
+        return sportPlace;
+    }
+
+
     private String getSqlForJoinTable(SportPlace sportPlace) {
         StringBuffer insertSportPlaceWithSportsBuffer = new StringBuffer("INSERT INTO SportPlace_Sport " +
                 "(sport_id, sportPlace_id) VALUES ");

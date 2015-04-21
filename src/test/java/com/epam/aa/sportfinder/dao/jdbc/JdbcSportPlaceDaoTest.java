@@ -10,10 +10,7 @@ import com.epam.aa.sportfinder.model.SportPlace;
 import org.junit.Test;
 
 import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -100,8 +97,6 @@ public class JdbcSportPlaceDaoTest extends TestConfig {
         sportPlace.setFloorCoverage(new FloorCoverage());
 
         dao.insert(sportPlace);
-
-        dao.insert(sportPlace);
     }
 
     @Test
@@ -174,48 +169,210 @@ public class JdbcSportPlaceDaoTest extends TestConfig {
         }
     }
 
-//    @Test(expected = DaoException.class)
-//    public void testUpdateFailsIfIdIsNull() throws Exception {
-//        DaoManager daoManager = getDaoManager();
-//        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
-//
-//        SportPlace sportPlace = new SportPlace();
-//        sportPlace.setName("parket");
-//
-//        dao.update(sportPlace);
-//    }
-//
-//    @Test
-//    public void testUpdateSuccessIfIdNotNull() throws Exception {
-//        DaoManager daoManager = getDaoManager();
-//        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
-//
-//        Connection connection = getDataSource().getConnection();
-//
-//        SportPlace sportPlace = new SportPlace();
-//        sportPlace.setId(2);
-//        sportPlace.setName("lenoleum");
-//
-//        dao.update(sportPlace);
-//
-//        PreparedStatement pst = connection.prepareStatement("SELECT id, uuid, deleted, name " +
-//                "FROM SportPlace WHERE id = ?");
-//        pst.setInt(1, sportPlace.getId());
-//        ResultSet resultSet = pst.executeQuery();
-//        SportPlace sportPlaceFromDatabase = new SportPlace();
-//
-//        if (resultSet.next()) {
-//            sportPlaceFromDatabase.setId(resultSet.getInt("id"));
-//            sportPlaceFromDatabase.setUuid((UUID) resultSet.getObject("uuid"));
-//            sportPlaceFromDatabase.setDeleted(resultSet.getBoolean("deleted"));
-//            sportPlaceFromDatabase.setName(resultSet.getString("name"));
-//        }
-//        resultSet.close();
-//        pst.close();
-//        connection.close();
-//
-//        assertSportPlacesEqualFromDaoPerspective(sportPlace, sportPlaceFromDatabase);
-//    }
+    @Test(expected = DaoException.class)
+    public void testUpdateFailsIfIdIsNull() throws Exception {
+        DaoManager daoManager = getDaoManager();
+        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+
+        SportPlace sportPlace = new SportPlace();
+
+        dao.update(sportPlace);
+    }
+
+    @Test(expected = DaoException.class)
+    public void testUpdateFailsIfAddressIsNull() throws Exception {
+        DaoManager daoManager = getDaoManager();
+        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+
+        SportPlace sportPlace = new SportPlace();
+        sportPlace.setId(1);
+        FloorCoverage floorCoverage = new FloorCoverage();
+        floorCoverage.setId(1);
+        sportPlace.setFloorCoverage(floorCoverage);
+
+        dao.update(sportPlace);
+    }
+
+    @Test(expected = DaoException.class)
+    public void testUpdateFailsIfFloorCoverageIsNull() throws Exception {
+        DaoManager daoManager = getDaoManager();
+        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+
+        SportPlace sportPlace = new SportPlace();
+        sportPlace.setId(1);
+        Address address = new Address();
+        address.setId(1);
+        sportPlace.setAddress(address);
+
+        dao.update(sportPlace);
+    }
+
+    @Test(expected = DaoException.class)
+    public void testUpdateFailsIfAddressIdIsNull() throws Exception {
+        DaoManager daoManager = getDaoManager();
+        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+
+        SportPlace sportPlace = new SportPlace();
+        sportPlace.setId(1);
+        FloorCoverage floorCoverage = new FloorCoverage();
+        floorCoverage.setId(1);
+        sportPlace.setFloorCoverage(floorCoverage);
+        sportPlace.setAddress(new Address());
+
+        dao.update(sportPlace);
+    }
+
+    @Test(expected = DaoException.class)
+    public void testUpdateFailsIfFloorCoverageIdIsNull() throws Exception {
+        DaoManager daoManager = getDaoManager();
+        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+
+        SportPlace sportPlace = new SportPlace();
+        sportPlace.setId(1);
+        Address address = new Address();
+        address.setId(1);
+        sportPlace.setAddress(address);
+        sportPlace.setFloorCoverage(new FloorCoverage());
+
+        dao.update(sportPlace);
+    }
+    @Test
+    public void testUpdateSuccessIfIdNotNullWithoutSports() throws Exception {
+        DaoManager daoManager = getDaoManager();
+        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+
+        Connection connection = getDataSource().getConnection();
+
+        SportPlace sportPlace = new SportPlace();
+        initSportPlaceWithoutSports(sportPlace);
+        sportPlace.setId(2);
+
+        dao.update(sportPlace);
+
+        PreparedStatement pst = connection.prepareStatement("SELECT id, uuid, deleted, size, floorcoverage, " +
+                "capacity, indoor, changingRoom, shower, lightening, tribuneCapacity, " +
+                "otherInfrastructureFeatures, pricePerHour, description, address " +
+                "FROM SportPlace WHERE id = ?");
+        pst.setInt(1, sportPlace.getId());
+        ResultSet resultSet = pst.executeQuery();
+
+        SportPlace sportPlaceFromDatabase = null;
+        if (resultSet.next()) {
+            sportPlaceFromDatabase = getSportPlaceFromResultSet(resultSet);
+        }
+        resultSet.close();
+        pst.close();
+        connection.close();
+
+        assertSportPlacesEqualFromDaoPerspective(sportPlace, sportPlaceFromDatabase);
+    }
+
+    @Test(expected = DaoException.class)
+    public void testAddSportFailsIfSportIdIsNull() throws Exception {
+        DaoManager daoManager = getDaoManager();
+        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+
+        SportPlace sportPlace = new SportPlace();
+        initSportPlaceWithoutSports(sportPlace);
+        sportPlace.setId(2);
+
+        dao.addSportToCorrespondingSports(sportPlace, new Sport());
+    }
+
+    @Test(expected = DaoException.class)
+    public void testAddSportFailsIfSportPlaceIdIsNull() throws Exception {
+        DaoManager daoManager = getDaoManager();
+        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+
+        Sport sport = new Sport();
+        sport.setId(1);
+        dao.addSportToCorrespondingSports(new SportPlace(), sport);
+    }
+
+    @Test
+    public void testAddSportSuccess() throws Exception {
+        DaoManager daoManager = getDaoManager();
+        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+
+        Connection connection = getDataSource().getConnection();
+
+        SportPlace sportPlace = new SportPlace();
+        initSportPlaceWithoutSports(sportPlace);
+        sportPlace.setId(2);
+        Sport sport = new Sport();
+        sport.setId(1);
+
+        dao.addSportToCorrespondingSports(sportPlace, sport);
+
+        Statement st = connection.createStatement();
+        ResultSet resultSet = st.executeQuery("SELECT sport_id, sportPlace_id " +
+                "FROM SportPlace_Sport WHERE sportPlace_id = " + sportPlace.getId());
+
+
+        ArrayList<Integer> sportIdsFromDatabase = new ArrayList<>();
+        while (resultSet.next()) {
+            sportIdsFromDatabase.add(resultSet.getInt("sport_id"));
+        }
+
+        resultSet.close();
+        connection.close();
+
+        assertEquals(true, sportIdsFromDatabase.contains(1));
+    }
+
+    @Test(expected = DaoException.class)
+    public void testRemoveSportFailsIfSportIdIsNull() throws Exception {
+        DaoManager daoManager = getDaoManager();
+        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+
+        SportPlace sportPlace = new SportPlace();
+        initSportPlaceWithoutSports(sportPlace);
+        sportPlace.setId(2);
+
+        dao.removeSportFromCorrespondingSports(sportPlace, new Sport());
+    }
+
+    @Test(expected = DaoException.class)
+    public void testRemoveSportFailsIfSportPlaceIdIsNull() throws Exception {
+        DaoManager daoManager = getDaoManager();
+        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+
+        Sport sport = new Sport();
+        sport.setId(1);
+        dao.removeSportFromCorrespondingSports(new SportPlace(), sport);
+    }
+
+    @Test
+    public void testRemoveSportSuccess() throws Exception {
+        DaoManager daoManager = getDaoManager();
+        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+
+        Connection connection = getDataSource().getConnection();
+
+        SportPlace sportPlace = new SportPlace();
+        initSportPlaceWithoutSports(sportPlace);
+        sportPlace.setId(2);
+        Sport sport = new Sport();
+        sport.setId(2);
+
+        dao.removeSportFromCorrespondingSports(sportPlace, sport);
+
+        Statement st = connection.createStatement();
+        ResultSet resultSet = st.executeQuery("SELECT sport_id, sportPlace_id " +
+                "FROM SportPlace_Sport WHERE sportPlace_id = " + sportPlace.getId());
+
+
+        ArrayList<Integer> sportIdsFromDatabase = new ArrayList<>();
+        while (resultSet.next()) {
+            sportIdsFromDatabase.add(resultSet.getInt("sport_id"));
+        }
+
+        resultSet.close();
+        connection.close();
+
+        assertEquals(false, sportIdsFromDatabase.contains(2));
+    }
+
 //
 //    @Test
 //    public void testDeleteInDbAndAssignTrueToObject() throws Exception {

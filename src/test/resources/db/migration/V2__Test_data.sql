@@ -46,4 +46,7 @@ INSERT INTO SportPlace(
   uuid_in(md5((now() + interval '1 day')::text)::cstring), '250 square meters', 2, 20, false, false, true, true, 0, 'There is a no parking',
   5000.00, 'Why not try', 2
 );
+INSERT INTO SportPlace_Sport(
+  sport_id, sportPlace_id
+) VALUES (2, 2);
 

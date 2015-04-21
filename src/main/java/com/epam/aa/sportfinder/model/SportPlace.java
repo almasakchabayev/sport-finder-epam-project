@@ -137,4 +137,16 @@ public class SportPlace extends BaseEntity {
     public void setSports(List<Sport> sports) {
         this.sports = sports;
     }
+
+    public boolean containsSport(Sport sport) {
+        return sports.contains(sport);
+    }
+
+    public void removeSport(Sport sport) {
+        sports.remove(sport);
+    }
+
+    public void addSport(Sport sport) {
+        sports.add(sport);
+    }
 }
