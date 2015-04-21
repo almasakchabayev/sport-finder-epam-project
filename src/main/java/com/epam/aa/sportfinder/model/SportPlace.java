@@ -27,6 +27,7 @@ public class SportPlace extends BaseEntity {
     private List<Sport> sports;
 
     private Company company;
+    private Manager manager;
 
     public SportPlace() {
         this.sports = new ArrayList<>();
@@ -158,5 +159,13 @@ public class SportPlace extends BaseEntity {
 
     public void setCompany(Company company) {
         this.company = company;
+    }
+
+    public Manager getManager() {
+        return manager;
+    }
+
+    public void setManager(Manager manager) {
+        this.manager = manager;
     }
 }

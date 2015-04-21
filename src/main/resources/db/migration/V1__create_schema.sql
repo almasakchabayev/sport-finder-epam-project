@@ -36,7 +36,8 @@ CREATE TABLE SportPlace (
   pricePerHour NUMERIC(21, 2),
   description TEXT,
   address INT,
-  company INT
+  company INT,
+  manager INT
 );
 CREATE TABLE SportPlace_Sport (
   sport_id INT NOT NULL,
@@ -53,7 +54,16 @@ CREATE TABLE Manager (
   id SERIAL NOT NULL PRIMARY KEY,
   uuid UUID UNIQUE,
   deleted BOOLEAN DEFAULT FALSE,
+  firstName TEXT,
+  lastName TEXT,
+  email TEXT,
+  password TEXT,
   company INT
+);
+CREATE TABLE Manager_PhoneNumber (
+  manager_id INT NOT NULL,
+  phoneNumber_id INT NOT NULL,
+  PRIMARY KEY (manager_id, phoneNumber_id)
 );
 CREATE TABLE Company (
   id SERIAL NOT NULL PRIMARY KEY,
@@ -79,6 +89,10 @@ ALTER TABLE SportPlace
    ADD CONSTRAINT SportPlace_Company_fkey
    FOREIGN KEY (company)
    REFERENCES  Company;
+ALTER TABLE SportPlace
+   ADD CONSTRAINT SportPlace_Manager_fkey
+   FOREIGN KEY (manager)
+   REFERENCES  Manager;
 ALTER TABLE SportPlace_Sport
    ADD CONSTRAINT SportPlace_Sport_Sport_fkey
    FOREIGN KEY (sport_id)
@@ -101,5 +115,13 @@ ALTER TABLE Company_PhoneNumber
    REFERENCES  Company;
 ALTER TABLE Company_PhoneNumber
    ADD CONSTRAINT Company_PhoneNumber_PhoneNumber_fkey
+   FOREIGN KEY (phoneNumber_id)
+   REFERENCES  PhoneNumber;
+ALTER TABLE Manager_PhoneNumber
+   ADD CONSTRAINT Manager_PhoneNumber_Manager_fkey
+   FOREIGN KEY (manager_id)
+   REFERENCES  Manager;
+ALTER TABLE Manager_PhoneNumber
+   ADD CONSTRAINT Manager_PhoneNumber_PhoneNumber_fkey
    FOREIGN KEY (phoneNumber_id)
    REFERENCES  PhoneNumber;
