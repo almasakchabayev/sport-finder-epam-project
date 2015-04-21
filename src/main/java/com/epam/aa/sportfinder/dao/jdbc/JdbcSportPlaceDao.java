@@ -76,8 +76,31 @@ public class JdbcSportPlaceDao extends JdbcBaseDao<SportPlace> implements SportP
         if (sportPlace.getSports() == null)
             sportPlace.setSports(new ArrayList<>());
 
-        sportPlace.addSport(sport);
+        if (!sportPlace.containsSport(sport))
+            sportPlace.addSport(sport);
         return sportPlace;
+    }
+
+    @Override
+    public List<Integer> findCorrespondingSportIds(SportPlace sportPlace) throws DaoException {
+        Integer sportPlaceId = sportPlace.getId();
+        if (sportPlaceId == null)
+            throw new DaoException("Could not find sports, id is null");
+
+        String sql = "SELECT sport_id, sportPlace_id FROM SportPlace_Sport " +
+                "WHERE sportPlace_id = " + sportPlaceId;
+
+        List<Integer> sportIds = new ArrayList<>();
+        try (Statement st = getConnection().createStatement()) {
+            try (ResultSet rs = st.executeQuery(sql)) {
+                while (rs.next()) {
+                    sportIds.add(rs.getInt("sport_id"));
+                }
+            }
+        } catch (SQLException e) {
+            throw new DaoException("Cannot find corresponding sports", e);
+        }
+        return sportIds;
     }
 
 

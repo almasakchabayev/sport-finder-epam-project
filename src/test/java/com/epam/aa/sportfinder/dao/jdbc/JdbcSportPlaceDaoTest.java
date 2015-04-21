@@ -454,6 +454,39 @@ public class JdbcSportPlaceDaoTest extends TestConfig {
         assertSportPlacesEqual(sportPlace, sportPlaceFromDatabase);
     }
 
+    @Test(expected = DaoException.class)
+    public void testFindCorrespondingSportIdsFailsIfIdIsNull() throws Exception {
+        DaoManager daoManager = getDaoManager();
+        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+
+        SportPlace sportPlace = new SportPlace();
+        dao.findCorrespondingSportIds(sportPlace);
+    }
+
+    @Test
+    public void testFindCorrespondingSportIds() throws Exception {
+        DaoManager daoManager = getDaoManager();
+        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+
+        Connection connection = getDataSource().getConnection();
+        SportPlace sportPlace = new SportPlace();
+        sportPlace.setId(2);
+        List<Integer> correspondingSportIds = dao.findCorrespondingSportIds(sportPlace);
+
+        PreparedStatement pst = connection.prepareStatement("SELECT sport_id, sportPlace_id " +
+                "FROM SportPlace_Sport WHERE sportPlace_id = ?");
+        pst.setInt(1, sportPlace.getId());
+        ResultSet resultSet = pst.executeQuery();
+        List<Integer> IdsFromDatabase = new ArrayList<>();
+
+        while (resultSet.next())
+            IdsFromDatabase.add(resultSet.getInt("sport_id"));
+
+        connection.close();
+
+        assertEquals(correspondingSportIds, IdsFromDatabase);
+    }
+
     public void assertSportPlacesEqual(SportPlace sportPlace, SportPlace sportPlaceFromDatabase) {
         assertEquals(sportPlace.getId(), sportPlaceFromDatabase.getId());
         assertEquals(sportPlace.getUuid(), sportPlaceFromDatabase.getUuid());
