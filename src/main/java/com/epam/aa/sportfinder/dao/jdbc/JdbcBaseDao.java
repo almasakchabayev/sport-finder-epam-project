@@ -122,26 +122,47 @@ public abstract class JdbcBaseDao<T extends BaseEntity> implements GenericDao<T>
     }
 
     private T map(ResultSet resultSet, DaoBean daoBean) {
-        T result;
+        T entity;
         try {
-            result = entityClass.newInstance();
+            entity = entityClass.newInstance();
             for (PropertyDescriptor pd : daoBean.getPropertyDescriptors()) {
-                pd.getWriteMethod().invoke(result, resultSet.getObject(pd.getName()));
+                mapProperty(resultSet, entity, pd);
             }
         } catch (InstantiationException | IllegalAccessException | SQLException | InvocationTargetException e) {
             throw new DaoException("Could not assign properties from db to object", e);
         }
-        return result;
+        return entity;
+    }
+
+    private void mapProperty(ResultSet resultSet, T entity, PropertyDescriptor pd) throws IllegalAccessException, InvocationTargetException, SQLException, InstantiationException {
+        // If property is not an entity
+        Class<?> propertyType = pd.getPropertyType();
+        if (!BaseEntity.class.isAssignableFrom(propertyType)) {
+            pd.getWriteMethod().invoke(entity, resultSet.getObject(pd.getName()));
+            return;
+        }
+
+        BaseEntity property = (BaseEntity) propertyType.newInstance();
+
+        Object id = resultSet.getObject(pd.getName());
+        // If id of entity is null
+        if (id == null) {
+            throw new DaoException("FindById Failed due to " + pd.getName() + "'s Id being null in a database");
+        }
+
+
+        property.setId((Integer) id);
+        pd.getWriteMethod().invoke(entity, property);
     }
 
     protected void fillPreparedStatement(T entity, PreparedStatement pst, PropertyDescriptor pd, int parameterIndex) throws IllegalAccessException, InvocationTargetException, SQLException {
-        Object invoke = pd.getReadMethod().invoke(entity);
-
-        // If invoke is not an entity
+        // If property is not an entity
         if (!BaseEntity.class.isAssignableFrom(pd.getPropertyType())) {
             pst.setObject(parameterIndex, pd.getReadMethod().invoke(entity));
             return;
         }
+
+        Object invoke = pd.getReadMethod().invoke(entity);
 
         // If invoke is an entity but is null
         if (invoke == null) {

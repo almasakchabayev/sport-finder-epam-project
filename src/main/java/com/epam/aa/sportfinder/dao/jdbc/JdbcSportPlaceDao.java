@@ -56,7 +56,6 @@ public class JdbcSportPlaceDao extends JdbcBaseDao<SportPlace> implements SportP
         if (sportPlace.containsSport(sport))
             sportPlace.removeSport(sport);
         return sportPlace;
-
     }
 
     @Override

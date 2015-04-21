@@ -125,7 +125,7 @@ public class JdbcSportPlaceDaoTest extends TestConfig {
         st.close();
         connection.close();
 
-        assertSportPlacesEqualFromDaoPerspective(sportPlace, sportPlaceFromDatabase);
+        assertSportPlacesEqual(sportPlace, sportPlaceFromDatabase);
     }
 
     @Test
@@ -264,7 +264,7 @@ public class JdbcSportPlaceDaoTest extends TestConfig {
         pst.close();
         connection.close();
 
-        assertSportPlacesEqualFromDaoPerspective(sportPlace, sportPlaceFromDatabase);
+        assertSportPlacesEqual(sportPlace, sportPlaceFromDatabase);
     }
 
     @Test(expected = DaoException.class)
@@ -373,88 +373,88 @@ public class JdbcSportPlaceDaoTest extends TestConfig {
         assertEquals(false, sportIdsFromDatabase.contains(2));
     }
 
-//
-//    @Test
-//    public void testDeleteInDbAndAssignTrueToObject() throws Exception {
-//        DaoManager daoManager = getDaoManager();
-//        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
-//
-//        Connection connection = getDataSource().getConnection();
-//        SportPlace sportPlace = new SportPlace();
-//        sportPlace.setId(1);
-//        dao.delete(sportPlace);
-//
-//        PreparedStatement pst = connection.prepareStatement("SELECT id, uuid, deleted, name " +
-//                "FROM SportPlace WHERE id = ?");
-//        pst.setInt(1, sportPlace.getId());
-//        ResultSet resultSet = pst.executeQuery();
-//        SportPlace sportPlaceFromDatabase = new SportPlace();
-//
-//        if (resultSet.next()) {
-//            sportPlaceFromDatabase.setId(resultSet.getInt("id"));
-//            sportPlaceFromDatabase.setUuid((UUID) resultSet.getObject("uuid"));
-//            sportPlaceFromDatabase.setDeleted(resultSet.getBoolean("deleted"));
-//            sportPlaceFromDatabase.setName(resultSet.getString("name"));
-//        }
-//        resultSet.close();
-//        pst.close();
-//        connection.close();
-//
-//        assertEquals(sportPlaceFromDatabase.isDeleted(), true);
-//        assertEquals(sportPlace.isDeleted(), sportPlaceFromDatabase.isDeleted());
-//    }
-//
-//    @Test(expected = DaoException.class)
-//    public void testFindByIdFailsIfIdIsNull() throws Exception {
-//        DaoManager daoManager = getDaoManager();
-//        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
-//
-//        SportPlace dummysportPlace = new SportPlace();
-//        SportPlace sportPlace = dao.findById(dummysportPlace.getId());
-//    }
-//
-//    @Test(expected = DaoException.class)
-//    public void testFindByIdFailsIfIdIsNegative() throws Exception {
-//        DaoManager daoManager = getDaoManager();
-//        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
-//
-//        SportPlace sportPlace = dao.findById(-1);
-//    }
-//
-//    @Test(expected = DaoException.class)
-//    public void testFindByIdFailsIfElementCouldNotBeFounded() throws Exception {
-//        DaoManager daoManager = getDaoManager();
-//        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
-//
-//        SportPlace sportPlace = dao.findById(100000000);
-//    }
-//
-//    @Test
-//    public void testFindByIdSuccessIfValidId() throws Exception {
-//        DaoManager daoManager = getDaoManager();
-//        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
-//
-//        Connection connection = getDataSource().getConnection();
-//        SportPlace sportPlace = dao.findById(1);
-//
-//        PreparedStatement pst = connection.prepareStatement("SELECT id, uuid, deleted, name " +
-//                "FROM SportPlace WHERE id = ?");
-//        pst.setInt(1, sportPlace.getId());
-//        ResultSet resultSet = pst.executeQuery();
-//        SportPlace sportPlaceFromDatabase = new SportPlace();
-//
-//        if (resultSet.next()) {
-//            sportPlaceFromDatabase.setId(resultSet.getInt("id"));
-//            sportPlaceFromDatabase.setUuid((UUID) resultSet.getObject("uuid"));
-//            sportPlaceFromDatabase.setDeleted(resultSet.getBoolean("deleted"));
-//            sportPlaceFromDatabase.setName(resultSet.getString("name"));}
-//
-//        connection.close();
-//
-//        assertSportPlacesEqualFromDaoPerspective(sportPlace, sportPlaceFromDatabase);
-//    }
 
-    public void assertSportPlacesEqualFromDaoPerspective(SportPlace sportPlace, SportPlace sportPlaceFromDatabase) {
+    @Test
+    public void testDeleteInDbAndAssignTrueToObject() throws Exception {
+        DaoManager daoManager = getDaoManager();
+        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+
+        Connection connection = getDataSource().getConnection();
+
+        SportPlace sportPlace = new SportPlace();
+        initSportPlaceWithoutSports(sportPlace);
+        sportPlace.setId(1);
+        dao.delete(sportPlace);
+
+        PreparedStatement pst = connection.prepareStatement("SELECT id, uuid, deleted, size, floorcoverage, " +
+                "capacity, indoor, changingRoom, shower, lightening, tribuneCapacity, " +
+                "otherInfrastructureFeatures, pricePerHour, description, address " +
+                "FROM SportPlace WHERE id = ?");
+        pst.setInt(1, sportPlace.getId());
+        ResultSet resultSet = pst.executeQuery();
+        SportPlace sportPlaceFromDatabase = null;
+
+        if (resultSet.next()) {
+            sportPlaceFromDatabase = getSportPlaceFromResultSet(resultSet);
+        }
+        resultSet.close();
+        pst.close();
+        connection.close();
+
+        assertEquals(sportPlaceFromDatabase.isDeleted(), true);
+        assertEquals(sportPlace.isDeleted(), sportPlaceFromDatabase.isDeleted());
+    }
+
+    @Test(expected = DaoException.class)
+    public void testFindByIdFailsIfIdIsNull() throws Exception {
+        DaoManager daoManager = getDaoManager();
+        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+
+        SportPlace dummysportPlace = new SportPlace();
+        SportPlace sportPlace = dao.findById(dummysportPlace.getId());
+    }
+
+    @Test(expected = DaoException.class)
+    public void testFindByIdFailsIfIdIsNegative() throws Exception {
+        DaoManager daoManager = getDaoManager();
+        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+
+        SportPlace sportPlace = dao.findById(-1);
+    }
+
+    @Test(expected = DaoException.class)
+    public void testFindByIdFailsIfElementCouldNotBeFounded() throws Exception {
+        DaoManager daoManager = getDaoManager();
+        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+
+        SportPlace sportPlace = dao.findById(100000000);
+    }
+
+    @Test
+    public void testFindByIdSuccessIfValidId() throws Exception {
+        DaoManager daoManager = getDaoManager();
+        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+
+        Connection connection = getDataSource().getConnection();
+        SportPlace sportPlace = dao.findById(1);
+
+        PreparedStatement pst = connection.prepareStatement("SELECT id, uuid, deleted, size, floorcoverage, " +
+                "capacity, indoor, changingRoom, shower, lightening, tribuneCapacity, " +
+                "otherInfrastructureFeatures, pricePerHour, description, address " +
+                "FROM SportPlace WHERE id = ?");
+        pst.setInt(1, sportPlace.getId());
+        ResultSet resultSet = pst.executeQuery();
+        SportPlace sportPlaceFromDatabase = null;
+
+        if (resultSet.next())
+            sportPlaceFromDatabase = getSportPlaceFromResultSet(resultSet);
+
+        connection.close();
+
+        assertSportPlacesEqual(sportPlace, sportPlaceFromDatabase);
+    }
+
+    public void assertSportPlacesEqual(SportPlace sportPlace, SportPlace sportPlaceFromDatabase) {
         assertEquals(sportPlace.getId(), sportPlaceFromDatabase.getId());
         assertEquals(sportPlace.getUuid(), sportPlaceFromDatabase.getUuid());
         assertEquals(sportPlace.isDeleted(), sportPlaceFromDatabase.isDeleted());
