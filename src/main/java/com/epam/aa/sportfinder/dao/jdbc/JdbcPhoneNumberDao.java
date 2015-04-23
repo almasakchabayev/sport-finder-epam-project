@@ -17,35 +17,35 @@ public class JdbcPhoneNumberDao extends JdbcBaseDao<PhoneNumber> implements Phon
         super(connection);
     }
 
-//    @Override
-//    public List<PhoneNumber> findByIds(List<Integer> phoneNumberIds) throws DaoException {
-//        if (phoneNumberIds == null)
-//            throw new DaoException("Could not find phoneNumbers, list is null");
-//
-//        StringBuffer sqlBuffer = new StringBuffer("SELECT id, uuid, deleted, number FROM SportPlace_Sport " +
-//                "WHERE");
-//        String prefix = "";
-//        for (Integer phoneNumberId : phoneNumberIds) {
-//            sqlBuffer.append(prefix);
-//            prefix = " AND";
-//            sqlBuffer.append(" id = " + phoneNumberId);
-//        }
-//
-//        List<PhoneNumber> phoneNumbers = new ArrayList<>();
-//        try (Statement st = getConnection().createStatement()) {
-//            try (ResultSet rs = st.executeQuery(sqlBuffer.toString())) {
-//                while (rs.next()) {
-//                    PhoneNumber phoneNumber = new PhoneNumber();
-//                    phoneNumber.setId(rs.getInt("id"));
-//                    phoneNumber.setUuid((UUID) rs.getObject("uuid"));
-//                    phoneNumber.setDeleted(rs.getBoolean("deleted"));
-//                    phoneNumber.setNumber(rs.getString("number"));
-//                    phoneNumbers.add(phoneNumber);
-//                }
-//            }
-//        } catch (SQLException e) {
-//            throw new DaoException("Cannot find corresponding sports", e);
-//        }
-//        return phoneNumbers;
-//    }
+    @Override
+    public List<PhoneNumber> findByIds(List<Integer> phoneNumberIds) throws DaoException {
+        if (phoneNumberIds == null)
+            throw new DaoException("Could not find phoneNumbers, list is null");
+
+        StringBuffer sqlBuffer = new StringBuffer("SELECT id, uuid, deleted, number FROM PhoneNumber " +
+                "WHERE");
+        String prefix = "";
+        for (Integer phoneNumberId : phoneNumberIds) {
+            sqlBuffer.append(prefix);
+            prefix = " AND";
+            sqlBuffer.append(" id = " + phoneNumberId);
+        }
+
+        List<PhoneNumber> phoneNumbers = new ArrayList<>();
+        try (Statement st = getConnection().createStatement()) {
+            try (ResultSet rs = st.executeQuery(sqlBuffer.toString())) {
+                while (rs.next()) {
+                    PhoneNumber phoneNumber = new PhoneNumber();
+                    phoneNumber.setId(rs.getInt("id"));
+                    phoneNumber.setUuid((UUID) rs.getObject("uuid"));
+                    phoneNumber.setDeleted(rs.getBoolean("deleted"));
+                    phoneNumber.setNumber(rs.getString("number"));
+                    phoneNumbers.add(phoneNumber);
+                }
+            }
+        } catch (SQLException e) {
+            throw new DaoException("Cannot find corresponding phone Numbers", e);
+        }
+        return phoneNumbers;
+    }
 }

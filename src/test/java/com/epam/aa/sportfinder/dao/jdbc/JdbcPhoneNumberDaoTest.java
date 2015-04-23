@@ -1,5 +1,6 @@
 package com.epam.aa.sportfinder.dao.jdbc;
 
+import com.epam.aa.sportfinder.dao.DaoCommand;
 import com.epam.aa.sportfinder.dao.DaoException;
 import com.epam.aa.sportfinder.dao.DaoManager;
 import com.epam.aa.sportfinder.dao.PhoneNumberDao;
@@ -10,6 +11,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
@@ -193,6 +196,51 @@ public class JdbcPhoneNumberDaoTest extends TestConfig {
         connection.close();
 
         assertPhoneNumbersEqual(phoneNumber, phoneNumberFromDatabase);
+    }
+
+    @Test
+    public void testFindByIdsSuccessIfValidId() throws Exception {
+        DaoManager daoManager = getDaoManager();
+
+        Connection connection = getDataSource().getConnection();
+
+        List<Integer> ids = new ArrayList<>();
+        ids.add(1);
+        ids.add(3);
+
+        List<PhoneNumber> phoneNumbers = daoManager.executeTx(daoManager1 -> {
+            PhoneNumberDao dao = daoManager1.getDao(PhoneNumber.class);
+            return dao.findByIds(ids);
+        });
+
+        String sql = "SELECT id, uuid, deleted, number " +
+                "FROM PhoneNumber WHERE ";
+
+        String prefix = "";
+        for (Integer id : ids) {
+            sql += prefix;
+            prefix = "AND ";
+            sql += "id = " + id +" ";
+        }
+        PreparedStatement pst = connection.prepareStatement(sql);
+        ResultSet resultSet = pst.executeQuery();
+
+        List<PhoneNumber> phoneNumbersFromDatabase = new ArrayList<>();
+        while (resultSet.next()) {
+            PhoneNumber phoneNumberFromDatabase = new PhoneNumber();
+            phoneNumberFromDatabase.setId(resultSet.getInt("id"));
+            phoneNumberFromDatabase.setUuid((UUID) resultSet.getObject("uuid"));
+            phoneNumberFromDatabase.setDeleted(resultSet.getBoolean("deleted"));
+            phoneNumberFromDatabase.setNumber(resultSet.getString("number"));
+            phoneNumbersFromDatabase.add(phoneNumberFromDatabase);
+        }
+
+        connection.close();
+
+        assertEquals(phoneNumbers.size(), phoneNumbersFromDatabase.size());
+        for (int i = 0; i < phoneNumbers.size(); i++) {
+            assertPhoneNumbersEqual(phoneNumbers.get(i), phoneNumbersFromDatabase.get(i));
+        }
     }
 
     public void assertPhoneNumbersEqual(PhoneNumber phoneNumber, PhoneNumber phoneNumberFromDatabase) {

@@ -42,6 +42,11 @@ INSERT INTO PhoneNumber(
 ) VALUES(
   uuid_in(md5((now() + interval '1 day')::text)::cstring), '87017556550'
 );
+INSERT INTO PhoneNumber(
+  uuid, number
+) VALUES(
+  uuid_in(md5(((now() + interval '1 day') + interval '1 day')::text)::cstring), '87017790300'
+);
 INSERT INTO Company(
   uuid, name, address
 ) VALUES(
