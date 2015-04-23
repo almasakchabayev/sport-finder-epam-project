@@ -1,5 +1,6 @@
 package com.epam.aa.sportfinder.dao.jdbc;
 
+import com.epam.aa.sportfinder.dao.DaoCommand;
 import com.epam.aa.sportfinder.dao.ManagerDao;
 import com.epam.aa.sportfinder.dao.DaoException;
 import com.epam.aa.sportfinder.dao.DaoManager;
@@ -47,16 +48,22 @@ public class JdbcManagerDaoTest extends TestConfig {
     @Test(expected = DaoException.class)
     public void testInsertFailsIfEmailAlreadyExists() throws Exception {
         DaoManager daoManager = getDaoManager();
-        ManagerDao dao = daoManager.getDao(Manager.class);
+        Manager manager = daoManager.executeTx(daoManager1 -> {
+            ManagerDao dao = daoManager1.getDao(Manager.class);
+            Manager insert = new Manager();
+            insert.setEmail("almas@gmail.com");
+            return dao.insert(insert);
+        });
 
-        Manager manager = new Manager();
-        manager.setEmail("almas@gmail.com");
-        dao.insert(manager);
 
-        Manager managerWithSameName = new Manager();
-        managerWithSameName.setEmail(manager.getEmail());
 
-        dao.insert(managerWithSameName);
+        DaoManager daoManager1 = getDaoManager();
+        Manager manager1 = daoManager1.executeTx(daoManager2 -> {
+            ManagerDao dao = daoManager1.getDao(Manager.class);
+            Manager managerWithSameName = new Manager();
+            managerWithSameName.setEmail(manager.getEmail());
+            return dao.insert(managerWithSameName);
+        });
     }
 
     @Test
@@ -180,7 +187,7 @@ public class JdbcManagerDaoTest extends TestConfig {
 
         Manager manager = new Manager();
         initManager(manager);
-        manager.setFirstName("Other Name");
+        manager.setEmail("Other email");
         manager.setId(2);
 
         dao.update(manager);
@@ -305,6 +312,33 @@ public class JdbcManagerDaoTest extends TestConfig {
                 "email, password, company " +
                 "FROM Manager WHERE id = ?");
         pst.setInt(1, manager.getId());
+        ResultSet resultSet = pst.executeQuery();
+
+        Manager managerFromDatabase = new Manager();
+        if (resultSet.next()) {
+            mapResultSetToManager(resultSet, managerFromDatabase);
+        }
+
+        connection.close();
+
+        assertManagersEqual(manager, managerFromDatabase);
+    }
+
+    @Test
+    public void testFindByEmailSuccess() throws Exception {
+        DaoManager daoManager = getDaoManager();
+
+        Connection connection = getDataSource().getConnection();
+
+        Manager manager = daoManager.executeTx(daoManager1 -> {
+            ManagerDao dao = daoManager1.getDao(Manager.class);
+            return dao.findByEmail("pg@gmail.com");
+        });
+
+        PreparedStatement pst = connection.prepareStatement("SELECT id, uuid, deleted, firstName, lastName, " +
+                "email, password, company " +
+                "FROM Manager WHERE email = ?");
+        pst.setString(1, "pg@gmail.com");
         ResultSet resultSet = pst.executeQuery();
 
         Manager managerFromDatabase = new Manager();

@@ -2,15 +2,14 @@ package com.epam.aa.sportfinder.dao.jdbc;
 
 import com.epam.aa.sportfinder.dao.ManagerDao;
 import com.epam.aa.sportfinder.dao.DaoException;
+import com.epam.aa.sportfinder.model.Company;
 import com.epam.aa.sportfinder.model.Manager;
 import com.epam.aa.sportfinder.model.PhoneNumber;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class JdbcManagerDao extends JdbcBaseDao<Manager> implements ManagerDao {
     public JdbcManagerDao(Connection connection) {
@@ -109,5 +108,35 @@ public class JdbcManagerDao extends JdbcBaseDao<Manager> implements ManagerDao {
             throw new DaoException("Cannot find corresponding phoneNumbers", e);
         }
         return phoneNumberIds;
+    }
+
+    @Override
+    public Manager findByEmail(String email) throws DaoException {
+        String sql = "SELECT id, uuid, deleted, firstName, lastName, " +
+                "email, password, company " +
+                "FROM Manager WHERE email = ?";
+
+        Manager manager = null;
+        try (PreparedStatement pst = getConnection().prepareStatement(sql)) {
+            pst.setString(1, email);
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    manager = new Manager();
+                    manager.setId(rs.getInt("id"));
+                    manager.setUuid((UUID) rs.getObject("uuid"));
+                    manager.setDeleted(rs.getBoolean("deleted"));
+                    manager.setFirstName(rs.getString("firstName"));
+                    manager.setLastName(rs.getString("lastName"));
+                    manager.setEmail(rs.getString("email"));
+                    manager.setPassword(rs.getString("password"));
+                    Company company = new Company();
+                    company.setId(rs.getInt("company"));
+                    manager.setCompany(company);
+                }
+            }
+        } catch (SQLException e) {
+            throw new DaoException("Cannot find corresponding phoneNumbers", e);
+        }
+        return manager;
     }
 }

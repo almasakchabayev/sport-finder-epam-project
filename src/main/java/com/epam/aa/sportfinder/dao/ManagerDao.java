@@ -10,4 +10,6 @@ public interface ManagerDao extends GenericDao<Manager> {
     Manager removePhoneNumber(Manager manager, PhoneNumber phoneNumber) throws DaoException;
     Manager addPhoneNumber(Manager manager, PhoneNumber phoneNumber) throws DaoException;
     List<Integer> findPhoneNumberIds(Manager manager) throws DaoException;
+
+    Manager findByEmail(String email) throws DaoException;
 }
