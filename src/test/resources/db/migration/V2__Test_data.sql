@@ -84,9 +84,6 @@ INSERT INTO SportPlace(
 INSERT INTO SportPlace_Sport(
   sport_id, sportPlace_id
 ) VALUES (2, 2);
-INSERT INTO Company_PhoneNumber(
-  company_id, PhoneNumber_id
-) VALUES (2, 2);
 INSERT INTO Manager_PhoneNumber(
   manager_id, PhoneNumber_id
 ) VALUES (2, 2);

@@ -72,11 +72,6 @@ CREATE TABLE Company (
   name TEXT UNIQUE,
   address INT
 );
-CREATE TABLE Company_PhoneNumber (
-  company_id INT NOT NULL,
-  phoneNumber_id INT NOT NULL,
-  PRIMARY KEY (company_id, phoneNumber_id)
-);
 ALTER TABLE SportPlace
     ADD CONSTRAINT SportPlace_FloorCoverage_fkey
     FOREIGN KEY (floorCoverage)
@@ -109,14 +104,6 @@ ALTER TABLE Company
    ADD CONSTRAINT Company_Address_fkey
    FOREIGN KEY (address)
    REFERENCES  Address;
-ALTER TABLE Company_PhoneNumber
-   ADD CONSTRAINT Company_PhoneNumber_Company_fkey
-   FOREIGN KEY (company_id)
-   REFERENCES  Company;
-ALTER TABLE Company_PhoneNumber
-   ADD CONSTRAINT Company_PhoneNumber_PhoneNumber_fkey
-   FOREIGN KEY (phoneNumber_id)
-   REFERENCES  PhoneNumber;
 ALTER TABLE Manager_PhoneNumber
    ADD CONSTRAINT Manager_PhoneNumber_Manager_fkey
    FOREIGN KEY (manager_id)
