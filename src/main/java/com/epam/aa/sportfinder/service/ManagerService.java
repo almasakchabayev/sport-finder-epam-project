@@ -41,4 +41,8 @@ public class ManagerService {
             return result;
         });
     }
+
+    public static Manager create(Manager manager) {
+        return null;
+    }
 }
