@@ -9,7 +9,7 @@ public class ActionFactory {
     private static final Map<String, Action> actions = initActionFactory();
 
     public static Action getAction(HttpServletRequest request) {
-        return actions.get(request.getMethod() + request.getRequestURI());
+        return actions.get(request.getMethod() + request.getPathInfo());
     }
 
     private static Map<String, Action> initActionFactory() {
