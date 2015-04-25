@@ -20,7 +20,6 @@ public class FrontController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException {
         try {
             Action action = ActionFactory.getAction(request);
-            System.out.println(request.getRequestURI() + "    " + request.getPathInfo());
             String view = "404";
             if (action != null) {
                 view = action.execute(request, response);

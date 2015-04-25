@@ -13,14 +13,6 @@ public class Filter implements javax.servlet.Filter {
     }
 
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
-
-//        final HttpServletRequestWrapper wrapped = new HttpServletRequestWrapper(request) {
-//            @Override
-//            public StringBuffer getRequestURL() {
-//                final StringBuffer originalUrl = ((HttpServletRequest) getRequest()).getRequestURL();
-//                return new StringBuffer("http://servername2:7001");
-//            }
-//        };
         HttpServletRequest request = (HttpServletRequest) req;
         String requestURI = request.getRequestURI();
         if(!requestURI.contains("assets")) {
