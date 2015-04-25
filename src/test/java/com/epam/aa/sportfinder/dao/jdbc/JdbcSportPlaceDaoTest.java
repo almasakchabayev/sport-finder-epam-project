@@ -14,7 +14,6 @@ import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 
-// TODO: add Company related tests
 public class JdbcSportPlaceDaoTest extends TestConfig {
 
 
@@ -112,7 +111,7 @@ public class JdbcSportPlaceDaoTest extends TestConfig {
         Statement st = connection.createStatement();
         ResultSet resultSet = st.executeQuery("SELECT id, uuid, deleted, size, floorcoverage,  " +
                 "capacity, indoor, changingRoom, shower, lightening, tribuneCapacity, " +
-                "otherInfrastructureFeatures, pricePerHour, description, address, company " +
+                "otherInfrastructureFeatures, pricePerHour, description, address, manager " +
                 "FROM SportPlace ORDER BY id DESC LIMIT 1");
 
         SportPlace sportPlaceFromDatabase = null;
@@ -250,7 +249,7 @@ public class JdbcSportPlaceDaoTest extends TestConfig {
 
         PreparedStatement pst = connection.prepareStatement("SELECT id, uuid, deleted, size, floorcoverage, " +
                 "capacity, indoor, changingRoom, shower, lightening, tribuneCapacity, " +
-                "otherInfrastructureFeatures, pricePerHour, description, address, company " +
+                "otherInfrastructureFeatures, pricePerHour, description, address, manager " +
                 "FROM SportPlace WHERE id = ?");
         pst.setInt(1, sportPlace.getId());
         ResultSet resultSet = pst.executeQuery();
@@ -393,7 +392,7 @@ public class JdbcSportPlaceDaoTest extends TestConfig {
 
         PreparedStatement pst = connection.prepareStatement("SELECT id, uuid, deleted, size, floorcoverage, " +
                 "capacity, indoor, changingRoom, shower, lightening, tribuneCapacity, " +
-                "otherInfrastructureFeatures, pricePerHour, description, address, company " +
+                "otherInfrastructureFeatures, pricePerHour, description, address, manager " +
                 "FROM SportPlace WHERE id = ?");
         pst.setInt(1, sportPlace.getId());
         ResultSet resultSet = pst.executeQuery();
@@ -445,7 +444,7 @@ public class JdbcSportPlaceDaoTest extends TestConfig {
 
         PreparedStatement pst = connection.prepareStatement("SELECT id, uuid, deleted, size, floorcoverage, " +
                 "capacity, indoor, changingRoom, shower, lightening, tribuneCapacity, " +
-                "otherInfrastructureFeatures, pricePerHour, description, address, company " +
+                "otherInfrastructureFeatures, pricePerHour, description, address, manager " +
                 "FROM SportPlace WHERE id = ?");
         pst.setInt(1, sportPlace.getId());
         ResultSet resultSet = pst.executeQuery();
@@ -507,7 +506,6 @@ public class JdbcSportPlaceDaoTest extends TestConfig {
 
         assertEquals(sportPlace.getAddress().getId(), sportPlaceFromDatabase.getAddress().getId());
         assertEquals(sportPlace.getFloorCoverage().getId(), sportPlaceFromDatabase.getFloorCoverage().getId());
-        assertEquals(sportPlace.getCompany().getId(), sportPlaceFromDatabase.getCompany().getId());
 
         assertEquals(sportPlace.isLightening(), sportPlaceFromDatabase.isLightening());
         assertEquals(sportPlace.getOtherInfrastructureFeatures(), sportPlaceFromDatabase.getOtherInfrastructureFeatures());
@@ -531,9 +529,6 @@ public class JdbcSportPlaceDaoTest extends TestConfig {
         sportPlace.setDescription("Traditional SportPlace");
         sportPlace.setChangingRoom(true);
         sportPlace.setCapacity(40);
-        Company company = new Company();
-        company.setId(1);
-        sportPlace.setCompany(company);
         Manager manager = new Manager();
         manager.setId(1);
         sportPlace.setManager(manager);
@@ -571,15 +566,10 @@ public class JdbcSportPlaceDaoTest extends TestConfig {
         floorCoverageFromDatabase.setId(floorCoverageId);
         sportPlaceFromDatabase.setFloorCoverage(floorCoverageFromDatabase);
 
-        Company CompanyFromDatabase = new Company();
-        Integer companyId = (Integer) resultSet.getObject("company");
-        CompanyFromDatabase.setId(companyId);
-        sportPlaceFromDatabase.setCompany(CompanyFromDatabase);
-
-        Manager ManagerFromDatabase = new Manager();
-        Integer managerId = (Integer) resultSet.getObject("company");
-        CompanyFromDatabase.setId(managerId);
-        sportPlaceFromDatabase.setManager(ManagerFromDatabase);
+        Manager managerFromDatabase = new Manager();
+        Integer managerId = (Integer) resultSet.getObject("manager");
+        managerFromDatabase.setId(managerId);
+        sportPlaceFromDatabase.setManager(managerFromDatabase);
 
         sportPlaceFromDatabase.setLightening(resultSet.getBoolean("lightening"));
         sportPlaceFromDatabase.setOtherInfrastructureFeatures(resultSet.getString("otherInfrastructureFeatures"));

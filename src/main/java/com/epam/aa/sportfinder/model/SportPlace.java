@@ -26,7 +26,6 @@ public class SportPlace extends BaseEntity {
     private Address address;
     private List<Sport> sports;
 
-    private Company company;
     private Manager manager;
 
     public SportPlace() {
@@ -151,14 +150,6 @@ public class SportPlace extends BaseEntity {
 
     public void addSport(Sport sport) {
         sports.add(sport);
-    }
-
-    public Company getCompany() {
-        return company;
-    }
-
-    public void setCompany(Company company) {
-        this.company = company;
     }
 
     public Manager getManager() {

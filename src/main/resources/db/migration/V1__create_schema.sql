@@ -36,7 +36,6 @@ CREATE TABLE SportPlace (
   pricePerHour NUMERIC(21, 2),
   description TEXT,
   address INT,
-  company INT,
   manager INT
 );
 CREATE TABLE SportPlace_Sport (
@@ -80,10 +79,6 @@ ALTER TABLE SportPlace
     ADD CONSTRAINT SportPlace_Address_fkey
     FOREIGN KEY (address)
     REFERENCES  Address;
-ALTER TABLE SportPlace
-   ADD CONSTRAINT SportPlace_Company_fkey
-   FOREIGN KEY (company)
-   REFERENCES  Company;
 ALTER TABLE SportPlace
    ADD CONSTRAINT SportPlace_Manager_fkey
    FOREIGN KEY (manager)

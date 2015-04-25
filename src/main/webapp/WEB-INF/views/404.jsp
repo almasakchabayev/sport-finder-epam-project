@@ -6,13 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
-    <link href="../assets/fonts/font-awesome.css" rel="stylesheet" type="text/css">
+    <link href="../../assets/fonts/font-awesome.css" rel="stylesheet" type="text/css">
     <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.css" type="text/css">
-    <link rel="stylesheet" href="../assets/css/bootstrap-select.min.css" type="text/css">
-    <link rel="stylesheet" href="../assets/css/owl.carousel.css" type="text/css">
-    <link rel="stylesheet" href="../assets/css/style.css" type="text/css">
-    <link rel="stylesheet" href="../assets/css/user.style.css" type="text/css">
+    <link rel="stylesheet" href="../../assets/bootstrap/css/bootstrap.css" type="text/css">
+    <link rel="stylesheet" href="../../assets/css/bootstrap-select.min.css" type="text/css">
+    <link rel="stylesheet" href="../../assets/css/owl.carousel.css" type="text/css">
+    <link rel="stylesheet" href="../../assets/css/style.css" type="text/css">
+    <link rel="stylesheet" href="../../assets/css/user.style.css" type="text/css">
 
     <title>Sport Finder</title>
 
@@ -28,7 +28,7 @@
         <div class="header">
             <div class="wrapper">
                 <div class="brand">
-                    <a href="index-directory.html"><img src="../assets/img/logo.png" alt="logo"></a>
+                    <a href="index-directory.html"><img src="../../assets/img/logo.png" alt="logo"></a>
                 </div>
                 <nav class="navigation-items">
                     <div class="wrapper">
@@ -98,7 +98,7 @@
                     <div class="block">
                         <div id="title-404">
                             <aside>404
-                                <img src="../assets/img/scissors.png" alt="">
+                                <img src="../../assets/img/scissors.png" alt="">
                             </aside>
                             <h2>Page Not Found</h2>
                             <p>Unfortunately the page you are looking for is not here.<br>You can go back or check these featured items:</p>
@@ -125,15 +125,15 @@
                                                 </div>
                                             </div>
                                             <div class="item-specific">
-                                                <span title="Bedrooms"><img src="../assets/img/bedrooms.png" alt="">2</span>
-                                                <span title="Bathrooms"><img src="../assets/img/bathrooms.png" alt="">2</span>
-                                                <span title="Area"><img src="../assets/img/area.png" alt="">240m<sup>2</sup></span>
-                                                <span title="Garages"><img src="../assets/img/garages.png" alt="">1</span>
+                                                <span title="Bedrooms"><img src="../../assets/img/bedrooms.png" alt="">2</span>
+                                                <span title="Bathrooms"><img src="../../assets/img/bathrooms.png" alt="">2</span>
+                                                <span title="Area"><img src="../../assets/img/area.png" alt="">240m<sup>2</sup></span>
+                                                <span title="Garages"><img src="../../assets/img/garages.png" alt="">1</span>
                                             </div>
                                             <div class="icon">
                                                 <i class="fa fa-thumbs-up"></i>
                                             </div>
-                                            <img src="../assets/img/items/1.jpg" alt="">
+                                            <img src="../../assets/img/items/1.jpg" alt="">
                                         </a>
                                     </div>
                                     <div class="wrapper">
@@ -141,7 +141,7 @@
                                         <figure>63 Birch Street</figure>
                                         <div class="info">
                                             <div class="type">
-                                                <i><img src="../assets/icons/restaurants-bars/restaurants/restaurant.png" alt=""></i>
+                                                <i><img src="../../assets/icons/restaurants-bars/restaurants/restaurant.png" alt=""></i>
                                                 <span>Restaurant</span>
                                             </div>
                                             <div class="rating" data-rating="4"></div>
@@ -164,7 +164,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <img src="../assets/img/items/2.jpg" alt="">
+                                            <img src="../../assets/img/items/2.jpg" alt="">
                                         </a>
                                     </div>
                                     <div class="wrapper">
@@ -172,7 +172,7 @@
                                         <figure>63 Birch Street</figure>
                                         <div class="info">
                                             <div class="type">
-                                                <i><img src="../assets/icons/restaurants-bars/restaurants/cafetaria.png" alt=""></i>
+                                                <i><img src="../../assets/icons/restaurants-bars/restaurants/cafetaria.png" alt=""></i>
                                                 <span>Cafeteria</span>
                                             </div>
                                             <div class="rating" data-rating="4"></div>
@@ -198,7 +198,7 @@
                                             <div class="item-specific">
                                                 <span>Daily menu from: $6</span>
                                             </div>
-                                            <img src="../assets/img/items/restaurant/9.jpg" alt="">
+                                            <img src="../../assets/img/items/restaurant/9.jpg" alt="">
                                         </a>
                                     </div>
                                     <div class="wrapper">
@@ -206,7 +206,7 @@
                                         <figure>4662 Bruce Street</figure>
                                         <div class="info">
                                             <div class="type">
-                                                <i><img src="../assets/icons/restaurants-bars/restaurants/japanese-food.png" alt=""></i>
+                                                <i><img src="../../assets/icons/restaurants-bars/restaurants/japanese-food.png" alt=""></i>
                                                 <span>Sushi</span>
                                             </div>
                                             <div class="rating" data-rating="3"></div>
@@ -232,7 +232,7 @@
                                             <div class="item-specific">
                                                 <span>Daily menu from: $6</span>
                                             </div>
-                                            <img src="../assets/img/items/restaurant/10.jpg" alt="">
+                                            <img src="../../assets/img/items/restaurant/10.jpg" alt="">
                                         </a>
                                     </div>
                                     <div class="wrapper">
@@ -240,7 +240,7 @@
                                         <figure>357 Trainer Avenue</figure>
                                         <div class="info">
                                             <div class="type">
-                                                <i><img src="../assets/icons/restaurants-bars/restaurants/fishchips.png" alt=""></i>
+                                                <i><img src="../../assets/icons/restaurants-bars/restaurants/fishchips.png" alt=""></i>
                                                 <span>Sushi Bar</span>
                                             </div>
                                             <div class="rating" data-rating="3"></div>
@@ -282,7 +282,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <img src="../assets/img/items/restaurant/8.jpg" alt="">
+                                        <img src="../../assets/img/items/restaurant/8.jpg" alt="">
                                     </div>
                                     <div class="wrapper">
                                         <a href="item-detail.html"><h3>Magma Bar and Grill</h3></a>
@@ -295,7 +295,7 @@
                                                 <aside class="reviews">6 reviews</aside>
                                             </div>
                                             <div class="type">
-                                                <i><img src="../assets/icons/restaurants-bars/restaurants/restaurant.png" alt=""></i>
+                                                <i><img src="../../assets/icons/restaurants-bars/restaurants/restaurant.png" alt=""></i>
                                                 <span>Restaurant</span>
                                             </div>
                                         </div><!--/.info-->
@@ -331,7 +331,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <img src="../assets/img/items/restaurant/9.jpg" alt="">
+                                        <img src="../../assets/img/items/restaurant/9.jpg" alt="">
                                     </div>
                                     <div class="wrapper">
                                         <a href="item-detail.html"><h3>Saguaro Tavern</h3></a>
@@ -344,7 +344,7 @@
                                                 <aside class="reviews">6 reviews</aside>
                                             </div>
                                             <div class="type">
-                                                <i><img src="../assets/icons/restaurants-bars/restaurants/restaurant.png" alt=""></i>
+                                                <i><img src="../../assets/icons/restaurants-bars/restaurants/restaurant.png" alt=""></i>
                                                 <span>Restaurant</span>
                                             </div>
                                         </div><!--/.info-->
@@ -383,10 +383,10 @@
                                         <h3>Cash Cow Restaurante</h3>
                                         <figure>63 Birch Street</figure>
                                         <div class="wrapper">
-                                            <div class="image"><img src="../assets/img/items/1.jpg" alt=""></div>
+                                            <div class="image"><img src="../../assets/img/items/1.jpg" alt=""></div>
                                             <div class="info">
                                                 <div class="type">
-                                                    <i><img src="../assets/icons/restaurants-bars/restaurants/restaurant.png" alt=""></i>
+                                                    <i><img src="../../assets/icons/restaurants-bars/restaurants/restaurant.png" alt=""></i>
                                                     <span>Restaurant</span>
                                                 </div>
                                                 <div class="rating" data-rating="4"></div>
@@ -398,10 +398,10 @@
                                         <h3>Blue Chilli</h3>
                                         <figure>2476 Whispering Pines Circle</figure>
                                         <div class="wrapper">
-                                            <div class="image"><img src="../assets/img/items/2.jpg" alt=""></div>
+                                            <div class="image"><img src="../../assets/img/items/2.jpg" alt=""></div>
                                             <div class="info">
                                                 <div class="type">
-                                                    <i><img src="../assets/icons/restaurants-bars/restaurants/restaurant.png" alt=""></i>
+                                                    <i><img src="../../assets/icons/restaurants-bars/restaurants/restaurant.png" alt=""></i>
                                                     <span>Restaurant</span>
                                                 </div>
                                                 <div class="rating" data-rating="3"></div>
@@ -422,7 +422,7 @@
                                         <div class="info">
                                             <div class="rating" data-rating="4"></div>
                                             <div class="type">
-                                                <i><img src="../assets/icons/restaurants-bars/restaurants/restaurant.png" alt=""></i>
+                                                <i><img src="../../assets/icons/restaurants-bars/restaurants/restaurant.png" alt=""></i>
                                                 <span>Restaurant</span>
                                             </div>
                                         </div>
@@ -436,7 +436,7 @@
                                         <div class="info">
                                             <div class="rating" data-rating="5"></div>
                                             <div class="type">
-                                                <i><img src="../assets/icons/restaurants-bars/restaurants/restaurant.png" alt=""></i>
+                                                <i><img src="../../assets/icons/restaurants-bars/restaurants/restaurant.png" alt=""></i>
                                                 <span>Restaurant</span>
                                             </div>
                                         </div>
@@ -504,14 +504,14 @@
 <!-- end Outer Wrapper-->
 
 
-<script type="text/javascript" src="../assets/js/jquery-2.1.0.min.js"></script>
-<script type="text/javascript" src="../assets/js/before.load.js"></script>
-<script type="text/javascript" src="../assets/js/jquery-migrate-1.2.1.min.js"></script>
-<script type="text/javascript" src="../assets/bootstrap/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="../assets/js/smoothscroll.js"></script>
-<script type="text/javascript" src="../assets/js/bootstrap-select.min.js"></script>
-<script type="text/javascript" src="../assets/js/jquery.hotkeys.js"></script>
-<script type="text/javascript" src="../assets/js/custom.js"></script>
+<script type="text/javascript" src="../../assets/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript" src="../../assets/js/before.load.js"></script>
+<script type="text/javascript" src="../../assets/js/jquery-migrate-1.2.1.min.js"></script>
+<script type="text/javascript" src="../../assets/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../assets/js/smoothscroll.js"></script>
+<script type="text/javascript" src="../../assets/js/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="../../assets/js/jquery.hotkeys.js"></script>
+<script type="text/javascript" src="../../assets/js/custom.js"></script>
 
 <script>
     $(window).load(function(){

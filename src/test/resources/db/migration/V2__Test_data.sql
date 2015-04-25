@@ -69,17 +69,17 @@ INSERT INTO Manager(
 );
 INSERT INTO SportPlace(
   uuid, size, floorCoverage, capacity, indoor, changingRoom, shower, lightening, tribuneCapacity,
-  otherInfrastructureFeatures, pricePerHour, description, address, company, manager
+  otherInfrastructureFeatures, pricePerHour, description, address, manager
 ) VALUES(
   uuid_in(md5(now()::text)::cstring), '55x45', 1, 10, true, true, true, true, 1000, 'There is a parking for 100 cars',
-    8000.00, 'Good air, well-placed', 1, 1, 1
+    8000.00, 'Good air, well-placed', 1, 1
 );
 INSERT INTO SportPlace(
   uuid, size, floorCoverage, capacity, indoor, changingRoom, shower, lightening, tribuneCapacity,
-  otherInfrastructureFeatures, pricePerHour, description, address, company, manager
+  otherInfrastructureFeatures, pricePerHour, description, address, manager
 ) VALUES(
   uuid_in(md5((now() + interval '1 day')::text)::cstring), '250 square meters', 2, 20, false, false, true, true, 0, 'There is a no parking',
-  5000.00, 'Why not try', 2, 2, 2
+  5000.00, 'Why not try', 2, 2
 );
 INSERT INTO SportPlace_Sport(
   sport_id, sportPlace_id
