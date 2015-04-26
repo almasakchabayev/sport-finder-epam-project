@@ -20,7 +20,7 @@
 
 </head>
 
-<body onunload="" class="page-subpage page-404 navigation-off-canvas" id="page-top">
+<body onunload="" class="page-subpage navigation-top-header" id="page-top">
 
 <!-- Outer Wrapper-->
 <div id="outer-wrapper">
@@ -128,6 +128,7 @@
 <script type="text/javascript" src="<c:url value="/assets/js/smoothscroll.js" />"></script>
 <script type="text/javascript" src="<c:url value="/assets/js/bootstrap-select.min.js" />"></script>
 <script type="text/javascript" src="<c:url value="/assets/js/jquery.hotkeys.js" />"></script>
+<script type="text/javascript" src="<c:url value="/assets/js/icheck.min.js" />"></script>
 <script type="text/javascript" src="<c:url value="/assets/js/custom.js" />"></script>
 
 <script>

@@ -8,8 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 
 public class LoginAction implements Action {
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ControllerException {
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
+        String email = request.getParameter("form-login-email");
+        String password = request.getParameter("form-login-password");
         Manager manager = ManagerService.findByCredentials(email, password);
         if (manager != null) {
             request.getSession().setAttribute("manager", manager);

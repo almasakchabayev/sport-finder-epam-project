@@ -10,14 +10,14 @@
                         <h1 class="page-title">Sign In</h1>
                     </header>
                     <hr>
-                    <form role="form" id="form-sign-in-account" method="post" action="?">
+                    <form role="form" id="form-login-account" method="post" action="?">
                         <div class="form-group">
-                            <label for="form-sign-in-email">Email:</label>
-                            <input type="email" class="form-control" id="form-sign-in-email" name="form-sign-in-email" required>
+                            <label for="form-login-email">Email:</label>
+                            <input type="email" class="form-control" id="form-login-email" name="form-login-email" required>
                         </div><!-- /.form-group -->
                         <div class="form-group">
-                            <label for="form-sign-in-password">Password:</label>
-                            <input type="password" class="form-control" id="form-sign-in-password" name="form-sign-in-password" required>
+                            <label for="form-login-password">Password:</label>
+                            <input type="password" class="form-control" id="form-login-password" name="form-login-password" required>
                         </div><!-- /.form-group -->
                         <div class="form-group clearfix">
                             <button type="submit" class="btn pull-right btn-default" id="account-submit">Sign In</button>

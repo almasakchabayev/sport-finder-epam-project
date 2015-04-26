@@ -14,9 +14,10 @@ public class ActionFactory {
 
     private static Map<String, Action> initActionFactory() {
         Map<String, Action> actions = new HashMap<>();
-//        actions.put("POST/register", new RegisterAction());
-        actions.put("POST/login", new LoginAction());
         actions.put("GET/login", (request, response) -> "login");
+        actions.put("POST/login", new LoginAction());
+        actions.put("GET/manager-register", (request, response) -> "manager-register");
+        actions.put("POST/manager-register", new ManagerRegisterAction());
 //        actions.put("GET/logout", new LogoutAction());
         return actions;
     }

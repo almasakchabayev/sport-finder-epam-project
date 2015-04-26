@@ -1,12 +1,14 @@
 package com.epam.aa.sportfinder.service;
 
 import com.epam.aa.sportfinder.dao.*;
+import com.epam.aa.sportfinder.model.Address;
 import com.epam.aa.sportfinder.model.Company;
 import com.epam.aa.sportfinder.model.Manager;
 import com.epam.aa.sportfinder.model.PhoneNumber;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ManagerService {
@@ -43,6 +45,30 @@ public class ManagerService {
     }
 
     public static Manager create(Manager manager) {
-        return null;
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        DaoManager daoManager = daoFactory.createDaoManager();
+
+        return daoManager.executeTx(daoManager1 -> {
+            ManagerDao managerDao = daoManager1.getDao(Manager.class);
+            CompanyDao companyDao = daoManager1.getDao(Company.class);
+            PhoneNumberDao phoneNumberDao = daoManager1.getDao(PhoneNumber.class);
+            AddressDao addressDao = daoManager1.getDao(Address.class);
+
+            Address address = addressDao.insert(manager.getCompany().getAddress());
+            Company company = companyDao.insert(manager.getCompany());
+            company.setAddress(address);
+            manager.setCompany(company);
+
+            List<PhoneNumber> phoneNumbers = new ArrayList<>();
+            //TODO: create bulk insert for PhoneNumbers
+            for (PhoneNumber phoneNumber : manager.getPhoneNumbers()) {
+                PhoneNumber insert = phoneNumberDao.insert(phoneNumber);
+                phoneNumbers.add(insert);
+            }
+            manager.setPhoneNumbers(phoneNumbers);
+            managerDao.insert(manager);
+            managerDao.insertPhoneNumbers(manager);
+            return manager;
+        });
     }
 }
