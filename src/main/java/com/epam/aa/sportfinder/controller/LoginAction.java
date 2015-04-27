@@ -1,5 +1,6 @@
 package com.epam.aa.sportfinder.controller;
 
+import com.epam.aa.sportfinder.model.Customer;
 import com.epam.aa.sportfinder.model.Manager;
 import com.epam.aa.sportfinder.service.ManagerService;
 
@@ -13,10 +14,12 @@ public class LoginAction implements Action {
         Manager manager = ManagerService.findByCredentials(email, password);
         if (manager != null) {
             request.getSession().setAttribute("manager", manager);
-            return "home";
-        } else {
-            request.setAttribute("error", "Unknown username/password. Please retry.");
-            return "login";
+            return "manager-home";
         }
+
+//        Customer customer = CustomerService.findByCredentials(email, password);
+
+        request.setAttribute("error", "Unknown username/password. Please retry.");
+        return "login";
     }
 }
