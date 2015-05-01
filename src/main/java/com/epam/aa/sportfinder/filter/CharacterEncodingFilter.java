@@ -2,9 +2,9 @@ package com.epam.aa.sportfinder.filter;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-@WebFilter(filterName = "CharacterEncodingFilter")
 public class CharacterEncodingFilter implements Filter {
     private String encoding;
 
@@ -12,10 +12,9 @@ public class CharacterEncodingFilter implements Filter {
     }
 
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
-        // Respect the client-specified character encoding
-        // (see HTTP specification section 3.4.1)
         if(null == req.getCharacterEncoding())
             req.setCharacterEncoding(encoding);
+        System.out.println(((HttpServletRequest) req).getRequestURI());
 
         resp.setContentType("text/html; charset=UTF-8");
         resp.setCharacterEncoding("UTF-8");

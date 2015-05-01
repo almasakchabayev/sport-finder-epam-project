@@ -14,11 +14,13 @@ public class FrontController extends HttpServlet {
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException {
         try {
             Action action = ActionFactory.getAction(request);
-            // TODO: use sendError
-            String view = "404";
-            if (action != null) {
-                view = action.execute(request, response);
+
+            if (action == null) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
             }
+
+            String view = action.execute(request, response);
             request.getRequestDispatcher("/WEB-INF/views/" + view + ".jsp").forward(request, response);
             // add P R G
         } catch (Exception e) {
