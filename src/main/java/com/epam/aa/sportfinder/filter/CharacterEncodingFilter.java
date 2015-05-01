@@ -14,7 +14,6 @@ public class CharacterEncodingFilter implements Filter {
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
         if(null == req.getCharacterEncoding())
             req.setCharacterEncoding(encoding);
-        System.out.println(((HttpServletRequest) req).getRequestURI());
 
         resp.setContentType("text/html; charset=UTF-8");
         resp.setCharacterEncoding("UTF-8");
