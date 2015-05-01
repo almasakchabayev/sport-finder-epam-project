@@ -1,6 +1,9 @@
 package com.epam.aa.sportfinder.model;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 public class PhoneNumber extends BaseEntity {
+    @NotBlank(message = "phone number cannot be empty")
     private String number;
 
     public PhoneNumber() {

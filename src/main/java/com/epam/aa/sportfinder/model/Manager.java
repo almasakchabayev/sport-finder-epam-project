@@ -1,11 +1,17 @@
 package com.epam.aa.sportfinder.model;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.Valid;
 import java.beans.Transient;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Manager extends User {
+    @Valid
     private Company company;
+    @NotEmpty(message = "Please specify at least one phone number")
+    @Valid
     private List<PhoneNumber> phoneNumbers;
     private List<SportPlace> sportPlaces;
 

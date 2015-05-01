@@ -1,12 +1,17 @@
 package com.epam.aa.sportfinder.model;
 
-import java.beans.Transient;
+import org.hibernate.validator.constraints.NotBlank;
 
 public class Address extends BaseEntity {
+    @NotBlank(message = "country name cannot be blank")
     private String country;
+    @NotBlank(message = "city cannot be blank")
     private String city;
+    @NotBlank(message = "address line 1 cannot be blank")
     private String addressLine1;
+    @NotBlank(message = "address line 2 cannot be blank")
     private String addressLine2;
+    @NotBlank(message = "zipcode cannot be blank")
     private String zipcode;
 
     public String getCountry() {

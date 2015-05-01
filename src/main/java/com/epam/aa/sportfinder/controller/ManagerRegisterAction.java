@@ -5,15 +5,23 @@ import com.epam.aa.sportfinder.model.Company;
 import com.epam.aa.sportfinder.model.Manager;
 import com.epam.aa.sportfinder.model.PhoneNumber;
 import com.epam.aa.sportfinder.service.ManagerService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.List;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+import java.util.Set;
 
 public class ManagerRegisterAction implements Action {
+    private static final Logger logger = LoggerFactory.getLogger(ManagerRegisterAction.class);
+
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
+        logger.debug("Starting manager register action");
         String firstName = request.getParameter("form-register-first-name");
         String lastName = request.getParameter("form-register-last-name");
         String email = request.getParameter("form-register-email");
@@ -28,11 +36,8 @@ public class ManagerRegisterAction implements Action {
         String companyAddressLine2 = request.getParameter("form-register-company-address-line-2");
         String companyZipcode = request.getParameter("form-register-company-zipcode");
 
+        logger.debug("retrieved data from web form");
 
-        if (!password.equals(confirmPassword)) {
-            request.setAttribute("error", "password and confirm-password are not the same");
-            return "/manager-register";
-        }
         Address address = new Address();
         address.setCountry(companyCountry);
         address.setCity(companyCity);
@@ -55,12 +60,25 @@ public class ManagerRegisterAction implements Action {
             PhoneNumber phoneNumber2 = new PhoneNumber(number2);
             manager.addPhoneNumber(phoneNumber2);
         }
+        if (!password.equals(confirmPassword))
+            return returnError(request, manager, "password and confirm-password are not the same");
+
         manager.setPassword(password);
 
-        //TODO: how to catch validation exceptions and show them to user?
-//        Validator.validate(customer);
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+        Set<ConstraintViolation<Manager>> violations = validator.validate(manager);
+        if (violations.size() > 0 )
+            return returnError(request, manager, violations.iterator().next().getMessage());
 
+        logger.debug("Validation finished successfully");
         ManagerService.create(manager);
-        return "manager-home";
+        return "redirect:manager/home";
+    }
+
+    private String returnError(HttpServletRequest request, Manager manager, String errorMessage) {
+        request.setAttribute("error", errorMessage);
+        request.setAttribute("manager", manager);
+        return "manager/register";
     }
 }

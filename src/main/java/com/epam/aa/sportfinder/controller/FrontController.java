@@ -1,5 +1,8 @@
 package com.epam.aa.sportfinder.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -9,6 +12,8 @@ import java.io.IOException;
 
 @WebServlet(name = "FrontController", urlPatterns = "/controller/*")
 public class FrontController extends HttpServlet {
+    private static final Logger logger = LoggerFactory.getLogger(FrontController.class);
+
 
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException {
@@ -21,7 +26,9 @@ public class FrontController extends HttpServlet {
             }
 
             String view = action.execute(request, response);
-            request.getRequestDispatcher("/WEB-INF/views/" + view + ".jsp").forward(request, response);
+            String requestDispatcherString = "/WEB-INF/views/" + view + ".jsp";
+            logger.debug("Request dispatching to {}", requestDispatcherString);
+            request.getRequestDispatcher(requestDispatcherString).forward(request, response);
             // add P R G
         } catch (Exception e) {
             throw new ServletException("Executing action failed.", e);
