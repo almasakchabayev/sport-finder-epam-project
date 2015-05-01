@@ -1,9 +1,10 @@
 package com.epam.aa.sportfinder.controller;
 
-import com.epam.aa.sportfinder.model.Customer;
 import com.epam.aa.sportfinder.model.Manager;
 import com.epam.aa.sportfinder.service.ManagerService;
 
+import javax.servlet.HttpMethodConstraintElement;
+import javax.servlet.annotation.HttpMethodConstraint;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 

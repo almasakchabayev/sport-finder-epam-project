@@ -1,5 +1,6 @@
 <%@ tag description="Overall Page template" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <!DOCTYPE html>
 
 <html lang="en-US">
@@ -26,37 +27,7 @@
 <div id="outer-wrapper">
   <!-- Inner Wrapper -->
   <div id="inner-wrapper">
-    <!-- Navigation-->
-    <div class="header">
-      <div class="wrapper">
-        <div class="brand">
-          <a href="index-directory.html"><img src="../../assets/img/logo.png" alt="logo"></a>
-        </div>
-        <nav class="navigation-items">
-          <div class="wrapper">
-            <ul class="main-navigation navigation-top-header"></ul>
-            <ul class="user-area">
-              <li><a href="sign-in.html">Sign In</a></li>
-              <li><a href="register.html"><strong>Register</strong></a></li>
-            </ul>
-            <a href="submit.html" class="submit-item">
-              <div class="content"><span>Submit Your Item</span></div>
-              <div class="icon">
-                <i class="fa fa-plus"></i>
-              </div>
-            </a>
-            <div class="toggle-navigation">
-              <div class="icon">
-                <div class="line"></div>
-                <div class="line"></div>
-                <div class="line"></div>
-              </div>
-            </div>
-          </div>
-        </nav>
-      </div>
-    </div>
-    <!-- end Navigation-->
+    <t:header />
     <!-- Page Canvas-->
     <div id="page-canvas">
       <!--Off Canvas Navigation-->
@@ -101,21 +72,7 @@
       <!-- end Page Content-->
     </div>
     <!-- end Page Canvas-->
-    <!--Page Footer-->
-    <footer id="page-footer">
-      <div class="inner">
-        <div class="footer-bottom">
-          <div class="container">
-            <span class="left">(C) Sport Finder, All rights reserved</span>
-                            <span class="right">
-                                <a href="#page-top" class="to-top roll"><i class="fa fa-angle-up"></i></a>
-                            </span>
-          </div>
-        </div>
-        <!--/.footer-bottom-->
-      </div>
-    </footer>
-    <!--end Page Footer-->
+    <t:footer />
   </div>
   <!-- end Inner Wrapper -->
 </div>

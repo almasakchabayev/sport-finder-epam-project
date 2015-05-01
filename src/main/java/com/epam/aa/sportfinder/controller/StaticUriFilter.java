@@ -7,8 +7,11 @@ import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebFilter(filterName = "Filter", urlPatterns = "/*", dispatcherTypes = DispatcherType.REQUEST)
-public class Filter implements javax.servlet.Filter {
+// TODO: may be put in a separate package, add filter to setCharachter encoding
+// TODO: move FIlter declarations and mapping to web.xml
+// TODO: Cache control filter, avoid browser caching
+@WebFilter(filterName = "StaticUriFilter", urlPatterns = "/*", dispatcherTypes = DispatcherType.REQUEST)
+public class StaticUriFilter implements javax.servlet.Filter {
     public void destroy() {
     }
 

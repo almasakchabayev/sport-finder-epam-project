@@ -9,23 +9,18 @@ import java.io.IOException;
 
 @WebServlet(name = "FrontController", urlPatterns = "/controller/*")
 public class FrontController extends HttpServlet {
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        processRequest(request, response);
-    }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-    //TODO: user service
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException {
+    @Override
+    protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException {
         try {
             Action action = ActionFactory.getAction(request);
+            // TODO: use sendError
             String view = "404";
             if (action != null) {
                 view = action.execute(request, response);
             }
             request.getRequestDispatcher("/WEB-INF/views/" + view + ".jsp").forward(request, response);
+            // add P R G
         } catch (Exception e) {
             throw new ServletException("Executing action failed.", e);
         }

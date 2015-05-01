@@ -12,6 +12,7 @@ public class ActionFactory {
         return actions.get(request.getMethod() + request.getPathInfo());
     }
 
+    //TODO: populate map using reflections and annotations
     private static Map<String, Action> initActionFactory() {
         Map<String, Action> actions = new HashMap<>();
         actions.put("GET/login", (request, response) -> "login");
