@@ -12,6 +12,35 @@
         </cookie-config>
     </session-config>
 
+    <filter>
+        <filter-name>CharacterEncodingFilter</filter-name>
+        <filter-class>com.epam.aa.sportfinder.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>CharacterEncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>StaticUriFilter</filter-name>
+        <filter-class>com.epam.aa.sportfinder.filter.StaticUriFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>StaticUriFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <jsp-config>
+        <jsp-property-group>
+            <url-pattern>*.jsp</url-pattern>
+            <page-encoding>UTF-8</page-encoding>
+        </jsp-property-group>
+    </jsp-config>
+
     <!--TODO: add error servlet-->
     <!--<error-page>-->
         <!--<location>/ErrorServlet</location>-->

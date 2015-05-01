@@ -1,4 +1,4 @@
-package com.epam.aa.sportfinder.controller;
+package com.epam.aa.sportfinder.filter;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -7,10 +7,7 @@ import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-// TODO: may be put in a separate package, add filter to setCharachter encoding
-// TODO: move FIlter declarations and mapping to web.xml
 // TODO: Cache control filter, avoid browser caching
-@WebFilter(filterName = "StaticUriFilter", urlPatterns = "/*", dispatcherTypes = DispatcherType.REQUEST)
 public class StaticUriFilter implements javax.servlet.Filter {
     public void destroy() {
     }
