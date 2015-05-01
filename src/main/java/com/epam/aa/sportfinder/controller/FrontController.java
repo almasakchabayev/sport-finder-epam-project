@@ -8,7 +8,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 @WebServlet(name = "FrontController", urlPatterns = "/controller/*")
 public class FrontController extends HttpServlet {
@@ -26,10 +25,16 @@ public class FrontController extends HttpServlet {
             }
 
             String view = action.execute(request, response);
+
+            if (view.contains("redirect:")) {
+                String redirectView = view.replace("redirect:", "");
+                response.sendRedirect(redirectView);
+                return;
+            }
+
             String requestDispatcherString = "/WEB-INF/views/" + view + ".jsp";
             logger.debug("Request dispatching to {}", requestDispatcherString);
             request.getRequestDispatcher(requestDispatcherString).forward(request, response);
-            // add P R G
         } catch (Exception e) {
             throw new ServletException("Executing action failed.", e);
         }
