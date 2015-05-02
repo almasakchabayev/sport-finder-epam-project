@@ -1,10 +1,12 @@
 package com.epam.aa.sportfinder.controller;
 
+import com.epam.aa.sportfinder.dao.DaoException;
 import com.epam.aa.sportfinder.model.Address;
 import com.epam.aa.sportfinder.model.Company;
 import com.epam.aa.sportfinder.model.Manager;
 import com.epam.aa.sportfinder.model.PhoneNumber;
 import com.epam.aa.sportfinder.service.ManagerService;
+import com.epam.aa.sportfinder.service.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -72,8 +74,13 @@ public class ManagerRegisterAction implements Action {
             return returnError(request, manager, violations.iterator().next().getMessage());
 
         logger.debug("Validation finished successfully");
-        ManagerService.create(manager);
-        return "redirect:manager/home";
+
+        try {
+            ManagerService.create(manager);
+        } catch (ServiceException e) {
+            return returnError(request, manager, e.getMessage());
+        }
+        return LoginAction.loginManager(request, manager);
     }
 
     private String returnError(HttpServletRequest request, Manager manager, String errorMessage) {

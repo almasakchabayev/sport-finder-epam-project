@@ -48,14 +48,19 @@ public class ManagerService {
         DaoFactory daoFactory = DaoFactory.getInstance();
         DaoManager daoManager = daoFactory.createDaoManager();
 
-        return daoManager.executeTx(daoManager1 -> {
-            ManagerDao managerDao = daoManager1.getDao(Manager.class);
-            CompanyDao companyDao = daoManager1.getDao(Company.class);
-            PhoneNumberDao phoneNumberDao = daoManager1.getDao(PhoneNumber.class);
-            AddressDao addressDao = daoManager1.getDao(Address.class);
+        return daoManager.executeTx(thisDaoManager -> {
+            ManagerDao managerDao = thisDaoManager.getDao(Manager.class);
+            CompanyDao companyDao = thisDaoManager.getDao(Company.class);
+            PhoneNumberDao phoneNumberDao = thisDaoManager.getDao(PhoneNumber.class);
+            AddressDao addressDao = thisDaoManager.getDao(Address.class);
 
             Address address = addressDao.insert(manager.getCompany().getAddress());
-            Company company = companyDao.insert(manager.getCompany());
+            Company company;
+            try {
+                company = companyDao.insert(manager.getCompany());
+            } catch (DaoException e) {
+                throw new ServiceException("Such company name already exists", e);
+            }
             company.setAddress(address);
             manager.setCompany(company);
 
@@ -66,7 +71,11 @@ public class ManagerService {
                 phoneNumbers.add(insert);
             }
             manager.setPhoneNumbers(phoneNumbers);
-            managerDao.insert(manager);
+            try {
+                managerDao.insert(manager);
+            } catch (DaoException e) {
+                throw new ServiceException("Such email already exists", e);
+            }
             managerDao.insertPhoneNumbers(manager);
             return manager;
         });
