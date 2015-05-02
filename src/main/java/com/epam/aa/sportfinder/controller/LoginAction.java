@@ -22,7 +22,7 @@ public class LoginAction implements Action {
     }
 
     protected static String loginManager(HttpServletRequest request, Manager manager) {
-        request.getSession().setAttribute("manager", manager);
+        request.getSession().setAttribute("user", manager);
         return "redirect:/manager/home";
     }
 }

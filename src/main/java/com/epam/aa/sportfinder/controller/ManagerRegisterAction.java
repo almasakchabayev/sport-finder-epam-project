@@ -24,7 +24,7 @@ public class ManagerRegisterAction implements Action {
 
     @Override
     public String execute(HttpServletRequest request) {
-        logger.debug("Starting manager register action");
+        logger.debug("Starting manager registration");
         String firstName = request.getParameter("form-register-first-name");
         String lastName = request.getParameter("form-register-last-name");
         String email = request.getParameter("form-register-email");

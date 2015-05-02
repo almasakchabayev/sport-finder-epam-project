@@ -16,10 +16,10 @@ public class ActionFactory {
 
     public static Action getAction(HttpServletRequest request) {
         logger.debug("Retrieving action according to {}{}", request.getMethod(), request.getRequestURI());
-        return actions.get(request.getMethod() + request.getPathInfo());
+        String path = request.getRequestURI().replace("/controller", "");
+        return actions.get(request.getMethod() + path);
     }
 
-    //TODO: populate map using reflections and annotations
     private static Map<String, Action> initActionFactory() {
         Map<String, Action> actions = new HashMap<>();
 
@@ -45,7 +45,6 @@ public class ActionFactory {
                 actions.put(simpleGetPath, (request) -> path);
             }
         }
-        actions.put("GET/manager/home", (request) -> "manager/home");
 //        actions.put("GET/logout", new LogoutAction());
         return actions;
     }
