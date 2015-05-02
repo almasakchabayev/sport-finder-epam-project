@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+@ControllerAction(path="manager/register", method="POST", autogenerateSimpleGet=true)
 public class ManagerRegisterAction implements Action {
     private static final Logger logger = LoggerFactory.getLogger(ManagerRegisterAction.class);
 
