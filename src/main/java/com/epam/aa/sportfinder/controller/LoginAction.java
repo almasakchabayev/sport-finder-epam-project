@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class LoginAction implements Action {
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws ControllerException {
+    public String execute(HttpServletRequest request) throws ControllerException {
         String email = request.getParameter("form-login-email");
         String password = request.getParameter("form-login-password");
         Manager manager = ManagerService.findByCredentials(email, password);
@@ -23,6 +23,6 @@ public class LoginAction implements Action {
 
     protected static String loginManager(HttpServletRequest request, Manager manager) {
         request.getSession().setAttribute("manager", manager);
-        return "manager-home";
+        return "redirect:/manager/home";
     }
 }

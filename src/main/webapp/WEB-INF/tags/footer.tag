@@ -1,18 +1,13 @@
 <%@ tag description="Overall Page template" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <!--Page Footer-->
 <%--TODO: add fotter-top--%>
 <footer id="page-footer">
     <div class="inner">
-        <div class="footer-bottom">
-            <div class="container">
-                <span class="left">(C) Sport Finder, All rights reserved</span>
-                            <span class="right">
-                                <a href="#page-top" class="to-top roll"><i class="fa fa-angle-up"></i></a>
-                            </span>
-            </div>
-        </div>
-        <!--/.footer-bottom-->
+        <%--TODO: top footer--%>
+        <t:footertop />
+        <t:footerbottom />
     </div>
 </footer>
 <!--end Page Footer-->

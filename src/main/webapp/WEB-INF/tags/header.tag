@@ -10,6 +10,12 @@
         <nav class="navigation-items">
             <div class="wrapper">
                 <ul class="main-navigation navigation-top-header"></ul>
+                <%--TODO: if logged in header shows this--%>
+                <%--<ul class="user-area">--%>
+                    <%--<li><a href="profile.html"><strong>John Doe</strong></a></li>--%>
+                    <%--<li><a href="my-items.html">My Items</a></li>--%>
+                    <%--<li><a href="#"><i class="fa fa-cog"></i></a></li>--%>
+                <%--</ul>--%>
                 <ul class="user-area">
                     <li><a href="sign-in.html">Sign In</a></li>
                     <li><a href="register.html"><strong>Register</strong></a></li>

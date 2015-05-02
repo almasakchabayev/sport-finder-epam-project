@@ -1,6 +1,5 @@
 package com.epam.aa.sportfinder.controller;
 
-import com.epam.aa.sportfinder.dao.DaoException;
 import com.epam.aa.sportfinder.model.Address;
 import com.epam.aa.sportfinder.model.Company;
 import com.epam.aa.sportfinder.model.Manager;
@@ -11,18 +10,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 public class ManagerRegisterAction implements Action {
     private static final Logger logger = LoggerFactory.getLogger(ManagerRegisterAction.class);
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public String execute(HttpServletRequest request) {
         logger.debug("Starting manager register action");
         String firstName = request.getParameter("form-register-first-name");
         String lastName = request.getParameter("form-register-last-name");
@@ -62,29 +62,44 @@ public class ManagerRegisterAction implements Action {
             PhoneNumber phoneNumber2 = new PhoneNumber(number2);
             manager.addPhoneNumber(phoneNumber2);
         }
-        if (!password.equals(confirmPassword))
-            return returnError(request, manager, "password and confirm-password are not the same");
+
+        Map<String, String> errors = new HashMap<>();
+        if (!password.equals(confirmPassword)) {
+            errors.put("password", "password and confirm password are not the same");
+        }
 
         manager.setPassword(password);
 
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
         Set<ConstraintViolation<Manager>> violations = validator.validate(manager);
-        if (violations.size() > 0 )
-            return returnError(request, manager, violations.iterator().next().getMessage());
+        if (violations.size() > 0 ) {
+            for (ConstraintViolation<Manager> violation : violations) {
+                errors.put(violation.getPropertyPath().toString(), violation.getMessage());
+            }
+        }
+        if (errors.size() > 0)
+            return returnError(request, manager, errors);
 
         logger.debug("Validation finished successfully");
 
         try {
             ManagerService.create(manager);
+            logger.info("New manager with email {} and id {} has been created",
+                    manager.getEmail(), manager.getId());
         } catch (ServiceException e) {
-            return returnError(request, manager, e.getMessage());
+            String message = e.getMessage();
+            if (message.contains("company name"))
+                errors.put("company.name", message);
+            if (message.contains("email"))
+                errors.put("email", message);
+            return returnError(request, manager, errors);
         }
         return LoginAction.loginManager(request, manager);
     }
 
-    private String returnError(HttpServletRequest request, Manager manager, String errorMessage) {
-        request.setAttribute("error", errorMessage);
+    private String returnError(HttpServletRequest request, Manager manager, Map<String, String> errors) {
+        request.setAttribute("errors", errors);
         request.setAttribute("manager", manager);
         return "manager/register";
     }

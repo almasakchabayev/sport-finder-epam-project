@@ -24,7 +24,7 @@ public class FrontController extends HttpServlet {
                 return;
             }
 
-            String view = action.execute(request, response);
+            String view = action.execute(request);
 
             if (view.contains("redirect:")) {
                 String redirectView = view.replace("redirect:", "");

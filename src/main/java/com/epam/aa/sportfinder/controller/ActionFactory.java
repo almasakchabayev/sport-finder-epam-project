@@ -21,10 +21,11 @@ public class ActionFactory {
     //TODO: populate map using reflections and annotations
     private static Map<String, Action> initActionFactory() {
         Map<String, Action> actions = new HashMap<>();
-        actions.put("GET/login", (request, response) -> "login");
+        actions.put("GET/login", (request) -> "login");
         actions.put("POST/login", new LoginAction());
-        actions.put("GET/manager/register", (request, response) -> "manager/register");
+        actions.put("GET/manager/register", (request) -> "manager/register");
         actions.put("POST/manager/register", new ManagerRegisterAction());
+        actions.put("GET/manager/home", (request) -> "manager/home");
 //        actions.put("GET/logout", new LogoutAction());
         return actions;
     }
