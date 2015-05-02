@@ -10,16 +10,22 @@
         <nav class="navigation-items">
             <div class="wrapper">
                 <ul class="main-navigation navigation-top-header"></ul>
-                <%--TODO: if logged in header shows this--%>
-                <%--<ul class="user-area">--%>
-                    <%--<li><a href="profile.html"><strong>John Doe</strong></a></li>--%>
-                    <%--<li><a href="my-items.html">My Items</a></li>--%>
-                    <%--<li><a href="#"><i class="fa fa-cog"></i></a></li>--%>
-                <%--</ul>--%>
-                <ul class="user-area">
-                    <li><a href="sign-in.html">Sign In</a></li>
-                    <li><a href="register.html"><strong>Register</strong></a></li>
-                </ul>
+                <c:choose>
+                    <c:when test="${sessionScope.user != null}">
+                        <ul class="user-area">
+                            <li><a href="<c:url value="/profile" />"><strong>${user.firstName} ${user.lastName}</strong></a></li>
+                            <li><a href="<c:url value="/manager/items" />">My Items</a></li>
+                            <li><a href="#"><i class="fa fa-cog"></i></a></li>
+                        </ul>
+                    </c:when>
+                    <c:otherwise>
+                        <ul class="user-area">
+                            <li><a href="<c:url value="/login" />">Sign In</a></li>
+                            <li><a href="<c:url value="/register" />"><strong>Register</strong></a></li>
+                        </ul>
+                    </c:otherwise>
+                </c:choose>
+
                 <a href="submit.html" class="submit-item">
                     <div class="content"><span>Submit Your Item</span></div>
                     <div class="icon">

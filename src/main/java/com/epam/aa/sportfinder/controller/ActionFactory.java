@@ -32,19 +32,24 @@ public class ActionFactory {
             String method = annotation.method();
             boolean autogenerateSimpleGet = annotation.autogenerateSimpleGet();
 
-            String actionFullPath = method + "/" + path;
+            String actionFullPath = method + path;
 
             try {
                 actions.put(actionFullPath, (Action) action.newInstance());
+                logger.info("added action for {}", actionFullPath);
             } catch (InstantiationException | IllegalAccessException e) {
                 throw new ControllerException("Could not initialise ActionFactory", e);
             }
 
             if (autogenerateSimpleGet){
-                String simpleGetPath = "GET/" + path;
+                String simpleGetPath = "GET" + path;
                 actions.put(simpleGetPath, (request) -> path);
+                logger.info("added action for {}", simpleGetPath);
             }
         }
+
+        // Manually adding simple actions
+        actions.put("GET/register", (request) -> "register");
 //        actions.put("GET/logout", new LogoutAction());
         return actions;
     }

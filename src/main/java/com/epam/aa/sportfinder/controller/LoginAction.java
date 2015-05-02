@@ -5,7 +5,7 @@ import com.epam.aa.sportfinder.service.ManagerService;
 
 import javax.servlet.http.HttpServletRequest;
 
-@ControllerAction(path="login", method="POST", autogenerateSimpleGet=true)
+@ControllerAction(path="/login", method="POST", autogenerateSimpleGet=true)
 public class LoginAction implements Action {
     public String execute(HttpServletRequest request) throws ControllerException {
         String email = request.getParameter("form-login-email");
@@ -23,6 +23,6 @@ public class LoginAction implements Action {
 
     protected static String loginManager(HttpServletRequest request, Manager manager) {
         request.getSession().setAttribute("user", manager);
-        return "redirect:/manager/home";
+        return "redirect:/manager/items";
     }
 }
