@@ -8,22 +8,22 @@
             <!--Content-->
             <div class="col-md-9">
                 <header>
-                    <h1 class="page-title">Submit Item</h1>
+                    <h1 class="page-title">Submit Sport Place</h1>
                 </header>
                 <form id="form-submit" role="form" method="post" action="?" enctype="multipart/form-data">
+                    <%--<section>--%>
+                        <%--<div class="form-group large">--%>
+                            <%--<label for="title">Title</label>--%>
+                            <%--<input type="text" class="form-control" id="title" name="title">--%>
+                        <%--</div>--%>
+                    <%--</section>--%>
                     <section>
-                        <div class="form-group large">
-                            <label for="title">Title</label>
-                            <input type="text" class="form-control" id="title" name="title">
-                        </div>
-                    </section>
-                    <section>
-                        <h3>Address & Contact</h3>
+                        <h3>Address</h3>
                         <div class="row">
                             <div class="col-md-4 col-sm-4">
                                 <div class="form-group">
-                                    <label for="state">State</label>
-                                    <input type="text" class="form-control" id="state" name="state">
+                                    <label for="country">Country</label>
+                                    <input type="text" class="form-control" id="country" name="country">
                                 </div>
                             </div>
                             <!--/.col-md-4-->
@@ -37,8 +37,8 @@
                                     </div>
                                     <div class="col-md-4 col-sm-4">
                                         <div class="form-group">
-                                            <label for="zip">ZIP</label>
-                                            <input type="text" class="form-control" id="zip" name="zip" pattern="\d*">
+                                            <label for="zipcode">ZIPCODE</label>
+                                            <input type="text" class="form-control" id="zipcode" name="zipcode" pattern="\d*">
                                         </div>
                                     </div>
                                 </div>
@@ -46,8 +46,8 @@
                             <!--/.col-md-4-->
                             <div class="col-md-4 col-sm-4">
                                 <div class="form-group">
-                                    <label for="street">Street</label>
-                                    <input type="text" class="form-control" id="street" name="street">
+                                    <label for="address-line-1">Address Line 1</label>
+                                    <input type="text" class="form-control" id="address-line-1" name="address-line-1">
                                 </div>
                             </div>
                             <!--/.col-md-4-->
@@ -56,24 +56,24 @@
                         <div class="row">
                             <div class="col-md-4 col-sm-4">
                                 <div class="form-group">
-                                    <label for="phone-number">Phone Number</label>
-                                    <input type="text" class="form-control" id="phone-number" name="phone-number" pattern="\d*">
+                                    <label for="address-line-1">Address Line 2</label>
+                                    <input type="text" class="form-control" id="address-line-1" name="address-line-1">
                                 </div>
                             </div>
                             <!--/.col-md-4-->
-                            <div class="col-md-4 col-sm-4">
-                                <div class="form-group">
-                                    <label for="email">E-mail</label>
-                                    <input type="email" class="form-control" id="email" name="email">
-                                </div>
-                            </div>
+                            <%--<div class="col-md-4 col-sm-4">--%>
+                                <%--<div class="form-group">--%>
+                                    <%--<label for="email">E-mail</label>--%>
+                                    <%--<input type="email" class="form-control" id="email" name="email">--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
                             <!--/.col-md-4-->
-                            <div class="col-md-4 col-sm-4">
-                                <div class="form-group">
-                                    <label for="website">Website</label>
-                                    <input type="text" class="form-control" id="website" name="website">
-                                </div>
-                            </div>
+                            <%--<div class="col-md-4 col-sm-4">--%>
+                                <%--<div class="form-group">--%>
+                                    <%--<label for="website">Website</label>--%>
+                                    <%--<input type="text" class="form-control" id="website" name="website">--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
                             <!--/.col-md-4-->
                         </div>
                         <!--/.row-->
@@ -86,156 +86,169 @@
                     <section>
                         <h3>Features</h3>
                         <ul class="list-unstyled checkboxes">
-                            <li><div class="checkbox"><label><input type="checkbox" name="features[]" value="1">Free Parking</label></div></li>
-                            <li><div class="checkbox"><label><input type="checkbox" name="features[]" value="2">Cards Accepted</label></div></li>
-                            <li><div class="checkbox"><label><input type="checkbox" name="features[]" value="3">Wi-Fi</label></div></li>
-                            <li><div class="checkbox"><label><input type="checkbox" name="features[]" value="4">Air Condition</label></div></li>
-                            <li><div class="checkbox"><label><input type="checkbox" name="features[]" value="5">Reservations</label></div></li>
-                            <li><div class="checkbox"><label><input type="checkbox" name="features[]" value="6">Team-buildings</label></div></li>
-                            <li><div class="checkbox"><label><input type="checkbox" name="features[]" value="7">Places to seat</label></div></li>
-                            <li><div class="checkbox"><label><input type="checkbox" name="features[]" value="8">Winery</label></div></li>
-                            <li><div class="checkbox"><label><input type="checkbox" name="features[]" value="9">Draft Beer</label></div></li>
-                            <li><div class="checkbox"><label><input type="checkbox" name="features[]" value="10">LCD</label></div></li>
-                            <li><div class="checkbox"><label><input type="checkbox" name="features[]" value="11">Saloon</label></div></li>
-                            <li><div class="checkbox"><label><input type="checkbox" name="features[]" value="12">Free Access</label></div></li>
-                            <li><div class="checkbox"><label><input type="checkbox" name="features[]" value="13">Terrace</label></div></li>
-                            <li><div class="checkbox"><label><input type="checkbox" name="features[]" value="14">Minigolf</label></div></li>
-                            <li><div class="checkbox"><label><input type="checkbox" name="features[]" value="15">Night Bar</label></div></li>
+                            <li>
+                                <div class="col-md-4 col-sm-4">
+                                    <label for="size">Size</label>
+                                    <input type="text" name="size" id="size">
+                                </div>
+                            </li>
+                            <li>
+                                <div class="col-md-4 col-sm-4">
+                                    <label for="capacity">Capacity</label>
+                                    <input type="text" name="capacity" id="capacity">
+                                </div>
+                            </li>
+                            <c:if test="${!floorCoverages.isEmpty()}">
+                                <li>
+                                    <div class="col-md-4 col-sm-4">
+                                        <label for="capacity">Floor Coverage</label>
+                                        <select>
+                                            <c:forEach items="${floorCoverages}" var="floorCoverage">
+                                                <option value="${floorCoverage.name}">${floorCoverage.name}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </li>
+                            </c:if>
+                            <li><div class="checkbox"><label><input type="checkbox" name="features[]" value="changingRoom">Changing Room</label></div></li>
+                            <li><div class="checkbox"><label><input type="checkbox" name="features[]" value="shower">Shower</label></div></li>
+                            <li><div class="checkbox"><label><input type="checkbox" name="features[]" value="lightening">Lightening</label></div></li>
+                            <li><div class="checkbox"><label><input type="checkbox" name="features[]" value="indoor">Indoor</label></div></li>
                         </ul>
                     </section>
                     <!--Menu-->
-                    <section>
-                        <h3>Menu & Wine List</h3>
-                        <div class="row">
-                            <div class="col-md-3">
-                                <!-- Nav tabs -->
-                                <ul class="nav nav-pills nav-stacked">
-                                    <li class="active"><a href="#tab-menu" data-toggle="tab">Menu</a></li>
-                                    <li><a href="#tab-daily-menu" data-toggle="tab">Daily Menu</a></li>
-                                    <li><a href="#tab-wine-list" data-toggle="tab">Wine List</a></li>
-                                </ul>
-                            </div>
-                            <div class="col-md-9">
-                                <!-- Tab panes -->
-                                <div class="tab-content menu min-height-160">
-                                    <div class="tab-pane fade in active" id="tab-menu">
-                                        <article>
-                                            <div class="row">
-                                                <div class="col-md-1">
-                                                    <div class="menu-icon"><i class="fa fa-cutlery"></i><span>1</span></div>
-                                                </div>
-                                                <div class="col-md-11">
-                                                    <div class="row">
-                                                        <div class="col-md-10">
-                                                            <div class="form-group">
-                                                                <input type="text" class="form-control" name="menu-title[]" placeholder="Title">
-                                                            </div>
-                                                        </div>
-                                                        <!-- /.col-md-10-->
-                                                        <div class="col-md-2">
-                                                            <div class="form-group">
-                                                                <input type="text" class="form-control" name="menu-price[]" placeholder="Price">
-                                                            </div>
-                                                        </div>
-                                                        <!-- /.col-md-2-->
-                                                    </div>
-                                                    <!-- /.row-->
-                                                    <div class="form-group">
-                                                        <input type="text" class="form-control" name="menu-description[]" placeholder="Description">
-                                                    </div>
-                                                    <!-- /.form-group -->
-                                                    <div class="form-group">
-                                                        <button type="submit" class="btn framed icon">Add More<i class="fa fa-plus"></i></button>
-                                                    </div>
-                                                    <!-- /.form-group -->
-                                                </div>
-                                                <!--/.col-md-11-->
-                                            </div>
-                                            <!--/.row-->
-                                        </article>
-                                    </div>
-                                    <!--/#tab-menu-->
-                                    <div class="tab-pane fade" id="tab-daily-menu">
-                                        <article>
-                                            <div class="row">
-                                                <div class="col-md-1">
-                                                    <div class="menu-icon"><i class="fa fa-cutlery"></i><span>1</span></div>
-                                                </div>
-                                                <div class="col-md-11">
-                                                    <div class="row">
-                                                        <div class="col-md-10">
-                                                            <div class="form-group">
-                                                                <input type="text" class="form-control" name="menu-title[]" placeholder="Title">
-                                                            </div>
-                                                        </div>
-                                                        <!-- /.col-md-10-->
-                                                        <div class="col-md-2">
-                                                            <div class="form-group">
-                                                                <input type="text" class="form-control" name="menu-price[]" placeholder="Price">
-                                                            </div>
-                                                        </div>
-                                                        <!-- /.col-md-2-->
-                                                    </div>
-                                                    <!-- /.row-->
-                                                    <div class="form-group">
-                                                        <input type="text" class="form-control" name="menu-description[]" placeholder="Description">
-                                                    </div>
-                                                    <!-- /.form-group -->
-                                                    <div class="form-group">
-                                                        <button type="submit" class="btn framed icon">Add More<i class="fa fa-plus"></i></button>
-                                                    </div>
-                                                    <!-- /.form-group -->
-                                                </div>
-                                                <!--/.col-md-11-->
-                                            </div>
-                                            <!--/.row-->
-                                        </article>
-                                    </div>
-                                    <!--/#tab-daily-menu-->
-                                    <div class="tab-pane fade" id="tab-wine-list">
-                                        <article>
-                                            <div class="row">
-                                                <div class="col-md-1">
-                                                    <div class="menu-icon"><i class="fa fa-glass"></i><span>1</span></div>
-                                                </div>
-                                                <div class="col-md-11">
-                                                    <div class="row">
-                                                        <div class="col-md-10">
-                                                            <div class="form-group">
-                                                                <input type="text" class="form-control" name="menu-title[]" placeholder="Title">
-                                                            </div>
-                                                        </div>
-                                                        <!-- /.col-md-10-->
-                                                        <div class="col-md-2">
-                                                            <div class="form-group">
-                                                                <input type="text" class="form-control" name="menu-price[]" placeholder="Price">
-                                                            </div>
-                                                        </div>
-                                                        <!-- /.col-md-2-->
-                                                    </div>
-                                                    <!-- /.row-->
-                                                    <div class="form-group">
-                                                        <input type="text" class="form-control" name="menu-description[]" placeholder="Description">
-                                                    </div>
-                                                    <!-- /.form-group -->
-                                                    <div class="form-group">
-                                                        <button type="submit" class="btn framed icon">Add More<i class="fa fa-plus"></i></button>
-                                                    </div>
-                                                    <!-- /.form-group -->
-                                                </div>
-                                                <!--/.col-md-11-->
-                                            </div>
-                                            <!--/.row-->
-                                        </article>
-                                    </div>
-                                    <!--/#tab-wine-list-->
-                                </div>
-                                <!--end Tab panes-->
-                            </div>
-                            <!--/.col-md-9-->
-                        </div>
-                        <!--/.row-->
-                    </section>
+                    <%--<section>--%>
+                        <%--<h3>Menu & Wine List</h3>--%>
+                        <%--<div class="row">--%>
+                            <%--<div class="col-md-3">--%>
+                                <%--<!-- Nav tabs -->--%>
+                                <%--<ul class="nav nav-pills nav-stacked">--%>
+                                    <%--<li class="active"><a href="#tab-menu" data-toggle="tab">Menu</a></li>--%>
+                                    <%--<li><a href="#tab-daily-menu" data-toggle="tab">Daily Menu</a></li>--%>
+                                    <%--<li><a href="#tab-wine-list" data-toggle="tab">Wine List</a></li>--%>
+                                <%--</ul>--%>
+                            <%--</div>--%>
+                            <%--<div class="col-md-9">--%>
+                                <%--<!-- Tab panes -->--%>
+                                <%--<div class="tab-content menu min-height-160">--%>
+                                    <%--<div class="tab-pane fade in active" id="tab-menu">--%>
+                                        <%--<article>--%>
+                                            <%--<div class="row">--%>
+                                                <%--<div class="col-md-1">--%>
+                                                    <%--<div class="menu-icon"><i class="fa fa-cutlery"></i><span>1</span></div>--%>
+                                                <%--</div>--%>
+                                                <%--<div class="col-md-11">--%>
+                                                    <%--<div class="row">--%>
+                                                        <%--<div class="col-md-10">--%>
+                                                            <%--<div class="form-group">--%>
+                                                                <%--<input type="text" class="form-control" name="menu-title[]" placeholder="Title">--%>
+                                                            <%--</div>--%>
+                                                        <%--</div>--%>
+                                                        <%--<!-- /.col-md-10-->--%>
+                                                        <%--<div class="col-md-2">--%>
+                                                            <%--<div class="form-group">--%>
+                                                                <%--<input type="text" class="form-control" name="menu-price[]" placeholder="Price">--%>
+                                                            <%--</div>--%>
+                                                        <%--</div>--%>
+                                                        <%--<!-- /.col-md-2-->--%>
+                                                    <%--</div>--%>
+                                                    <%--<!-- /.row-->--%>
+                                                    <%--<div class="form-group">--%>
+                                                        <%--<input type="text" class="form-control" name="menu-description[]" placeholder="Description">--%>
+                                                    <%--</div>--%>
+                                                    <%--<!-- /.form-group -->--%>
+                                                    <%--<div class="form-group">--%>
+                                                        <%--<button type="submit" class="btn framed icon">Add More<i class="fa fa-plus"></i></button>--%>
+                                                    <%--</div>--%>
+                                                    <%--<!-- /.form-group -->--%>
+                                                <%--</div>--%>
+                                                <%--<!--/.col-md-11-->--%>
+                                            <%--</div>--%>
+                                            <%--<!--/.row-->--%>
+                                        <%--</article>--%>
+                                    <%--</div>--%>
+                                    <%--<!--/#tab-menu-->--%>
+                                    <%--<div class="tab-pane fade" id="tab-daily-menu">--%>
+                                        <%--<article>--%>
+                                            <%--<div class="row">--%>
+                                                <%--<div class="col-md-1">--%>
+                                                    <%--<div class="menu-icon"><i class="fa fa-cutlery"></i><span>1</span></div>--%>
+                                                <%--</div>--%>
+                                                <%--<div class="col-md-11">--%>
+                                                    <%--<div class="row">--%>
+                                                        <%--<div class="col-md-10">--%>
+                                                            <%--<div class="form-group">--%>
+                                                                <%--<input type="text" class="form-control" name="menu-title[]" placeholder="Title">--%>
+                                                            <%--</div>--%>
+                                                        <%--</div>--%>
+                                                        <%--<!-- /.col-md-10-->--%>
+                                                        <%--<div class="col-md-2">--%>
+                                                            <%--<div class="form-group">--%>
+                                                                <%--<input type="text" class="form-control" name="menu-price[]" placeholder="Price">--%>
+                                                            <%--</div>--%>
+                                                        <%--</div>--%>
+                                                        <%--<!-- /.col-md-2-->--%>
+                                                    <%--</div>--%>
+                                                    <%--<!-- /.row-->--%>
+                                                    <%--<div class="form-group">--%>
+                                                        <%--<input type="text" class="form-control" name="menu-description[]" placeholder="Description">--%>
+                                                    <%--</div>--%>
+                                                    <%--<!-- /.form-group -->--%>
+                                                    <%--<div class="form-group">--%>
+                                                        <%--<button type="submit" class="btn framed icon">Add More<i class="fa fa-plus"></i></button>--%>
+                                                    <%--</div>--%>
+                                                    <%--<!-- /.form-group -->--%>
+                                                <%--</div>--%>
+                                                <%--<!--/.col-md-11-->--%>
+                                            <%--</div>--%>
+                                            <%--<!--/.row-->--%>
+                                        <%--</article>--%>
+                                    <%--</div>--%>
+                                    <%--<!--/#tab-daily-menu-->--%>
+                                    <%--<div class="tab-pane fade" id="tab-wine-list">--%>
+                                        <%--<article>--%>
+                                            <%--<div class="row">--%>
+                                                <%--<div class="col-md-1">--%>
+                                                    <%--<div class="menu-icon"><i class="fa fa-glass"></i><span>1</span></div>--%>
+                                                <%--</div>--%>
+                                                <%--<div class="col-md-11">--%>
+                                                    <%--<div class="row">--%>
+                                                        <%--<div class="col-md-10">--%>
+                                                            <%--<div class="form-group">--%>
+                                                                <%--<input type="text" class="form-control" name="menu-title[]" placeholder="Title">--%>
+                                                            <%--</div>--%>
+                                                        <%--</div>--%>
+                                                        <%--<!-- /.col-md-10-->--%>
+                                                        <%--<div class="col-md-2">--%>
+                                                            <%--<div class="form-group">--%>
+                                                                <%--<input type="text" class="form-control" name="menu-price[]" placeholder="Price">--%>
+                                                            <%--</div>--%>
+                                                        <%--</div>--%>
+                                                        <%--<!-- /.col-md-2-->--%>
+                                                    <%--</div>--%>
+                                                    <%--<!-- /.row-->--%>
+                                                    <%--<div class="form-group">--%>
+                                                        <%--<input type="text" class="form-control" name="menu-description[]" placeholder="Description">--%>
+                                                    <%--</div>--%>
+                                                    <%--<!-- /.form-group -->--%>
+                                                    <%--<div class="form-group">--%>
+                                                        <%--<button type="submit" class="btn framed icon">Add More<i class="fa fa-plus"></i></button>--%>
+                                                    <%--</div>--%>
+                                                    <%--<!-- /.form-group -->--%>
+                                                <%--</div>--%>
+                                                <%--<!--/.col-md-11-->--%>
+                                            <%--</div>--%>
+                                            <%--<!--/.row-->--%>
+                                        <%--</article>--%>
+                                    <%--</div>--%>
+                                    <%--<!--/#tab-wine-list-->--%>
+                                <%--</div>--%>
+                                <%--<!--end Tab panes-->--%>
+                            <%--</div>--%>
+                            <%--<!--/.col-md-9-->--%>
+                        <%--</div>--%>
+                        <%--<!--/.row-->--%>
+                    <%--</section>--%>
                     <!--end Menu-->
                     <!--Gallery-->
                     <section>
@@ -247,101 +260,101 @@
                     </section>
                     <!--end Gallery-->
                     <!--Opening Hours-->
-                    <section>
-                        <h3>Opening Hours</h3>
-                        <div class="opening-hours">
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <tbody>
-                                    <tr class="day">
-                                        <td class="day-name">Monday</td>
-                                        <td class="from"><input class="oh-timepicker" type="text" placeholder="From" name="open-hour-from[]"></td>
-                                        <td class="to"><input class="oh-timepicker" type="text" placeholder="To" name="open-hour-to[]"></td>
-                                        <td class="non-stop"><div class="checkbox">
-                                            <label>
-                                                <input type="checkbox">Non-stop
-                                            </label>
-                                        </div>
-                                        </td>
-                                    </tr>
-                                    <!--/.day-->
-                                    <tr class="day">
-                                        <td class="day-name">Tuesday</td>
-                                        <td class="from"><input class="oh-timepicker" type="text" placeholder="From" name="open-hour-from[]"></td>
-                                        <td class="to"><input class="oh-timepicker" type="text" placeholder="To" name="open-hour-to[]"></td>
-                                        <td class="non-stop"><div class="checkbox">
-                                            <label>
-                                                <input type="checkbox">Non-stop
-                                            </label>
-                                        </div>
-                                        </td>
-                                    </tr>
-                                    <!--/.day-->
-                                    <tr class="day">
-                                        <td class="day-name">Wednesday</td>
-                                        <td class="from"><input class="oh-timepicker" type="text" placeholder="From" name="open-hour-from[]"></td>
-                                        <td class="to"><input class="oh-timepicker" type="text" placeholder="To" name="open-hour-to[]"></td>
-                                        <td class="non-stop"><div class="checkbox">
-                                            <label>
-                                                <input type="checkbox">Non-stop
-                                            </label>
-                                        </div>
-                                        </td>
-                                    </tr>
-                                    <!--/.day-->
-                                    <tr class="day">
-                                        <td class="day-name">Thursday</td>
-                                        <td class="from"><input class="oh-timepicker" type="text" placeholder="From" name="open-hour-from[]"></td>
-                                        <td class="to"><input class="oh-timepicker" type="text" placeholder="To" name="open-hour-to[]"></td>
-                                        <td class="non-stop"><div class="checkbox">
-                                            <label>
-                                                <input type="checkbox">Non-stop
-                                            </label>
-                                        </div>
-                                        </td>
-                                    </tr>
-                                    <!--/.day-->
-                                    <tr class="day">
-                                        <td class="day-name">Friday</td>
-                                        <td class="from"><input class="oh-timepicker" type="text" placeholder="From" name="open-hour-from[]"></td>
-                                        <td class="to"><input class="oh-timepicker" type="text" placeholder="To" name="open-hour-to[]"></td>
-                                        <td class="non-stop"><div class="checkbox">
-                                            <label>
-                                                <input type="checkbox">Non-stop
-                                            </label>
-                                        </div>
-                                        </td>
-                                    </tr>
-                                    <!--/.day-->
-                                    <tr class="day weekend">
-                                        <td class="day-name">Saturday</td>
-                                        <td class="from"><input class="oh-timepicker" type="text" placeholder="From" name="open-hour-from[]"></td>
-                                        <td class="to"><input class="oh-timepicker" type="text" placeholder="To" name="open-hour-to[]"></td>
-                                        <td class="non-stop"><div class="checkbox">
-                                            <label>
-                                                <input type="checkbox">Non-stop
-                                            </label>
-                                        </div>
-                                        </td>
-                                    </tr>
-                                    <!--/.day-->
-                                    <tr class="day weekend">
-                                        <td class="day-name">Sunday</td>
-                                        <td class="from"><input class="oh-timepicker" type="text" placeholder="From" name="open-hour-from[]"></td>
-                                        <td class="to"><input class="oh-timepicker" type="text" placeholder="To" name="open-hour-to[]"></td>
-                                        <td class="non-stop"><div class="checkbox">
-                                            <label>
-                                                <input type="checkbox">Non-stop
-                                            </label>
-                                        </div>
-                                        </td>
-                                    </tr>
-                                    <!--/.day-->
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </section>
+                    <%--<section>--%>
+                        <%--<h3>Opening Hours</h3>--%>
+                        <%--<div class="opening-hours">--%>
+                            <%--<div class="table-responsive">--%>
+                                <%--<table class="table">--%>
+                                    <%--<tbody>--%>
+                                    <%--<tr class="day">--%>
+                                        <%--<td class="day-name">Monday</td>--%>
+                                        <%--<td class="from"><input class="oh-timepicker" type="text" placeholder="From" name="open-hour-from[]"></td>--%>
+                                        <%--<td class="to"><input class="oh-timepicker" type="text" placeholder="To" name="open-hour-to[]"></td>--%>
+                                        <%--<td class="non-stop"><div class="checkbox">--%>
+                                            <%--<label>--%>
+                                                <%--<input type="checkbox">Non-stop--%>
+                                            <%--</label>--%>
+                                        <%--</div>--%>
+                                        <%--</td>--%>
+                                    <%--</tr>--%>
+                                    <%--<!--/.day-->--%>
+                                    <%--<tr class="day">--%>
+                                        <%--<td class="day-name">Tuesday</td>--%>
+                                        <%--<td class="from"><input class="oh-timepicker" type="text" placeholder="From" name="open-hour-from[]"></td>--%>
+                                        <%--<td class="to"><input class="oh-timepicker" type="text" placeholder="To" name="open-hour-to[]"></td>--%>
+                                        <%--<td class="non-stop"><div class="checkbox">--%>
+                                            <%--<label>--%>
+                                                <%--<input type="checkbox">Non-stop--%>
+                                            <%--</label>--%>
+                                        <%--</div>--%>
+                                        <%--</td>--%>
+                                    <%--</tr>--%>
+                                    <%--<!--/.day-->--%>
+                                    <%--<tr class="day">--%>
+                                        <%--<td class="day-name">Wednesday</td>--%>
+                                        <%--<td class="from"><input class="oh-timepicker" type="text" placeholder="From" name="open-hour-from[]"></td>--%>
+                                        <%--<td class="to"><input class="oh-timepicker" type="text" placeholder="To" name="open-hour-to[]"></td>--%>
+                                        <%--<td class="non-stop"><div class="checkbox">--%>
+                                            <%--<label>--%>
+                                                <%--<input type="checkbox">Non-stop--%>
+                                            <%--</label>--%>
+                                        <%--</div>--%>
+                                        <%--</td>--%>
+                                    <%--</tr>--%>
+                                    <%--<!--/.day-->--%>
+                                    <%--<tr class="day">--%>
+                                        <%--<td class="day-name">Thursday</td>--%>
+                                        <%--<td class="from"><input class="oh-timepicker" type="text" placeholder="From" name="open-hour-from[]"></td>--%>
+                                        <%--<td class="to"><input class="oh-timepicker" type="text" placeholder="To" name="open-hour-to[]"></td>--%>
+                                        <%--<td class="non-stop"><div class="checkbox">--%>
+                                            <%--<label>--%>
+                                                <%--<input type="checkbox">Non-stop--%>
+                                            <%--</label>--%>
+                                        <%--</div>--%>
+                                        <%--</td>--%>
+                                    <%--</tr>--%>
+                                    <%--<!--/.day-->--%>
+                                    <%--<tr class="day">--%>
+                                        <%--<td class="day-name">Friday</td>--%>
+                                        <%--<td class="from"><input class="oh-timepicker" type="text" placeholder="From" name="open-hour-from[]"></td>--%>
+                                        <%--<td class="to"><input class="oh-timepicker" type="text" placeholder="To" name="open-hour-to[]"></td>--%>
+                                        <%--<td class="non-stop"><div class="checkbox">--%>
+                                            <%--<label>--%>
+                                                <%--<input type="checkbox">Non-stop--%>
+                                            <%--</label>--%>
+                                        <%--</div>--%>
+                                        <%--</td>--%>
+                                    <%--</tr>--%>
+                                    <%--<!--/.day-->--%>
+                                    <%--<tr class="day weekend">--%>
+                                        <%--<td class="day-name">Saturday</td>--%>
+                                        <%--<td class="from"><input class="oh-timepicker" type="text" placeholder="From" name="open-hour-from[]"></td>--%>
+                                        <%--<td class="to"><input class="oh-timepicker" type="text" placeholder="To" name="open-hour-to[]"></td>--%>
+                                        <%--<td class="non-stop"><div class="checkbox">--%>
+                                            <%--<label>--%>
+                                                <%--<input type="checkbox">Non-stop--%>
+                                            <%--</label>--%>
+                                        <%--</div>--%>
+                                        <%--</td>--%>
+                                    <%--</tr>--%>
+                                    <%--<!--/.day-->--%>
+                                    <%--<tr class="day weekend">--%>
+                                        <%--<td class="day-name">Sunday</td>--%>
+                                        <%--<td class="from"><input class="oh-timepicker" type="text" placeholder="From" name="open-hour-from[]"></td>--%>
+                                        <%--<td class="to"><input class="oh-timepicker" type="text" placeholder="To" name="open-hour-to[]"></td>--%>
+                                        <%--<td class="non-stop"><div class="checkbox">--%>
+                                            <%--<label>--%>
+                                                <%--<input type="checkbox">Non-stop--%>
+                                            <%--</label>--%>
+                                        <%--</div>--%>
+                                        <%--</td>--%>
+                                    <%--</tr>--%>
+                                    <%--<!--/.day-->--%>
+                                    <%--</tbody>--%>
+                                <%--</table>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                    <%--</section>--%>
                     <!--end Opening Hours-->
                     <hr>
                     <section>
