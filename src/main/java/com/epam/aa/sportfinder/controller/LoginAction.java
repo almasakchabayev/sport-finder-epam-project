@@ -15,6 +15,7 @@ public class LoginAction implements Action {
             return loginManager(request, manager);
         }
 
+        //TODO; add login for ordinary user
 //        Customer customer = CustomerService.findByCredentials(email, password);
 
         request.setAttribute("error", "Unknown username/password. Please retry.");

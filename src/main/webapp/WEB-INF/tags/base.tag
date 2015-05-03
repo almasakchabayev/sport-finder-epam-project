@@ -14,6 +14,8 @@
   <link rel="stylesheet" href="<c:url value="/assets/bootstrap/css/bootstrap.css" />" type="text/css">
   <link rel="stylesheet" href="<c:url value="/assets/css/bootstrap-select.min.css" />" type="text/css">
   <link rel="stylesheet" href="<c:url value="/assets/css/owl.carousel.css" />" type="text/css">
+  <link rel="stylesheet" href="<c:url value="/assets/css/dropzone.css" />" type="text/css">
+  <link rel="stylesheet" href="<c:url value="/assets/css/jquery.ui.timepicker.css" />" type="text/css">
   <link rel="stylesheet" href="<c:url value="/assets/css/style.css" />" type="text/css">
   <link rel="stylesheet" href="<c:url value="/assets/css/user.style.css" />" type="text/css">
 
@@ -55,19 +57,31 @@
 
 <script type="text/javascript" src="<c:url value="/assets/js/jquery-2.1.0.min.js" />"></script>
 <script type="text/javascript" src="<c:url value="/assets/js/before.load.js" />"></script>
+<script type="text/javascript" src="<c:url value="/assets/js/jquery-ui.min.js" />"></script>
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&amp;libraries=places"></script>
+<script type="text/javascript" src="<c:url value="/assets/js/richmarker-compiled.js" />"></script>
 <script type="text/javascript" src="<c:url value="/assets/js/jquery-migrate-1.2.1.min.js" />"></script>
 <script type="text/javascript" src="<c:url value="/assets/bootstrap/js/bootstrap.min.js" />"></script>
 <script type="text/javascript" src="<c:url value="/assets/js/smoothscroll.js" />"></script>
 <script type="text/javascript" src="<c:url value="/assets/js/bootstrap-select.min.js" />"></script>
 <script type="text/javascript" src="<c:url value="/assets/js/jquery.hotkeys.js" />"></script>
 <script type="text/javascript" src="<c:url value="/assets/js/icheck.min.js" />"></script>
+<script type="text/javascript" src="<c:url value="/assets/js/dropzone.min.js" />"></script>
+<script type="text/javascript" src="<c:url value="/assets/js/jquery.ui.timepicker.js" />"></script>
 <script type="text/javascript" src="<c:url value="/assets/js/custom.js" />"></script>
+<script type="text/javascript" src="<c:url value="/assets/js/maps.js" />"></script>
 
 <script>
   $(window).load(function(){
     var rtl = false; // Use RTL
     initializeOwl(rtl);
+
+    var _latitude = 51.541599;
+    var _longitude = -0.112588;
+    var draggableMarker = true;
+    simpleMap(_latitude, _longitude,draggableMarker);
   });
+  autoComplete();
 </script>
 
 <!--[if lte IE 9]>

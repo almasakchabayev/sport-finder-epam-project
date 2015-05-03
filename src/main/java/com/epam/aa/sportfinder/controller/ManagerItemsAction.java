@@ -7,32 +7,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @ControllerAction(path = "/manager/items", method = "GET")
-public class ManagerItemsAction implements Action {
+public class ManagerItemsAction extends AuthorizedManagerAction {
     private static final Logger logger = LoggerFactory.getLogger(ManagerItemsAction.class);
 
     @Override
-    public String execute(HttpServletRequest request) throws ControllerException {
-        HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("user") == null) {
-            logger.info("Unauthorized access to /manager/items, redirecting to /login");
-            return "redirect:/login";
-        }
-
-        Manager manager;
-        try {
-            manager = (Manager) session.getAttribute("user");
-        } catch (ClassCastException e) {
-            logger.info("Unauthorized access to /manager/items, redirecting to /login");
-            return "redirect:/login";
-        }
-
+    public String executeIfAuthorizedAsManager(HttpServletRequest request) {
+        Manager manager = (Manager) request.getSession().getAttribute("user");
         List<SportPlace> sportPlaces = SportPlaceService.findByManager(manager);
         request.setAttribute("sportPlaces", sportPlaces);
-        logger.info("SUccessfully retrieved sport places for manager {}, opening /manager/items", manager.getEmail());
+        logger.info("Successfully retrieved sport places for manager {}, opening /manager/items", manager.getEmail());
+        // TODO: redirect to a page user came from
         return "manager/items";
     }
 }
