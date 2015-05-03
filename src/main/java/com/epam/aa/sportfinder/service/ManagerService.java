@@ -11,12 +11,11 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ManagerService {
+public class ManagerService extends BaseService{
     private static final Logger LOGGER = LoggerFactory.getLogger(ManagerService.class);
 
     public static Manager findByCredentials(String email, String password) {
-        DaoFactory daoFactory = DaoFactory.getInstance();
-        DaoManager daoManager = daoFactory.createDaoManager();
+        DaoManager daoManager = createDaoManager();
 
         return daoManager.executeTx(manager -> {
             ManagerDao managerDao = manager.getDao(Manager.class);
@@ -45,8 +44,7 @@ public class ManagerService {
     }
 
     public static Manager create(Manager manager) {
-        DaoFactory daoFactory = DaoFactory.getInstance();
-        DaoManager daoManager = daoFactory.createDaoManager();
+        DaoManager daoManager = createDaoManager();
 
         return daoManager.executeTx(thisDaoManager -> {
             ManagerDao managerDao = thisDaoManager.getDao(Manager.class);

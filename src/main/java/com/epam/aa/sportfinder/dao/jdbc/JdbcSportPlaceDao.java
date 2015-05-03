@@ -2,10 +2,7 @@ package com.epam.aa.sportfinder.dao.jdbc;
 
 import com.epam.aa.sportfinder.dao.DaoException;
 import com.epam.aa.sportfinder.dao.SportPlaceDao;
-import com.epam.aa.sportfinder.model.Address;
-import com.epam.aa.sportfinder.model.FloorCoverage;
-import com.epam.aa.sportfinder.model.Sport;
-import com.epam.aa.sportfinder.model.SportPlace;
+import com.epam.aa.sportfinder.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -101,6 +98,31 @@ public class JdbcSportPlaceDao extends JdbcBaseDao<SportPlace> implements SportP
         return sportIds;
     }
 
+    @Override
+    public List<SportPlace> findByManager(Manager manager) {
+        Integer managerId = manager.getId();
+        if (managerId == null)
+            throw new DaoException("Could not find sportPlaces, Manager id is null");
+
+        String sql = "SELECT id, uuid, deleted, size, floorcoverage,  " +
+                "capacity, indoor, changingRoom, shower, lightening, tribuneCapacity, " +
+                "otherInfrastructureFeatures, pricePerHour, description, address, manager " +
+                "FROM SportPlace WHERE manager = " + manager.getId();
+
+        List<SportPlace> sportPlaces = new ArrayList<>();
+        try (Statement st = getConnection().createStatement()) {
+            try (ResultSet rs = st.executeQuery(sql)) {
+                while (rs.next()) {
+                    SportPlace sportPlace = getSportPlaceFromResultSet(rs);
+                    sportPlaces.add(sportPlace);
+                }
+            }
+        } catch (SQLException e) {
+            throw new DaoException("Cannot find SportPlaces given Manager with email  " + manager.getEmail(), e);
+        }
+        return sportPlaces;
+    }
+
 
     private String getSqlForJoinTable(SportPlace sportPlace) {
         StringBuffer insertSportPlaceWithSportsBuffer = new StringBuffer("INSERT INTO SportPlace_Sport " +
@@ -119,5 +141,40 @@ public class JdbcSportPlaceDao extends JdbcBaseDao<SportPlace> implements SportP
         }
 
         return insertSportPlaceWithSportsBuffer.append(";").toString();
+    }
+
+    private SportPlace getSportPlaceFromResultSet(ResultSet resultSet) throws SQLException {
+        SportPlace sportPlaceFromDatabase = new SportPlace();
+        sportPlaceFromDatabase.setId(resultSet.getInt("id"));
+        sportPlaceFromDatabase.setUuid((UUID) resultSet.getObject("uuid"));
+        sportPlaceFromDatabase.setDeleted(resultSet.getBoolean("deleted"));
+        sportPlaceFromDatabase.setIndoor(resultSet.getBoolean("indoor"));
+        sportPlaceFromDatabase.setDescription(resultSet.getString("description"));
+        sportPlaceFromDatabase.setChangingRoom(resultSet.getBoolean("changingRoom"));
+        sportPlaceFromDatabase.setCapacity(resultSet.getInt("capacity"));
+
+        Address addressFromDatabase = new Address();
+        Integer addressId = (Integer) resultSet.getObject("address");
+        addressFromDatabase.setId(addressId);
+        sportPlaceFromDatabase.setAddress(addressFromDatabase);
+
+        FloorCoverage floorCoverageFromDatabase = new FloorCoverage();
+        Integer floorCoverageId = (Integer) resultSet.getObject("floorCoverage");
+        floorCoverageFromDatabase.setId(floorCoverageId);
+        sportPlaceFromDatabase.setFloorCoverage(floorCoverageFromDatabase);
+
+        Manager managerFromDatabase = new Manager();
+        Integer managerId = (Integer) resultSet.getObject("manager");
+        managerFromDatabase.setId(managerId);
+        sportPlaceFromDatabase.setManager(managerFromDatabase);
+
+        sportPlaceFromDatabase.setLightening(resultSet.getBoolean("lightening"));
+        sportPlaceFromDatabase.setOtherInfrastructureFeatures(resultSet.getString("otherInfrastructureFeatures"));
+        sportPlaceFromDatabase.setPricePerHour((BigDecimal) resultSet.getObject("pricePerHour"));
+        sportPlaceFromDatabase.setSize(resultSet.getString("size"));
+        sportPlaceFromDatabase.setShower(resultSet.getBoolean("shower"));
+        sportPlaceFromDatabase.setTribuneCapacity(resultSet.getInt("tribuneCapacity"));
+
+        return sportPlaceFromDatabase;
     }
 }
