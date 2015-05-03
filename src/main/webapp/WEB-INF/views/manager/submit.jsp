@@ -17,7 +17,13 @@
                             <%--<input type="text" class="form-control" id="title" name="title">--%>
                         <%--</div>--%>
                     <%--</section>--%>
-                    <section>
+                        <section>
+                            <div class="form-group large">
+                                <label for="description">Description</label>
+                                <textarea rows="5" class="form-control" id="description" name="description"></textarea>
+                            </div>
+                        </section>
+                        <section>
                         <h3>Address</h3>
                         <div class="row">
                             <div class="col-md-4 col-sm-4">
@@ -56,8 +62,8 @@
                         <div class="row">
                             <div class="col-md-4 col-sm-4">
                                 <div class="form-group">
-                                    <label for="address-line-1">Address Line 2</label>
-                                    <input type="text" class="form-control" id="address-line-1" name="address-line-1">
+                                    <label for="address-line-2">Address Line 2</label>
+                                    <input type="text" class="form-control" id="address-line-2" name="address-line-2">
                                 </div>
                             </div>
                             <!--/.col-md-4-->
@@ -84,37 +90,87 @@
                         <div id="map-simple" class="map-submit"></div>
                     </section>
                     <section>
+                        <div class="row">
+                            <div class="col-md-4 col-sm-4">
+                                <div class="form-group">
+                                    <label for="country">Size</label>
+                                    <input type="text" class="form-control" id="size" name="size">
+                                </div>
+                            </div>
+                            <!--/.col-md-4-->
+                            <div class="col-md-4 col-sm-4">
+                                <div class="row">
+                                    <div class="col-md-8 col-sm-8">
+                                        <div class="form-group">
+                                            <label for="floor-coverage">Floor Coverage</label>
+                                            <select name="floor-coverage" id="floor-coverage">
+                                                <c:forEach items="${floorCoverages}" var="floorCoverage">
+                                                    <option value="${floorCoverage.name}">${floorCoverage.name}</option>
+                                                </c:forEach>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4">
+                                        <div class="form-group">
+                                            <label for="capacity">Capacity</label>
+                                            <input type="text" class="form-control" id="capacity" name="capacity" pattern="\d*">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/.col-md-4-->
+                            <div class="col-md-4 col-sm-4">
+                                <div class="form-group">
+                                    <label for="price">Price Per Hour</label>
+                                    <input type="text" class="form-control" id="price" name="price" pattern="\d*">
+                                </div>
+                            </div>
+                            <!--/.col-md-4-->
+                        </div>
+                        <!--/.row-->
+                        <div class="row">
+                            <div class="col-md-4 col-sm-4">
+                                <div class="form-group">
+                                    <label for="sport">Sport</label>
+                                    <select name="sport" id="sport">
+                                        <c:forEach items="${sports}" var="sport">
+                                            <option value="${sport.name}">${sport.name}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                            </div>
+                            <!--/.col-md-4-->
+                            <div class="col-md-4 col-sm-4">
+                                <div class="form-group">
+                                    <label for="tribune-capacity">Tribune Capacity</label>
+                                    <input type="text" class="form-control" id="tribune-capacity" name="tribune-capacity" pattern="\d*">
+                                </div>
+                            </div>
+                            <!--/.col-md-4-->
+                                <%--<div class="col-md-4 col-sm-4">--%>
+                                <%--<div class="form-group">--%>
+                                <%--<label for="website">Website</label>--%>
+                                <%--<input type="text" class="form-control" id="website" name="website">--%>
+                                <%--</div>--%>
+                                <%--</div>--%>
+                            <!--/.col-md-4-->
+                        </div>
+                        <!--/.row-->
+                    </section>
+                    <section>
                         <h3>Features</h3>
                         <ul class="list-unstyled checkboxes">
-                            <li>
-                                <div class="col-md-4 col-sm-4">
-                                    <label for="size">Size</label>
-                                    <input type="text" name="size" id="size">
-                                </div>
-                            </li>
-                            <li>
-                                <div class="col-md-4 col-sm-4">
-                                    <label for="capacity">Capacity</label>
-                                    <input type="text" name="capacity" id="capacity">
-                                </div>
-                            </li>
-                            <c:if test="${!floorCoverages.isEmpty()}">
-                                <li>
-                                    <div class="col-md-4 col-sm-4">
-                                        <label for="capacity">Floor Coverage</label>
-                                        <select>
-                                            <c:forEach items="${floorCoverages}" var="floorCoverage">
-                                                <option value="${floorCoverage.name}">${floorCoverage.name}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-                                </li>
-                            </c:if>
                             <li><div class="checkbox"><label><input type="checkbox" name="features[]" value="changingRoom">Changing Room</label></div></li>
                             <li><div class="checkbox"><label><input type="checkbox" name="features[]" value="shower">Shower</label></div></li>
                             <li><div class="checkbox"><label><input type="checkbox" name="features[]" value="lightening">Lightening</label></div></li>
                             <li><div class="checkbox"><label><input type="checkbox" name="features[]" value="indoor">Indoor</label></div></li>
                         </ul>
+                    </section>
+                    <section>
+                        <div class="form-group large">
+                            <label for="other-infrastructure-features">Other Infrastructure Features</label>
+                            <textarea rows="5" class="form-control" id="other-infrastructure-features" name="other-infrastructure-features"></textarea>
+                        </div>
                     </section>
                     <!--Menu-->
                     <%--<section>--%>
@@ -372,29 +428,29 @@
             <!--/.col-md-9-->
             <!--Sidebar-->
             <div class="col-md-3">
-                <aside id="sidebar">
-                    <div class="sidebar-box">
-                        <h3>Payment</h3>
-                        <div class="form-group">
-                            <label for="package">Your Package</label>
-                            <select name="package" id="package" class="framed">
-                                <option value="">Select your package</option>
-                                <option value="1">Free</option>
-                                <option value="2">Silver</option>
-                                <option value="3">Gold</option>
-                                <option value="4">Platinum</option>
-                            </select>
-                        </div>
-                        <!-- /.form-group -->
-                        <h4>This package includes</h4>
-                        <ul class="bullets">
-                            <li>1 Property</li>
-                            <li>1 Agent Profile</li>
-                            <li class="disabled">Agency Profile</li>
-                            <li class="disabled">Featured Properties</li>
-                        </ul>
-                    </div>
-                </aside>
+                <%--<aside id="sidebar">--%>
+                    <%--<div class="sidebar-box">--%>
+                        <%--<h3>Payment</h3>--%>
+                        <%--<div class="form-group">--%>
+                            <%--<label for="package">Your Package</label>--%>
+                            <%--<select name="package" id="package" class="framed">--%>
+                                <%--<option value="">Select your package</option>--%>
+                                <%--<option value="1">Free</option>--%>
+                                <%--<option value="2">Silver</option>--%>
+                                <%--<option value="3">Gold</option>--%>
+                                <%--<option value="4">Platinum</option>--%>
+                            <%--</select>--%>
+                        <%--</div>--%>
+                        <%--<!-- /.form-group -->--%>
+                        <%--<h4>This package includes</h4>--%>
+                        <%--<ul class="bullets">--%>
+                            <%--<li>1 Property</li>--%>
+                            <%--<li>1 Agent Profile</li>--%>
+                            <%--<li class="disabled">Agency Profile</li>--%>
+                            <%--<li class="disabled">Featured Properties</li>--%>
+                        <%--</ul>--%>
+                    <%--</div>--%>
+                <%--</aside>--%>
                 <!-- /#sidebar-->
             </div>
             <!-- /.col-md-3-->

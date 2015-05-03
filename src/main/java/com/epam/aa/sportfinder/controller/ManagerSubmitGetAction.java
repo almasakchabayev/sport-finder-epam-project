@@ -2,7 +2,9 @@ package com.epam.aa.sportfinder.controller;
 
 import com.epam.aa.sportfinder.model.FloorCoverage;
 import com.epam.aa.sportfinder.model.Manager;
+import com.epam.aa.sportfinder.model.Sport;
 import com.epam.aa.sportfinder.service.FloorCoverageService;
+import com.epam.aa.sportfinder.service.SportService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,6 +20,8 @@ public class ManagerSubmitGetAction extends AuthorizedManagerAction {
         Manager manager = (Manager) request.getSession().getAttribute("user");
         List<FloorCoverage> floorCoverages = FloorCoverageService.findAll();
         request.setAttribute("floorCoverages", floorCoverages);
+        List<Sport> sports = SportService.findAll();
+        request.setAttribute("sports", sports);
         return "manager/submit";
     }
 }
