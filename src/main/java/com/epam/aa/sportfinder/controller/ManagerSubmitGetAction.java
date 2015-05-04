@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-@ControllerAction(path="/manager/submit", method="GET")
+@ControllerAction(path = "/manager/submit", method = ControllerAction.HttpMethod.GET)
 public class ManagerSubmitGetAction extends AuthorizedManagerAction {
     private static final Logger logger = LoggerFactory.getLogger(ManagerSubmitGetAction.class);
 

@@ -50,11 +50,11 @@
     </filter-mapping>
 
     <filter>
-        <filter-name>AccessFilter</filter-name>
-        <filter-class>com.epam.aa.sportfinder.filter.AccessFilter</filter-class>
+        <filter-name>AuthorizationCheckFilter</filter-name>
+        <filter-class>com.epam.aa.sportfinder.filter.AuthorizationCheckFilter</filter-class>
     </filter>
     <filter-mapping>
-        <filter-name>AccessFilter</filter-name>
+        <filter-name>AuthorizationCheckFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 

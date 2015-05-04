@@ -8,4 +8,10 @@ public @interface ControllerAction {
     String path();
 
     String method();
+
+
+    class HttpMethod {
+        public static final String POST = "POST";
+        public static final String GET = "GET";
+    }
 }

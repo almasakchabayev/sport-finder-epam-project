@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-@ControllerAction(path="/manager/register", method="POST")
+@ControllerAction(path = "/manager/register", method = ControllerAction.HttpMethod.POST)
 public class ManagerRegisterPostAction implements Action {
     private static final Logger logger = LoggerFactory.getLogger(ManagerRegisterPostAction.class);
 

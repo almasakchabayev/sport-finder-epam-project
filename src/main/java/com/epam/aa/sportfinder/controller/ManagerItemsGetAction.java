@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-@ControllerAction(path = "/manager/items", method = "GET")
+@ControllerAction(path = "/manager/items", method = ControllerAction.HttpMethod.GET)
 public class ManagerItemsGetAction extends AuthorizedManagerAction {
     private static final Logger logger = LoggerFactory.getLogger(ManagerItemsGetAction.class);
 
@@ -18,8 +18,7 @@ public class ManagerItemsGetAction extends AuthorizedManagerAction {
         Manager manager = (Manager) request.getSession().getAttribute("user");
         List<SportPlace> sportPlaces = SportPlaceService.findByManager(manager);
         request.setAttribute("sportPlaces", sportPlaces);
-        logger.info("Successfully retrieved sport places for manager {}, opening /manager/items", manager.getEmail());
-        // TODO: redirect to a page user came from
+        logger.debug("Successfully retrieved sport places for manager {}, opening /manager/items", manager.getEmail());
         return "manager/items";
     }
 }

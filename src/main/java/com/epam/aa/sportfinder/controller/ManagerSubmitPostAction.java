@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-@ControllerAction(path="/manager/submit", method= "POST")
+@ControllerAction(path = "/manager/submit", method = ControllerAction.HttpMethod.POST)
 public class ManagerSubmitPostAction extends AuthorizedManagerAction {
     private static final Logger logger = LoggerFactory.getLogger(ManagerSubmitPostAction.class);
 

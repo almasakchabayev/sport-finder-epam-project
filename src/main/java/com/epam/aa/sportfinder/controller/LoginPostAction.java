@@ -6,7 +6,7 @@ import com.epam.aa.sportfinder.service.ManagerService;
 
 import javax.servlet.http.HttpServletRequest;
 
-@ControllerAction(path="/login", method="POST")
+@ControllerAction(path = "/login", method = ControllerAction.HttpMethod.POST)
 public class LoginPostAction implements Action {
     public String execute(HttpServletRequest request) throws ControllerException {
         String email = request.getParameter("form-login-email");
