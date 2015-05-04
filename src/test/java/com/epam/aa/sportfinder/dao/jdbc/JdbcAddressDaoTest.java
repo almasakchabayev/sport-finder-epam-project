@@ -4,6 +4,7 @@ import com.epam.aa.sportfinder.dao.AddressDao;
 import com.epam.aa.sportfinder.dao.DaoException;
 import com.epam.aa.sportfinder.dao.DaoManager;
 import com.epam.aa.sportfinder.model.Address;
+import org.junit.After;
 import org.junit.Test;
 
 import java.sql.Connection;
@@ -15,48 +16,52 @@ import java.util.UUID;
 import static org.junit.Assert.assertEquals;
 
 public class JdbcAddressDaoTest extends TestConfig {
-
-
     @Test(expected = DaoException.class)
     public void testInsertFailsIfIdNotNull() throws Exception {
         DaoManager daoManager = getDaoManager();
-        AddressDao dao = daoManager.getDao(Address.class);
+        daoManager.executeTx(daoManager1 -> {
+            AddressDao dao = daoManager.getDao(Address.class);
 
-        Address address = new Address();
-        address.setId(1);
+            Address address = new Address();
+            address.setId(1);
 
-        dao.insert(address);
+            return dao.insert(address);
+        });
     }
 
     @Test(expected = DaoException.class)
     public void testInsertFailsIfUuidAlreadyExists() throws Exception {
         DaoManager daoManager = getDaoManager();
-        AddressDao dao = daoManager.getDao(Address.class);
+        daoManager.executeTx(daoManager1 -> {
+            AddressDao dao = daoManager.getDao(Address.class);
 
-        Address address = new Address();
-        dao.insert(address);
+            Address address = new Address();
+            dao.insert(address);
 
-        Address addressWithSameUuid = new Address();
-        addressWithSameUuid.setUuid(address.getUuid());
+            Address addressWithSameUuid = new Address();
+            addressWithSameUuid.setUuid(address.getUuid());
 
-        dao.insert(addressWithSameUuid);
+            return dao.insert(addressWithSameUuid);
+        });
     }
 
     @Test
     public void testInsertSuccessWithoutIdAndUuid() throws Exception {
         DaoManager daoManager = getDaoManager();
-        AddressDao dao = daoManager.getDao(Address.class);
-        Connection connection = getDataSource().getConnection();
-
         Address address = new Address();
-        address.setCountry("Kazakhstan");
-        address.setCity("Almaty");
-        address.setAddressLine1("Amangeldy street, 72");
-        address.setAddressLine2("1");
-        address.setZipcode("050012");
+        daoManager.executeTx(daoManager1 -> {
+            AddressDao dao = daoManager.getDao(Address.class);
 
-        dao.insert(address);
+            address.setCountry("Kazakhstan");
+            address.setCity("Almaty");
+            address.setAddressLine1("Amangeldy street, 72");
+            address.setAddressLine2("1");
+            address.setZipcode("050012");
 
+            return dao.insert(address);
+        });
+
+        Connection connection = getDataSource().getConnection();
         Statement st = connection.createStatement();
         ResultSet resultSet = st.executeQuery("SELECT id, uuid, deleted, country, city, addressLine1, addressLine2, zipcode " +
                 "FROM Address ORDER BY id DESC LIMIT 1");
@@ -82,33 +87,39 @@ public class JdbcAddressDaoTest extends TestConfig {
     @Test(expected = DaoException.class)
     public void testUpdateFailsIfIdIsNull() throws Exception {
         DaoManager daoManager = getDaoManager();
-        AddressDao dao = daoManager.getDao(Address.class);
+        daoManager.executeTx(daoManager1 -> {
+            AddressDao dao = daoManager.getDao(Address.class);
 
-        Address address = new Address();
-        address.setCountry("UK");
-        address.setCity("London");
-        address.setAddressLine1("Canary Wharf, 72");
-        address.setAddressLine2("5th floor");
-        address.setZipcode("CV47AL");
+            Address address = new Address();
+            address.setCountry("UK");
+            address.setCity("London");
+            address.setAddressLine1("Canary Wharf, 72");
+            address.setAddressLine2("5th floor");
+            address.setZipcode("CV47AL");
 
-        dao.update(address);
+            dao.update(address);
+            return null;
+        });
     }
 
     @Test
     public void testUpdateSuccessIfIdNotNull() throws Exception {
         DaoManager daoManager = getDaoManager();
-        AddressDao dao = daoManager.getDao(Address.class);
-        Connection connection = getDataSource().getConnection();
         Address address = new Address();
-        address.setId(2);
-        address.setCountry("UK");
-        address.setCity("London");
-        address.setAddressLine1("Canary Wharf, 72");
-        address.setAddressLine2("5th floor");
-        address.setZipcode("CV47AL");
+        daoManager.executeTx(daoManager1 -> {
+            AddressDao dao = daoManager.getDao(Address.class);
+            address.setId(2);
+            address.setCountry("UK");
+            address.setCity("London");
+            address.setAddressLine1("Canary Wharf, 72");
+            address.setAddressLine2("5th floor");
+            address.setZipcode("CV47AL");
 
-        dao.update(address);
+            dao.update(address);
+            return null;
+        });
 
+        Connection connection = getDataSource().getConnection();
         PreparedStatement pst = connection.prepareStatement("SELECT id, uuid, deleted, country, city, addressLine1, addressLine2, zipcode " +
                 "FROM Address WHERE id = ?");
         pst.setInt(1, address.getId());
@@ -135,12 +146,14 @@ public class JdbcAddressDaoTest extends TestConfig {
     @Test
     public void testDeleteInDbAndAssignTrueToObject() throws Exception {
         DaoManager daoManager = getDaoManager();
-        AddressDao dao = daoManager.getDao(Address.class);
-        Connection connection = getDataSource().getConnection();
         Address address = new Address();
-        address.setId(1);
-        dao.delete(address);
+        daoManager.executeTx(daoManager1 -> {
+            AddressDao dao = daoManager.getDao(Address.class);
+            address.setId(1);
+            return dao.delete(address);
+        });
 
+        Connection connection = getDataSource().getConnection();
         PreparedStatement pst = connection.prepareStatement("SELECT id, uuid, deleted, country, city, addressLine1, addressLine2, zipcode " +
                 "FROM Address WHERE id = ?");
         pst.setInt(1, address.getId());
@@ -168,35 +181,40 @@ public class JdbcAddressDaoTest extends TestConfig {
     @Test(expected = DaoException.class)
     public void testFindByIdFailsIfIdIsNull() throws Exception {
         DaoManager daoManager = getDaoManager();
-        AddressDao dao = daoManager.getDao(Address.class);
-        Address dummyAddress = new Address();
-        Address address = dao.findById(dummyAddress.getId());
+        daoManager.executeTx(daoManager1 -> {
+            AddressDao dao = daoManager.getDao(Address.class);
+            Address dummyAddress = new Address();
+            return dao.findById(dummyAddress.getId());
+        });
     }
 
     @Test(expected = DaoException.class)
     public void testFindByIdFailsIfIdIsNegative() throws Exception {
         DaoManager daoManager = getDaoManager();
-        AddressDao dao = daoManager.getDao(Address.class);
-
-        Address address = dao.findById(-1);
+        daoManager.executeTx(daoManager1 -> {
+            AddressDao dao = daoManager.getDao(Address.class);
+            return dao.findById(-1);
+        });
     }
 
     @Test(expected = DaoException.class)
     public void testFindByIdFailsIfElementCouldNotBeFounded() throws Exception {
         DaoManager daoManager = getDaoManager();
-        AddressDao dao = daoManager.getDao(Address.class);
-
-        Address address = dao.findById(100000000);
+        daoManager.executeTx(daoManager1 -> {
+            AddressDao dao = daoManager.getDao(Address.class);
+            return dao.findById(100000000);
+        });
     }
 
     @Test
     public void testFindByIdSuccessIfValidId() throws Exception {
         DaoManager daoManager = getDaoManager();
-        AddressDao dao = daoManager.getDao(Address.class);
+        Address address = daoManager.executeTx(daoManager1 -> {
+            AddressDao dao = daoManager.getDao(Address.class);
+            return dao.findById(1);
+        });
 
         Connection connection = getDataSource().getConnection();
-        Address address = dao.findById(1);
-
         PreparedStatement pst = connection.prepareStatement("SELECT id, uuid, deleted, country, city, addressLine1, addressLine2, zipcode " +
                 "FROM Address WHERE id = ?");
         pst.setInt(1, address.getId());

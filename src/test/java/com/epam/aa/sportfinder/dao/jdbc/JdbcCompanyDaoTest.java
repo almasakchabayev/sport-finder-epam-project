@@ -2,8 +2,11 @@ package com.epam.aa.sportfinder.dao.jdbc;
 
 import com.epam.aa.sportfinder.dao.*;
 import com.epam.aa.sportfinder.model.*;
+import com.zaxxer.hikari.HikariDataSource;
+import org.junit.After;
 import org.junit.Test;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,60 +15,58 @@ import java.util.UUID;
 import static org.junit.Assert.assertEquals;
 
 public class JdbcCompanyDaoTest extends TestConfig {
-
-
     @Test(expected = DaoException.class)
     public void testInsertFailsIfIdNotNull() throws Exception {
         DaoManager daoManager = getDaoManager();
-        CompanyDao dao = daoManager.getDao(Company.class);
-
-        Company company = new Company();
-        company.setId(1);
-
-        dao.insert(company);
+        daoManager.executeTx(daoManager1 -> {
+            CompanyDao dao = daoManager.getDao(Company.class);
+            Company company = new Company();
+            company.setId(1);
+            return dao.insert(company);
+        });
     }
 
     @Test(expected = DaoException.class)
     public void testInsertFailsIfUuidAlreadyExists() throws Exception {
         DaoManager daoManager = getDaoManager();
-        CompanyDao dao = daoManager.getDao(Company.class);
-
-        Company company = new Company();
-        dao.insert(company);
-
-        Company companyWithSameUuid = new Company();
-        companyWithSameUuid.setUuid(company.getUuid());
-
-        dao.insert(companyWithSameUuid);
+        daoManager.executeTx(daoManager1 -> {
+            CompanyDao dao = daoManager.getDao(Company.class);
+            Company company = new Company();
+            dao.insert(company);
+            Company companyWithSameUuid = new Company();
+            companyWithSameUuid.setUuid(company.getUuid());
+            return dao.insert(companyWithSameUuid);
+        });
     }
 
     @Test(expected = DaoException.class)
     public void testInsertFailsIfNameAlreadyExists() throws Exception {
         DaoManager daoManager = getDaoManager();
-        CompanyDao dao = daoManager.getDao(Company.class);
+        daoManager.executeTx(daoManager1 -> {
+            CompanyDao dao = daoManager.getDao(Company.class);
 
-        Company company = new Company();
-        company.setName("UniqueCompany");
-        dao.insert(company);
+            Company company = new Company();
+            company.setName("UniqueCompany");
+            dao.insert(company);
 
-        Company companyWithSameName = new Company();
-        companyWithSameName.setName(company.getName());
+            Company companyWithSameName = new Company();
+            companyWithSameName.setName(company.getName());
 
-        dao.insert(companyWithSameName);
+            return dao.insert(companyWithSameName);
+        });
     }
 
     @Test
     public void testInsertSuccessWithoutIdAndUuid() throws Exception {
         DaoManager daoManager = getDaoManager();
-        CompanyDao dao = daoManager.getDao(Company.class);
+        Company company = new Company();
+        daoManager.executeTx(daoManager1 -> {
+            CompanyDao dao = daoManager.getDao(Company.class);
+            initCompany(company);
+            return dao.insert(company);
+        });
 
         Connection connection = getDataSource().getConnection();
-
-        Company company = new Company();
-        initCompany(company);
-
-        dao.insert(company);
-
         Statement st = connection.createStatement();
         ResultSet resultSet = st.executeQuery("SELECT id, uuid, deleted, name, address " +
                 "FROM Company ORDER BY id DESC LIMIT 1");
@@ -84,28 +85,33 @@ public class JdbcCompanyDaoTest extends TestConfig {
     @Test(expected = DaoException.class)
     public void testUpdateFailsIfIdIsNull() throws Exception {
         DaoManager daoManager = getDaoManager();
-        CompanyDao dao = daoManager.getDao(Company.class);
+        daoManager.executeTx(daoManager1 -> {
+            CompanyDao dao = daoManager.getDao(Company.class);
 
-        Company company = new Company();
-        initCompany(company);
+            Company company = new Company();
+            initCompany(company);
 
-        dao.update(company);
+            dao.update(company);
+            return null;
+        });
     }
 
     @Test
     public void testUpdateSuccessIfIdNotNull() throws Exception {
         DaoManager daoManager = getDaoManager();
-        CompanyDao dao = daoManager.getDao(Company.class);
+        Company company = new Company();
+        daoManager.executeTx(daoManager1 -> {
+            CompanyDao dao = daoManager.getDao(Company.class);
+
+            initCompany(company);
+            company.setName("Other Name");
+            company.setId(2);
+
+            dao.update(company);
+            return null;
+        });
 
         Connection connection = getDataSource().getConnection();
-
-        Company company = new Company();
-        initCompany(company);
-        company.setName("Other Name");
-        company.setId(2);
-
-        dao.update(company);
-
         PreparedStatement pst = connection.prepareStatement("SELECT id, uuid, deleted, name, address " +
                 "FROM Company WHERE id = ?");
         pst.setInt(1, company.getId());
@@ -126,14 +132,14 @@ public class JdbcCompanyDaoTest extends TestConfig {
     @Test
     public void testDeleteInDbAndAssignTrueToObject() throws Exception {
         DaoManager daoManager = getDaoManager();
-        CompanyDao dao = daoManager.getDao(Company.class);
+        Company company = new Company();
+        daoManager.executeTx(daoManager1 -> {
+            CompanyDao dao = daoManager.getDao(Company.class);
+            company.setId(1);
+            return dao.delete(company);
+        });
 
         Connection connection = getDataSource().getConnection();
-
-        Company company = new Company();
-        company.setId(1);
-        dao.delete(company);
-
         PreparedStatement pst = connection.prepareStatement("SELECT id, uuid, deleted, name, address " +
                 "FROM Company WHERE id = ?");
         pst.setInt(1, company.getId());
@@ -154,35 +160,40 @@ public class JdbcCompanyDaoTest extends TestConfig {
     @Test(expected = DaoException.class)
     public void testFindByIdFailsIfIdIsNull() throws Exception {
         DaoManager daoManager = getDaoManager();
-        CompanyDao dao = daoManager.getDao(Company.class);
-
-        Company dummycompany = new Company();
-        Company company = dao.findById(dummycompany.getId());
+        daoManager.executeTx(daoManager1 -> {
+            CompanyDao dao = daoManager.getDao(Company.class);
+            Company dummycompany = new Company();
+            return dao.findById(dummycompany.getId());
+        });
     }
 
     @Test(expected = DaoException.class)
     public void testFindByIdFailsIfIdIsNegative() throws Exception {
         DaoManager daoManager = getDaoManager();
-        CompanyDao dao = daoManager.getDao(Company.class);
-
-        Company company = dao.findById(-1);
+        daoManager.executeTx(daoManager1 -> {
+            CompanyDao dao = daoManager.getDao(Company.class);
+            return dao.findById(-1);
+        });
     }
 
     @Test(expected = DaoException.class)
     public void testFindByIdFailsIfElementCouldNotBeFounded() throws Exception {
         DaoManager daoManager = getDaoManager();
-        CompanyDao dao = daoManager.getDao(Company.class);
-        Company company = dao.findById(100000000);
+        daoManager.executeTx(daoManager1 -> {
+            CompanyDao dao = daoManager.getDao(Company.class);
+            return dao.findById(100000000);
+        });
     }
 
     @Test
     public void testFindByIdSuccessIfValidId() throws Exception {
         DaoManager daoManager = getDaoManager();
-        CompanyDao dao = daoManager.getDao(Company.class);
+        Company company = daoManager.executeTx(daoManager1 -> {
+            CompanyDao dao = daoManager.getDao(Company.class);
+            return dao.findById(1);
+        });
 
         Connection connection = getDataSource().getConnection();
-        Company company = dao.findById(1);
-
         PreparedStatement pst = connection.prepareStatement("SELECT id, uuid, deleted, name, address " +
                 "FROM Company WHERE id = ?");
         pst.setInt(1, company.getId());
