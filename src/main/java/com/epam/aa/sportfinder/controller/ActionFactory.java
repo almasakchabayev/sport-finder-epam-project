@@ -1,6 +1,6 @@
 package com.epam.aa.sportfinder.controller;
 
-import org.reflections.Reflections;
+import com.epam.aa.sportfinder.config.ControllerActionLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,14 +23,11 @@ public class ActionFactory {
     private static Map<String, Action> initActionFactory() {
         Map<String, Action> actions = new HashMap<>();
 
-        Reflections reflections = new Reflections("com.epam.aa.sportfinder.controller");
-        Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(ControllerAction.class);
-
+        Set<Class<?>> annotated = ControllerActionLoader.getClassesAnnotatedWithControllerAction();
         for (Class<?> action : annotated) {
             ControllerAction annotation = action.getAnnotation(ControllerAction.class);
             String path = annotation.path();
             String method = annotation.method();
-            boolean autogenerateSimpleGet = annotation.autogenerateSimpleGet();
 
             String actionFullPath = method + path;
 
@@ -38,18 +35,10 @@ public class ActionFactory {
                 actions.put(actionFullPath, (Action) action.newInstance());
                 logger.info("added action for {}", actionFullPath);
             } catch (InstantiationException | IllegalAccessException e) {
-                throw new ControllerException("Could not initialise ActionFactory", e);
-            }
-
-            if (autogenerateSimpleGet){
-                String simpleGetPath = "GET" + path;
-                actions.put(simpleGetPath, (request) -> path.substring(1));
-                logger.info("added action for {}", simpleGetPath);
+                throw new ControllerException("Could not initialize ActionFactory", e);
             }
         }
-
-        // Manually adding simple actions
-        actions.put("GET/register", (request) -> "register");
+        //TODO: add logout
 //        actions.put("GET/logout", new LogoutAction());
         return actions;
     }

@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-@ControllerAction(path="/manager/submit", method="POST")
+@ControllerAction(path="/manager/submit", method= "POST")
 public class ManagerSubmitPostAction extends AuthorizedManagerAction {
     private static final Logger logger = LoggerFactory.getLogger(ManagerSubmitPostAction.class);
 
@@ -105,6 +105,7 @@ public class ManagerSubmitPostAction extends AuthorizedManagerAction {
             request.setAttribute("errors", errors);
             request.setAttribute("item", sportPlace);
             logger.debug("errors found during validation, redirecting to manager/submit.jsp");
+            //TODO: load these to context once and for all
             List<FloorCoverage> floorCoverages = FloorCoverageService.findAll();
             request.setAttribute("floorCoverages", floorCoverages);
             List<Sport> sportsToDisplay = SportService.findAll();

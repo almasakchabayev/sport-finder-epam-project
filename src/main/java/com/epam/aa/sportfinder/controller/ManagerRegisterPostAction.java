@@ -18,9 +18,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-@ControllerAction(path="/manager/register", method="POST", autogenerateSimpleGet=true)
-public class ManagerRegisterAction implements Action {
-    private static final Logger logger = LoggerFactory.getLogger(ManagerRegisterAction.class);
+@ControllerAction(path="/manager/register", method="POST")
+public class ManagerRegisterPostAction implements Action {
+    private static final Logger logger = LoggerFactory.getLogger(ManagerRegisterPostAction.class);
 
     @Override
     public String execute(HttpServletRequest request) {
@@ -96,7 +96,7 @@ public class ManagerRegisterAction implements Action {
                 errors.put("email", message);
             return returnError(request, manager, errors);
         }
-        return LoginAction.loginManager(request, manager);
+        return LoginPostAction.loginUser(request, manager);
     }
 
     private String returnError(HttpServletRequest request, Manager manager, Map<String, String> errors) {

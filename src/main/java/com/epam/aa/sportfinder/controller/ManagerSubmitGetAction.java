@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @ControllerAction(path="/manager/submit", method="GET")
+@ManagerAuthorizedAccess
 public class ManagerSubmitGetAction extends AuthorizedManagerAction {
     private static final Logger logger = LoggerFactory.getLogger(ManagerSubmitGetAction.class);
 

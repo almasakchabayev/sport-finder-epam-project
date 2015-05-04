@@ -1,13 +1,12 @@
 package com.epam.aa.sportfinder.controller;
 
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import javax.servlet.http.HttpServletRequest;
 
 import static org.mockito.Mockito.*;
 
-public class ManagerRegisterActionTest {
+public class ManagerRegisterPostActionTest {
 
     @Test
     public void testExecute() throws Exception {
@@ -41,7 +40,7 @@ public class ManagerRegisterActionTest {
         when(mockRequest.getParameter("form-register-company-address-line-2")).thenReturn("");
         when(mockRequest.getParameter("form-register-company-zipcode")).thenReturn("");
 
-        ManagerRegisterAction action = new ManagerRegisterAction();
+        ManagerRegisterPostAction action = new ManagerRegisterPostAction();
         String execute = action.execute(mockRequest);
         assert(execute.equals("manager/register"));
     }

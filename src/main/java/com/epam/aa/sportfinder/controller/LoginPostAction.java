@@ -1,29 +1,31 @@
 package com.epam.aa.sportfinder.controller;
 
 import com.epam.aa.sportfinder.model.Manager;
+import com.epam.aa.sportfinder.model.User;
 import com.epam.aa.sportfinder.service.ManagerService;
 
 import javax.servlet.http.HttpServletRequest;
 
-@ControllerAction(path="/login", method="POST", autogenerateSimpleGet=true)
-public class LoginAction implements Action {
+@ControllerAction(path="/login", method="POST")
+public class LoginPostAction implements Action {
     public String execute(HttpServletRequest request) throws ControllerException {
         String email = request.getParameter("form-login-email");
         String password = request.getParameter("form-login-password");
-        Manager manager = ManagerService.findByCredentials(email, password);
+        User manager = ManagerService.findByCredentials(email, password);
         if (manager != null) {
-            return loginManager(request, manager);
+            return loginUser(request, manager);
         }
 
-        //TODO; add login for ordinary user
+        //TODO; add login for customer
 //        Customer customer = CustomerService.findByCredentials(email, password);
 
         request.setAttribute("error", "Unknown username/password. Please retry.");
         return "login";
     }
 
-    protected static String loginManager(HttpServletRequest request, Manager manager) {
-        request.getSession().setAttribute("user", manager);
+    protected static String loginUser(HttpServletRequest request, User user) {
+        request.getSession().setAttribute("user", user);
+        // TODO: add referer or something to the url like ?...
         return "redirect:/manager/items";
     }
 }
