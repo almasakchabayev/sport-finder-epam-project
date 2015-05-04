@@ -15,7 +15,7 @@
                         <ul class="user-area">
                             <li><a href="<c:url value="/profile" />"><strong>${user.firstName} ${user.lastName}</strong></a></li>
                             <li><a href="<c:url value="/manager/items" />">My Items</a></li>
-                            <li><a href="#"><i class="fa fa-cog"></i></a></li>
+                            <li><a href="<c:url value="/logout" />"><i class="fa fa-cog"></i></a></li>
                         </ul>
                     </c:when>
                     <c:otherwise>
@@ -26,7 +26,7 @@
                     </c:otherwise>
                 </c:choose>
 
-                <a href="submit.html" class="submit-item">
+                <a href="<c:url value="/manager/submit" />" class="submit-item">
                     <div class="content"><span>Submit Your Item</span></div>
                     <div class="icon">
                         <i class="fa fa-plus"></i>
