@@ -5,7 +5,7 @@ import com.epam.aa.sportfinder.service.ManagerService;
 
 import javax.servlet.http.HttpServletRequest;
 
-@ControllerAction(path="/login", method="GET")
+@ControllerAction(path = "/login", method = "GET")
 public class LoginGetAction implements Action {
     public String execute(HttpServletRequest request) throws ControllerException {
         return "login";

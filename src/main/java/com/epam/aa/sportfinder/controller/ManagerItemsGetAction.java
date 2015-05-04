@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @ControllerAction(path = "/manager/items", method = "GET")
-@ManagerAuthorizedAccess
 public class ManagerItemsGetAction extends AuthorizedManagerAction {
     private static final Logger logger = LoggerFactory.getLogger(ManagerItemsGetAction.class);
 
