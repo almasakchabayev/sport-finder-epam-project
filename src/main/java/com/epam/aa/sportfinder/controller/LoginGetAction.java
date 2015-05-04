@@ -2,7 +2,11 @@ package com.epam.aa.sportfinder.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
-@ControllerAction(path = "/login", method = ControllerAction.HttpMethod.GET)
+import static com.epam.aa.sportfinder.controller.ControllerAction.*;
+
+@ControllerAction(path = "/login",
+        httpMethod = HttpMethod.GET,
+        accessAllowedTo = {AuthenticatedAs.GUEST})
 public class LoginGetAction implements Action {
     public String execute(HttpServletRequest request) throws ControllerException {
         return "login";

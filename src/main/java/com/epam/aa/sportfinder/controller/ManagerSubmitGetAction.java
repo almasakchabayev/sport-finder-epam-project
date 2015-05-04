@@ -11,7 +11,11 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-@ControllerAction(path = "/manager/submit", method = ControllerAction.HttpMethod.GET)
+import static com.epam.aa.sportfinder.controller.ControllerAction.*;
+
+@ControllerAction(path = "/manager/submit",
+        httpMethod = HttpMethod.GET,
+        accessAllowedTo = {AuthenticatedAs.MANAGER})
 public class ManagerSubmitGetAction extends AuthorizedManagerAction {
     private static final Logger logger = LoggerFactory.getLogger(ManagerSubmitGetAction.class);
 

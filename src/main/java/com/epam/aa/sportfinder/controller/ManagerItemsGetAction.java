@@ -9,7 +9,9 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-@ControllerAction(path = "/manager/items", method = ControllerAction.HttpMethod.GET)
+@ControllerAction(path = "/manager/items",
+        httpMethod = ControllerAction.HttpMethod.GET,
+        accessAllowedTo = {ControllerAction.AuthenticatedAs.MANAGER})
 public class ManagerItemsGetAction extends AuthorizedManagerAction {
     private static final Logger logger = LoggerFactory.getLogger(ManagerItemsGetAction.class);
 

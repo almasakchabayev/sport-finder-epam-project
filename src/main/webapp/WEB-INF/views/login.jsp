@@ -11,6 +11,9 @@
                         <h1 class="page-title">Sign In</h1>
                     </header>
                     <hr>
+                    <c:if test="${error != null}">
+                        <div><span class="error">${error}</span></div>
+                    </c:if>
                     <form role="form" id="form-login-account" method="post" action="<c:url value="/login" />">
                         <div class="form-group">
                             <label for="form-login-email">Email:</label>

@@ -21,7 +21,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-@ControllerAction(path = "/manager/submit", method = ControllerAction.HttpMethod.POST)
+import static com.epam.aa.sportfinder.controller.ControllerAction.*;
+
+@ControllerAction(path = "/manager/submit",
+        httpMethod = HttpMethod.POST,
+        accessAllowedTo = {AuthenticatedAs.MANAGER})
 public class ManagerSubmitPostAction extends AuthorizedManagerAction {
     private static final Logger logger = LoggerFactory.getLogger(ManagerSubmitPostAction.class);
 

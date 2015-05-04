@@ -17,6 +17,14 @@ public class ActionFactory {
     public static Action getAction(HttpServletRequest request) {
         logger.debug("Retrieving action according to {}{}", request.getMethod(), request.getRequestURI());
         String path = request.getRequestURI().replace("/controller", "");
+        if (path.contains(";")) {
+            int i = path.indexOf(";");
+            path = path.substring(0, i);
+        }
+        if (path.contains("?")) {
+            int i = path.indexOf("?");
+            path = path.substring(0, i);
+        }
         return actions.get(request.getMethod() + path);
     }
 
@@ -27,7 +35,7 @@ public class ActionFactory {
         for (Class<?> action : annotated) {
             ControllerAction annotation = action.getAnnotation(ControllerAction.class);
             String path = annotation.path();
-            String method = annotation.method();
+            String method = annotation.httpMethod();
 
             String actionFullPath = method + path;
 

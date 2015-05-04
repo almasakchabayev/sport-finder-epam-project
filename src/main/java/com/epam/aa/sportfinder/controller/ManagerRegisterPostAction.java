@@ -18,7 +18,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-@ControllerAction(path = "/manager/register", method = ControllerAction.HttpMethod.POST)
+import static com.epam.aa.sportfinder.controller.ControllerAction.*;
+
+@ControllerAction(path = "/manager/register",
+        httpMethod = HttpMethod.POST,
+        accessAllowedTo = {AuthenticatedAs.GUEST, AuthenticatedAs.CUSTOMER})
 public class ManagerRegisterPostAction implements Action {
     private static final Logger logger = LoggerFactory.getLogger(ManagerRegisterPostAction.class);
 

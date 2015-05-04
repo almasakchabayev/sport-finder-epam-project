@@ -1,12 +1,15 @@
 package com.epam.aa.sportfinder.controller;
 
-import com.epam.aa.sportfinder.model.Manager;
 import com.epam.aa.sportfinder.model.User;
 import com.epam.aa.sportfinder.service.ManagerService;
 
 import javax.servlet.http.HttpServletRequest;
 
-@ControllerAction(path = "/login", method = ControllerAction.HttpMethod.POST)
+import static com.epam.aa.sportfinder.controller.ControllerAction.*;
+
+@ControllerAction(path = "/login",
+        httpMethod = HttpMethod.POST,
+        accessAllowedTo = {AuthenticatedAs.GUEST})
 public class LoginPostAction implements Action {
     public String execute(HttpServletRequest request) throws ControllerException {
         String email = request.getParameter("form-login-email");
