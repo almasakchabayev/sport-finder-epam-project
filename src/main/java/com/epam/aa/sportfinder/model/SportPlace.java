@@ -1,5 +1,10 @@
 package com.epam.aa.sportfinder.model;
 
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.beans.Transient;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
@@ -8,8 +13,11 @@ import java.util.List;
 
 public class SportPlace extends BaseEntity {
     //features
+    @NotBlank(message = "please specify size")
     private String size;
+    @NotNull(message = "please specify capacity")
     private Integer capacity;
+    @Valid
     private FloorCoverage floorCoverage;
     private boolean indoor;
 
@@ -20,12 +28,17 @@ public class SportPlace extends BaseEntity {
     private Integer tribuneCapacity;
     private String otherInfrastructureFeatures;
 
+    @NotNull(message = "please specify price")
     private BigDecimal pricePerHour;
 
     private String description;
+    @Valid
     private Address address;
+    @NotEmpty(message = "Please specify at least one sport")
+    @Valid
     private List<Sport> sports;
 
+    @NotNull(message = "only managers can create sport places")
     private Manager manager;
 
     public SportPlace() {

@@ -43,7 +43,7 @@ public class ActionFactory {
 
             if (autogenerateSimpleGet){
                 String simpleGetPath = "GET" + path;
-                actions.put(simpleGetPath, (request) -> path);
+                actions.put(simpleGetPath, (request) -> path.substring(1));
                 logger.info("added action for {}", simpleGetPath);
             }
         }

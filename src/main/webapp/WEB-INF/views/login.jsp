@@ -1,5 +1,6 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <t:base>
     <jsp:body>
@@ -10,7 +11,7 @@
                         <h1 class="page-title">Sign In</h1>
                     </header>
                     <hr>
-                    <form role="form" id="form-login-account" method="post" action="?">
+                    <form role="form" id="form-login-account" method="post" action="<c:url value="/login" />">
                         <div class="form-group">
                             <label for="form-login-email">Email:</label>
                             <input type="email" class="form-control" id="form-login-email" name="form-login-email" required>

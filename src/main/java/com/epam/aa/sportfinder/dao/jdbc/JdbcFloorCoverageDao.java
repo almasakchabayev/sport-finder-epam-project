@@ -35,6 +35,28 @@ public class JdbcFloorCoverageDao extends JdbcBaseDao<FloorCoverage> implements 
         return floorCoverages;
     }
 
+    @Override
+    public FloorCoverage findByName(FloorCoverage floorCoverage) {
+        String name = floorCoverage.getName();
+        if (name == null) {
+            throw new DaoException("Cannot find floorCoverage by name if name is null");
+        }
+
+        String sql = "SELECT id, uuid, deleted, name " +
+                "FROM FloorCoverage WHERE name = " + "'" + name + "'";
+
+        try (Statement st = getConnection().createStatement()) {
+            try (ResultSet rs = st.executeQuery(sql)) {
+                if (rs.next()) {
+                    floorCoverage = getFloorCoverageFromResultSet(rs);
+                }
+            }
+        } catch (SQLException e) {
+            throw new DaoException("Could not fetch Floor Coverage by name " + name, e);
+        }
+        return floorCoverage;
+    }
+
     private FloorCoverage getFloorCoverageFromResultSet(ResultSet resultSet) throws SQLException {
         FloorCoverage floorCoverage = new FloorCoverage();
         floorCoverage.setId(resultSet.getInt("id"));

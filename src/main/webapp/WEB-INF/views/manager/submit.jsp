@@ -10,7 +10,7 @@
                 <header>
                     <h1 class="page-title">Submit Sport Place</h1>
                 </header>
-                <form id="form-submit" role="form" method="post" action="?" enctype="multipart/form-data">
+                <form id="form-submit" role="form" method="post" action="<c:url value="/manager/submit"/>" enctype="multipart/form-data">
                     <%--<section>--%>
                         <%--<div class="form-group large">--%>
                             <%--<label for="title">Title</label>--%>
@@ -20,7 +20,7 @@
                         <section>
                             <div class="form-group large">
                                 <label for="description">Description</label>
-                                <textarea rows="5" class="form-control" id="description" name="description"></textarea>
+                                <textarea rows="5" class="form-control" id="description" name="description">${item.description}</textarea>
                             </div>
                         </section>
                         <section>
@@ -29,7 +29,10 @@
                             <div class="col-md-4 col-sm-4">
                                 <div class="form-group">
                                     <label for="country">Country</label>
-                                    <input type="text" class="form-control" id="country" name="country">
+                                    <c:if test="${errors.containsKey('address.country')}">
+                                        <span class="error">${errors.get('address.country')}</span>
+                                    </c:if>
+                                    <input type="text" class="form-control" id="country" name="country" value="${item.address.country}">
                                 </div>
                             </div>
                             <!--/.col-md-4-->
@@ -38,13 +41,19 @@
                                     <div class="col-md-8 col-sm-8">
                                         <div class="form-group">
                                             <label for="city">City</label>
-                                            <input type="text" class="form-control" id="city" name="city">
+                                            <c:if test="${errors.containsKey('address.city')}">
+                                                <span class="error">${errors.get('address.city')}</span>
+                                            </c:if>
+                                            <input type="text" class="form-control" id="city" name="city" value="${item.address.city}">
                                         </div>
                                     </div>
                                     <div class="col-md-4 col-sm-4">
                                         <div class="form-group">
                                             <label for="zipcode">ZIPCODE</label>
-                                            <input type="text" class="form-control" id="zipcode" name="zipcode" pattern="\d*">
+                                            <c:if test="${errors.containsKey('address.zipcode')}">
+                                                <span class="error">${errors.get('address.zipcode')}</span>
+                                            </c:if>
+                                            <input type="text" class="form-control" id="zipcode" name="zipcode" value="${item.address.zipcode}">
                                         </div>
                                     </div>
                                 </div>
@@ -53,7 +62,10 @@
                             <div class="col-md-4 col-sm-4">
                                 <div class="form-group">
                                     <label for="address-line-1">Address Line 1</label>
-                                    <input type="text" class="form-control" id="address-line-1" name="address-line-1">
+                                    <c:if test="${errors.containsKey('address.addressLine1')}">
+                                        <span class="error">${errors.get('address.addressLine1')}</span>
+                                    </c:if>
+                                    <input type="text" class="form-control" id="address-line-1" name="address-line-1" value="${item.address.addressLine1}">
                                 </div>
                             </div>
                             <!--/.col-md-4-->
@@ -63,7 +75,10 @@
                             <div class="col-md-4 col-sm-4">
                                 <div class="form-group">
                                     <label for="address-line-2">Address Line 2</label>
-                                    <input type="text" class="form-control" id="address-line-2" name="address-line-2">
+                                    <c:if test="${errors.containsKey('address.addressLine2')}">
+                                        <span class="error">${errors.get('address.addressLine2')}</span>
+                                    </c:if>
+                                    <input type="text" class="form-control" id="address-line-2" name="address-line-2" value="${item.address.addressLine2}">
                                 </div>
                             </div>
                             <!--/.col-md-4-->
@@ -94,7 +109,10 @@
                             <div class="col-md-4 col-sm-4">
                                 <div class="form-group">
                                     <label for="country">Size</label>
-                                    <input type="text" class="form-control" id="size" name="size">
+                                    <c:if test="${errors.containsKey('size')}">
+                                        <span class="error">${errors.get('size')}</span>
+                                    </c:if>
+                                    <input type="text" class="form-control" id="size" name="size" value="${item.size}">
                                 </div>
                             </div>
                             <!--/.col-md-4-->
@@ -103,6 +121,9 @@
                                     <div class="col-md-8 col-sm-8">
                                         <div class="form-group">
                                             <label for="floor-coverage">Floor Coverage</label>
+                                            <c:if test="${errors.containsKey('floorCoverage.name')}">
+                                                <span class="error">${errors.get('floorCoverage.name')}</span>
+                                            </c:if>
                                             <select name="floor-coverage" id="floor-coverage">
                                                 <c:forEach items="${floorCoverages}" var="floorCoverage">
                                                     <option value="${floorCoverage.name}">${floorCoverage.name}</option>
@@ -113,7 +134,10 @@
                                     <div class="col-md-4 col-sm-4">
                                         <div class="form-group">
                                             <label for="capacity">Capacity</label>
-                                            <input type="text" class="form-control" id="capacity" name="capacity" pattern="\d*">
+                                            <c:if test="${errors.containsKey('capacity')}">
+                                                <span class="error">${errors.get('capacity')}</span>
+                                            </c:if>
+                                            <input type="text" class="form-control" id="capacity" name="capacity" value="${item.capacity}" pattern="\d*">
                                         </div>
                                     </div>
                                 </div>
@@ -122,7 +146,10 @@
                             <div class="col-md-4 col-sm-4">
                                 <div class="form-group">
                                     <label for="price">Price Per Hour</label>
-                                    <input type="text" class="form-control" id="price" name="price" pattern="\d*">
+                                    <c:if test="${errors.containsKey('pricePerHour')}">
+                                        <span class="error">${errors.get('pricePerHour')}</span>
+                                    </c:if>
+                                    <input type="text" class="form-control" id="price" name="price" value="${item.pricePerHour}" pattern="\d*">
                                 </div>
                             </div>
                             <!--/.col-md-4-->
@@ -132,7 +159,13 @@
                             <div class="col-md-4 col-sm-4">
                                 <div class="form-group">
                                     <label for="sport">Sport</label>
-                                    <select name="sport" id="sport">
+                                    <c:if test="${errors.containsKey('sports[0].name')}">
+                                        <span class="error">${errors.get('sports[0].name')}</span>
+                                    </c:if>
+                                    <c:if test="${errors.containsKey('sports')}">
+                                        <span class="error">${errors.get('sports')}</span>
+                                    </c:if>
+                                    <select multiple name="sport" id="sport">
                                         <c:forEach items="${sports}" var="sport">
                                             <option value="${sport.name}">${sport.name}</option>
                                         </c:forEach>
@@ -143,7 +176,10 @@
                             <div class="col-md-4 col-sm-4">
                                 <div class="form-group">
                                     <label for="tribune-capacity">Tribune Capacity</label>
-                                    <input type="text" class="form-control" id="tribune-capacity" name="tribune-capacity" pattern="\d*">
+                                    <c:if test="${errors.containsKey('tribuneCapacity')}">
+                                        <span class="error">${errors.get('tribuneCapacity')}</span>
+                                    </c:if>
+                                    <input type="text" class="form-control" id="tribune-capacity" name="tribune-capacity" value="${item.tribuneCapacity}" pattern="\d*">
                                 </div>
                             </div>
                             <!--/.col-md-4-->
@@ -160,16 +196,28 @@
                     <section>
                         <h3>Features</h3>
                         <ul class="list-unstyled checkboxes">
-                            <li><div class="checkbox"><label><input type="checkbox" name="features[]" value="changingRoom">Changing Room</label></div></li>
-                            <li><div class="checkbox"><label><input type="checkbox" name="features[]" value="shower">Shower</label></div></li>
-                            <li><div class="checkbox"><label><input type="checkbox" name="features[]" value="lightening">Lightening</label></div></li>
-                            <li><div class="checkbox"><label><input type="checkbox" name="features[]" value="indoor">Indoor</label></div></li>
+                            <li><div class="checkbox"><label>
+                                <input type="checkbox" name="changing-room" value="changing-room"
+                                       <c:if test="${item.changingRoom}">checked="checked"</c:if>>Changing Room</label>
+                            </div></li>
+                            <li><div class="checkbox"><label>
+                                <input type="checkbox" name="shower" value="shower"
+                                       <c:if test="${item.shower}">checked="checked"</c:if>>Shower</label>
+                            </div></li>
+                            <li><div class="checkbox"><label>
+                                <input type="checkbox" name="lightening" value="lightening"
+                                       <c:if test="${item.lightening}">checked="checked"</c:if>>Lightening</label>
+                            </div></li>
+                            <li><div class="checkbox"><label>
+                                <input type="checkbox" name="indoor" value="indoor"
+                                       <c:if test="${item.indoor}">checked="checked"</c:if>>Indoor</label>
+                            </div></li>
                         </ul>
                     </section>
                     <section>
                         <div class="form-group large">
                             <label for="other-infrastructure-features">Other Infrastructure Features</label>
-                            <textarea rows="5" class="form-control" id="other-infrastructure-features" name="other-infrastructure-features"></textarea>
+                            <textarea rows="5" class="form-control" id="other-infrastructure-features" name="other-infrastructure-features">${item.otherInfrastructureFeatures}</textarea>
                         </div>
                     </section>
                     <!--Menu-->

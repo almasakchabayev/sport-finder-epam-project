@@ -36,6 +36,28 @@ public class JdbcSportDao extends JdbcBaseDao<Sport> implements SportDao {
         return sports;
     }
 
+    @Override
+    public Sport findByName(Sport sport) {
+        String name = sport.getName();
+        if (name == null) {
+            throw new DaoException("Cannot find sport by name if name is null");
+        }
+
+        String sql = "SELECT id, uuid, deleted, name " +
+                "FROM Sport WHERE name = " + "'" + name + "'";
+
+        try (Statement st = getConnection().createStatement()) {
+            try (ResultSet rs = st.executeQuery(sql)) {
+                if (rs.next()) {
+                    sport = getSportFromResultSet(rs);
+                }
+            }
+        } catch (SQLException e) {
+            throw new DaoException("Could not fetch Sport by name " + name, e);
+        }
+        return sport;
+    }
+
     private Sport getSportFromResultSet(ResultSet resultSet) throws SQLException {
         Sport sport = new Sport();
         sport.setId(resultSet.getInt("id"));

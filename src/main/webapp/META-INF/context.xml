@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context cachingAllowed="false" cacheMaxSize="1" cacheTTL="1">
+<Context allowCasualMultipartParsing="true"
+         cachingAllowed="false"
+         cacheMaxSize="1"
+         cacheTTL="1">
     <WatchedResource>WEB-INF/web.xml</WatchedResource>
 </Context>

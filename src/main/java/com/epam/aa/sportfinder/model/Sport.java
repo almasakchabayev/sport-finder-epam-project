@@ -1,9 +1,12 @@
 package com.epam.aa.sportfinder.model;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Sport extends BaseEntity {
+    @NotBlank(message = "please specify sport")
     private String name;
     private List<SportPlace> sportPlaces;
 

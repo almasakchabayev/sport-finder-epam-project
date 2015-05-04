@@ -59,7 +59,7 @@ public class ManagerRegisterAction implements Action {
         manager.setEmail(email);
         PhoneNumber phoneNumber = new PhoneNumber(number);
         manager.addPhoneNumber(phoneNumber);
-        if (!number2.equals("")) {
+        if (number2 != null && !number2.equals("")) {
             PhoneNumber phoneNumber2 = new PhoneNumber(number2);
             manager.addPhoneNumber(phoneNumber2);
         }
