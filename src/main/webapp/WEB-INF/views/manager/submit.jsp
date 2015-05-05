@@ -32,7 +32,7 @@
                                     <c:if test="${errors.containsKey('address.country')}">
                                         <span class="error">${errors.get('address.country')}</span>
                                     </c:if>
-                                    <input type="text" class="form-control" id="country" name="country" value="${item.address.country}">
+                                    <input type="text" class="form-control" id="country" name="country" value="${item.address.country}" required>
                                 </div>
                             </div>
                             <!--/.col-md-4-->
@@ -44,7 +44,7 @@
                                             <c:if test="${errors.containsKey('address.city')}">
                                                 <span class="error">${errors.get('address.city')}</span>
                                             </c:if>
-                                            <input type="text" class="form-control" id="city" name="city" value="${item.address.city}">
+                                            <input type="text" class="form-control" id="city" name="city" value="${item.address.city}" required>
                                         </div>
                                     </div>
                                     <div class="col-md-4 col-sm-4">
@@ -53,7 +53,7 @@
                                             <c:if test="${errors.containsKey('address.zipcode')}">
                                                 <span class="error">${errors.get('address.zipcode')}</span>
                                             </c:if>
-                                            <input type="text" class="form-control" id="zipcode" name="zipcode" value="${item.address.zipcode}">
+                                            <input type="text" class="form-control" id="zipcode" name="zipcode" value="${item.address.zipcode}" required>
                                         </div>
                                     </div>
                                 </div>
@@ -65,7 +65,7 @@
                                     <c:if test="${errors.containsKey('address.addressLine1')}">
                                         <span class="error">${errors.get('address.addressLine1')}</span>
                                     </c:if>
-                                    <input type="text" class="form-control" id="address-line-1" name="address-line-1" value="${item.address.addressLine1}">
+                                    <input type="text" class="form-control" id="address-line-1" name="address-line-1" value="${item.address.addressLine1}" required>
                                 </div>
                             </div>
                             <!--/.col-md-4-->
@@ -78,7 +78,7 @@
                                     <c:if test="${errors.containsKey('address.addressLine2')}">
                                         <span class="error">${errors.get('address.addressLine2')}</span>
                                     </c:if>
-                                    <input type="text" class="form-control" id="address-line-2" name="address-line-2" value="${item.address.addressLine2}">
+                                    <input type="text" class="form-control" id="address-line-2" name="address-line-2" value="${item.address.addressLine2}" required>
                                 </div>
                             </div>
                             <!--/.col-md-4-->
@@ -112,7 +112,7 @@
                                     <c:if test="${errors.containsKey('size')}">
                                         <span class="error">${errors.get('size')}</span>
                                     </c:if>
-                                    <input type="text" class="form-control" id="size" name="size" value="${item.size}">
+                                    <input type="text" class="form-control" id="size" name="size" value="${item.size}" required>
                                 </div>
                             </div>
                             <!--/.col-md-4-->
@@ -124,7 +124,7 @@
                                             <c:if test="${errors.containsKey('floorCoverage.name')}">
                                                 <span class="error">${errors.get('floorCoverage.name')}</span>
                                             </c:if>
-                                            <select name="floor-coverage" id="floor-coverage">
+                                            <select name="floor-coverage" id="floor-coverage" required>
                                                 <c:forEach items="${floorCoverages}" var="floorCoverage">
                                                     <option value="${floorCoverage.name}">${floorCoverage.name}</option>
                                                 </c:forEach>
@@ -137,7 +137,7 @@
                                             <c:if test="${errors.containsKey('capacity')}">
                                                 <span class="error">${errors.get('capacity')}</span>
                                             </c:if>
-                                            <input type="text" class="form-control" id="capacity" name="capacity" value="${item.capacity}" pattern="\d*">
+                                            <input type="text" class="form-control" id="capacity" name="capacity" value="${item.capacity}" pattern="\d*" required>
                                         </div>
                                     </div>
                                 </div>
@@ -149,7 +149,7 @@
                                     <c:if test="${errors.containsKey('pricePerHour')}">
                                         <span class="error">${errors.get('pricePerHour')}</span>
                                     </c:if>
-                                    <input type="text" class="form-control" id="price" name="price" value="${item.pricePerHour}" pattern="\d*">
+                                    <input type="text" class="form-control" id="price" name="price" value="${item.pricePerHour}" pattern="\d*" required>
                                 </div>
                             </div>
                             <!--/.col-md-4-->
@@ -165,7 +165,7 @@
                                     <c:if test="${errors.containsKey('sports')}">
                                         <span class="error">${errors.get('sports')}</span>
                                     </c:if>
-                                    <select multiple name="sport" id="sport">
+                                    <select multiple name="sport" id="sport" required>
                                         <c:forEach items="${sports}" var="sport">
                                             <option value="${sport.name}">${sport.name}</option>
                                         </c:forEach>
@@ -179,7 +179,7 @@
                                     <c:if test="${errors.containsKey('tribuneCapacity')}">
                                         <span class="error">${errors.get('tribuneCapacity')}</span>
                                     </c:if>
-                                    <input type="text" class="form-control" id="tribune-capacity" name="tribune-capacity" value="${item.tribuneCapacity}" pattern="\d*">
+                                    <input type="text" class="form-control" id="tribune-capacity" name="tribune-capacity" value="${item.tribuneCapacity}" pattern="\d*" required>
                                 </div>
                             </div>
                             <!--/.col-md-4-->

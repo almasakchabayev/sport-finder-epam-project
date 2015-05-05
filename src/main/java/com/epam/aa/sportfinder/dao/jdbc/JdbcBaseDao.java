@@ -24,6 +24,7 @@ public abstract class JdbcBaseDao<T extends BaseEntity> implements GenericDao<T>
         return connection;
     }
 
+    // todo if deleted do not return
     @Override
     public T findById(Integer id) throws DaoException{
         if (id == null)
