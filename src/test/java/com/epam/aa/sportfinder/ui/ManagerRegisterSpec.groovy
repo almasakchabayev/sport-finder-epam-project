@@ -59,22 +59,22 @@ class ManagerRegisterSpec extends Specification {
 
     def "if everything is ok, manager should be redirected to /manager/items page"() {
         when:
-        $("#form-register-first-name").val("Almas")
-        $("#form-register-last-name").val("Akchabayev")
-        $("#form-register-email").val("almas.akchabayev@gmail.com")
-        $("#form-register-phone-number").val("87017511143")
-        $("#form-register-phone-number-2").val("87272920973")
-        $("#form-register-password").val("1234")
-        $("#form-register-confirm-password").val("1234")
-        $("#form-register-company-name").val("Almas Ltd")
-        $("#form-register-company-country").val("Kazakhstan")
-        $("#form-register-company-city").val("Almaty")
-        $("#form-register-company-address-line-1").val("Amangeldy 72")
-        $("#form-register-company-address-line-2").val("1")
-        $("#form-register-company-zipcode").val("050012")
-        $("#account-submit").click()
+            $("#form-register-first-name").val("Almas")
+            $("#form-register-last-name").val("Akchabayev")
+            $("#form-register-email").val("almas.akchabayev@gmail.com")
+            $("#form-register-phone-number").val("87017511143")
+            $("#form-register-phone-number-2").val("87272920973")
+            $("#form-register-password").val("1234")
+            $("#form-register-confirm-password").val("1234")
+            $("#form-register-company-name").val("Almas Ltd")
+            $("#form-register-company-country").val("Kazakhstan")
+            $("#form-register-company-city").val("Almaty")
+            $("#form-register-company-address-line-1").val("Amangeldy 72")
+            $("#form-register-company-address-line-2").val("1")
+            $("#form-register-company-zipcode").val("050012")
+            $("#account-submit").click()
 
         then:
-        $(byText("Almas Akchabayev")).shouldBe(visible)
+            $(byText("Almas Akchabayev")).shouldBe(visible)
     }
 }
