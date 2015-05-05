@@ -221,24 +221,26 @@ public class JdbcFloorCoverageDaoTest extends TestConfig {
             floorCoverageFromDatabase.setId(resultSet.getInt("id"));
             floorCoverageFromDatabase.setUuid((UUID) resultSet.getObject("uuid"));
             floorCoverageFromDatabase.setDeleted(resultSet.getBoolean("deleted"));
-            floorCoverageFromDatabase.setName(resultSet.getString("name"));}
-
+            floorCoverageFromDatabase.setName(resultSet.getString("name"));
+        }
+        resultSet.close();
+        pst.close();
         connection.close();
 
         assertFloorCoveragesEqual(floorCoverage, floorCoverageFromDatabase);
     }
 
     @Test
-    public void testFindAllSuccess() throws Exception {
+    public void testFindAllNonDeletedSuccess() throws Exception {
         DaoManager daoManager = getDaoManager();
         List<FloorCoverage> floorCoverages = daoManager.executeTx(daoManager1 -> {
             FloorCoverageDao dao = daoManager.getDao(FloorCoverage.class);
-            return dao.findAll();
+            return dao.findAllNonDeleted();
         });
 
         Connection connection = getDataSource().getConnection();
         PreparedStatement pst = connection.prepareStatement("SELECT id, uuid, deleted, name " +
-                "FROM FloorCoverage");
+                "FROM FloorCoverage WHERE deleted = false");
         ResultSet resultSet = pst.executeQuery();
 
         List<FloorCoverage> floorCoveragesFromDatabase = new ArrayList<>();
@@ -250,7 +252,8 @@ public class JdbcFloorCoverageDaoTest extends TestConfig {
             floorCoverageFromDatabase.setName(resultSet.getString("name"));
             floorCoveragesFromDatabase.add(floorCoverageFromDatabase);
         }
-
+        resultSet.close();
+        pst.close();
         connection.close();
 
         assertEquals(floorCoverages.size(), floorCoveragesFromDatabase.size());
@@ -265,23 +268,24 @@ public class JdbcFloorCoverageDaoTest extends TestConfig {
         FloorCoverage floorCoverage = daoManager.executeTx(daoManager1 -> {
             FloorCoverageDao dao = daoManager.getDao(FloorCoverage.class);
             FloorCoverage f = new FloorCoverage();
-            f.setName("natural grass");
+            f.setName("artificial grass");
             return dao.findByName(f);
         });
 
         Connection connection = getDataSource().getConnection();
         PreparedStatement pst = connection.prepareStatement("SELECT id, uuid, deleted, name " +
-                "FROM FloorCoverage WHERE name = 'natural grass'");
+                "FROM FloorCoverage WHERE name = 'artificial grass'");
         ResultSet resultSet = pst.executeQuery();
 
         FloorCoverage floorCoverageFromDatabase = new FloorCoverage();
-        while (resultSet.next()) {
+        if (resultSet.next()) {
             floorCoverageFromDatabase.setId(resultSet.getInt("id"));
             floorCoverageFromDatabase.setUuid((UUID) resultSet.getObject("uuid"));
             floorCoverageFromDatabase.setDeleted(resultSet.getBoolean("deleted"));
             floorCoverageFromDatabase.setName(resultSet.getString("name"));
         }
-
+        resultSet.close();
+        pst.close();
         connection.close();
 
         assertFloorCoveragesEqual(floorCoverage, floorCoverageFromDatabase);

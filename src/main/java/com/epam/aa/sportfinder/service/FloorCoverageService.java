@@ -12,7 +12,7 @@ public class FloorCoverageService extends BaseService {
         DaoManager daoManager = createDaoManager();
         return daoManager.executeTx(manager -> {
             FloorCoverageDao floorCoverageDao = manager.getDao(FloorCoverage.class);
-            return floorCoverageDao.findAll();
+            return floorCoverageDao.findAllNonDeleted();
         });
     }
 }

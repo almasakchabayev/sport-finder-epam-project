@@ -23,43 +23,40 @@ public class JdbcManagerDaoTest extends TestConfig {
     @Test(expected = DaoException.class)
     public void testInsertFailsIfIdNotNull() throws Exception {
         DaoManager daoManager = getDaoManager();
-        ManagerDao dao = daoManager.getDao(Manager.class);
+        daoManager.executeTx(daoManager1 -> {
+            ManagerDao dao = daoManager.getDao(Manager.class);
 
-        Manager manager = new Manager();
-        manager.setId(1);
+            Manager manager = new Manager();
+            manager.setId(1);
 
-        dao.insert(manager);
+            return dao.insert(manager);
+        });
     }
 
     @Test(expected = DaoException.class)
     public void testInsertFailsIfUuidAlreadyExists() throws Exception {
         DaoManager daoManager = getDaoManager();
-        ManagerDao dao = daoManager.getDao(Manager.class);
+        daoManager.executeTx(daoManager1 -> {
+            ManagerDao dao = daoManager.getDao(Manager.class);
 
-        Manager manager = new Manager();
-        dao.insert(manager);
+            Manager manager = new Manager();
+            dao.insert(manager);
 
-        Manager managerWithSameUuid = new Manager();
-        managerWithSameUuid.setUuid(manager.getUuid());
+            Manager managerWithSameUuid = new Manager();
+            managerWithSameUuid.setUuid(manager.getUuid());
 
-        dao.insert(managerWithSameUuid);
+            return dao.insert(managerWithSameUuid);
+        });
     }
 
     @Test(expected = DaoException.class)
     public void testInsertFailsIfEmailAlreadyExists() throws Exception {
         DaoManager daoManager = getDaoManager();
-        Manager manager = daoManager.executeTx(daoManager1 -> {
+        daoManager.executeTx(daoManager1 -> {
             ManagerDao dao = daoManager1.getDao(Manager.class);
-            Manager insert = new Manager();
-            insert.setEmail("almas@gmail.com");
-            return dao.insert(insert);
-        });
-
-
-
-        DaoManager daoManager1 = getDaoManager();
-        Manager manager1 = daoManager1.executeTx(daoManager2 -> {
-            ManagerDao dao = daoManager1.getDao(Manager.class);
+            Manager manager = new Manager();
+            manager.setEmail("almas@gmail.com");
+            dao.insert(manager);
             Manager managerWithSameName = new Manager();
             managerWithSameName.setEmail(manager.getEmail());
             return dao.insert(managerWithSameName);
@@ -69,15 +66,14 @@ public class JdbcManagerDaoTest extends TestConfig {
     @Test
     public void testInsertSuccessWithoutIdAndUuid() throws Exception {
         DaoManager daoManager = getDaoManager();
-        ManagerDao dao = daoManager.getDao(Manager.class);
+        Manager manager = new Manager();
+        daoManager.executeTx(daoManager1 -> {
+            ManagerDao dao = daoManager.getDao(Manager.class);
+            initManager(manager);
+            return dao.insert(manager);
+        });
 
         Connection connection = getDataSource().getConnection();
-
-        Manager manager = new Manager();
-        initManager(manager);
-
-        dao.insert(manager);
-
         Statement st = connection.createStatement();
         ResultSet resultSet = st.executeQuery("SELECT id, uuid, deleted, firstName, lastName, " +
                 "email, password, company " +
@@ -97,24 +93,25 @@ public class JdbcManagerDaoTest extends TestConfig {
     @Test
     public void testInsertPhoneNumbersSuccess() throws Exception {
         DaoManager daoManager = getDaoManager();
-        ManagerDao dao = daoManager.getDao(Manager.class);
+        Manager manager = new Manager();
+        daoManager.executeTx(daoManager1 -> {
+            ManagerDao dao = daoManager.getDao(Manager.class);
+
+            initManager(manager);
+            manager.setId(1);
+            List<PhoneNumber> phoneNumbers = new ArrayList<>();
+            PhoneNumber phoneNumber1 = new PhoneNumber();
+            phoneNumber1.setId(1);
+            phoneNumbers.add(phoneNumber1);
+            PhoneNumber phoneNumber2 = new PhoneNumber();
+            phoneNumber2.setId(2);
+            phoneNumbers.add(phoneNumber2);
+            manager.setPhoneNumbers(phoneNumbers);
+
+            return dao.insertPhoneNumbers(manager);
+        });
 
         Connection connection = getDataSource().getConnection();
-
-        Manager manager = new Manager();
-        initManager(manager);
-        manager.setId(1);
-        List<PhoneNumber> phoneNumbers = new ArrayList<>();
-        PhoneNumber phoneNumber1 = new PhoneNumber();
-        phoneNumber1.setId(1);
-        phoneNumbers.add(phoneNumber1);
-        PhoneNumber phoneNumber2 = new PhoneNumber();
-        phoneNumber2.setId(2);
-        phoneNumbers.add(phoneNumber2);
-        manager.setPhoneNumbers(phoneNumbers);
-
-        dao.insertPhoneNumbers(manager);
-
         Statement st = connection.createStatement();
         ResultSet resultSet = st.executeQuery("SELECT manager_id, phoneNumber_id " +
                 "FROM Manager_PhoneNumber WHERE manager_id = " + manager.getId());
@@ -138,18 +135,19 @@ public class JdbcManagerDaoTest extends TestConfig {
     @Test
     public void testAddPhoneNumberSuccess() throws Exception {
         DaoManager daoManager = getDaoManager();
-        ManagerDao dao = daoManager.getDao(Manager.class);
+        Manager manager = new Manager();
+        daoManager.executeTx(daoManager1 -> {
+            ManagerDao dao = daoManager.getDao(Manager.class);
+
+            initManager(manager);
+            manager.setId(2);
+            PhoneNumber phoneNumber = new PhoneNumber();
+            phoneNumber.setId(1);
+
+            return dao.addPhoneNumber(manager, phoneNumber);
+        });
 
         Connection connection = getDataSource().getConnection();
-
-        Manager manager = new Manager();
-        initManager(manager);
-        manager.setId(2);
-        PhoneNumber phoneNumber = new PhoneNumber();
-        phoneNumber.setId(1);
-
-        dao.addPhoneNumber(manager, phoneNumber);
-
         Statement st = connection.createStatement();
         ResultSet resultSet = st.executeQuery("SELECT phoneNumber_id, manager_id " +
                 "FROM Manager_PhoneNumber WHERE manager_id = " + manager.getId());
@@ -170,28 +168,34 @@ public class JdbcManagerDaoTest extends TestConfig {
     @Test(expected = DaoException.class)
     public void testUpdateFailsIfIdIsNull() throws Exception {
         DaoManager daoManager = getDaoManager();
-        ManagerDao dao = daoManager.getDao(Manager.class);
+        daoManager.executeTx(daoManager1 -> {
+            ManagerDao dao = daoManager.getDao(Manager.class);
 
-        Manager manager = new Manager();
-        initManager(manager);
+            Manager manager = new Manager();
+            initManager(manager);
 
-        dao.update(manager);
+            dao.update(manager);
+            return null;
+        });
     }
 
     @Test
     public void testUpdateSuccessIfIdNotNull() throws Exception {
         DaoManager daoManager = getDaoManager();
-        ManagerDao dao = daoManager.getDao(Manager.class);
+        Manager manager = new Manager();
+        daoManager.executeTx(daoManager1 -> {
+            ManagerDao dao = daoManager.getDao(Manager.class);
+
+
+            initManager(manager);
+            manager.setEmail("Other email");
+            manager.setId(2);
+
+            dao.update(manager);
+            return null;
+        });
 
         Connection connection = getDataSource().getConnection();
-
-        Manager manager = new Manager();
-        initManager(manager);
-        manager.setEmail("Other email");
-        manager.setId(2);
-
-        dao.update(manager);
-
         PreparedStatement pst = connection.prepareStatement("SELECT id, uuid, deleted, firstName, lastName, " +
                 "email, password, company " +
                 "FROM Manager WHERE id = ?");
@@ -213,14 +217,14 @@ public class JdbcManagerDaoTest extends TestConfig {
     @Test
     public void testDeleteInDbAndAssignTrueToObject() throws Exception {
         DaoManager daoManager = getDaoManager();
-        ManagerDao dao = daoManager.getDao(Manager.class);
+        Manager manager = new Manager();
+        daoManager.executeTx(daoManager1 -> {
+            ManagerDao dao = daoManager.getDao(Manager.class);
+            manager.setId(1);
+            return dao.delete(manager);
+        });
 
         Connection connection = getDataSource().getConnection();
-
-        Manager manager = new Manager();
-        manager.setId(1);
-        dao.delete(manager);
-
         PreparedStatement pst = connection.prepareStatement("SELECT id, uuid, deleted, firstName, lastName, " +
                 "email, password, company " +
                 "FROM Manager WHERE id = ?");
@@ -242,18 +246,20 @@ public class JdbcManagerDaoTest extends TestConfig {
     @Test
     public void testRemovePhoneNumberSuccess() throws Exception {
         DaoManager daoManager = getDaoManager();
-        ManagerDao dao = daoManager.getDao(Manager.class);
+        Manager manager = new Manager();
+        daoManager.executeTx(daoManager1 -> {
+            ManagerDao dao = daoManager.getDao(Manager.class);
+
+
+            initManager(manager);
+            manager.setId(2);
+            PhoneNumber phoneNumber = new PhoneNumber();
+            phoneNumber.setId(2);
+
+            return dao.removePhoneNumber(manager, phoneNumber);
+        });
 
         Connection connection = getDataSource().getConnection();
-
-        Manager manager = new Manager();
-        initManager(manager);
-        manager.setId(2);
-        PhoneNumber phoneNumber = new PhoneNumber();
-        phoneNumber.setId(2);
-
-        dao.removePhoneNumber(manager, phoneNumber);
-
         Statement st = connection.createStatement();
         ResultSet resultSet = st.executeQuery("SELECT phoneNumber_id, manager_id " +
                 "FROM Manager_PhoneNumber WHERE manager_id = " + manager.getId());
@@ -279,35 +285,41 @@ public class JdbcManagerDaoTest extends TestConfig {
     @Test(expected = DaoException.class)
     public void testFindByIdFailsIfIdIsNull() throws Exception {
         DaoManager daoManager = getDaoManager();
-        ManagerDao dao = daoManager.getDao(Manager.class);
+        daoManager.executeTx(daoManager1 -> {
+            ManagerDao dao = daoManager.getDao(Manager.class);
 
-        Manager dummymanager = new Manager();
-        Manager manager = dao.findById(dummymanager.getId());
+            Manager dummymanager = new Manager();
+            return dao.findById(dummymanager.getId());
+        });
     }
 
     @Test(expected = DaoException.class)
     public void testFindByIdFailsIfIdIsNegative() throws Exception {
         DaoManager daoManager = getDaoManager();
-        ManagerDao dao = daoManager.getDao(Manager.class);
-
-        Manager manager = dao.findById(-1);
+        daoManager.executeTx(daoManager1 -> {
+            ManagerDao dao = daoManager.getDao(Manager.class);
+            return dao.findById(-1);
+        });
     }
 
     @Test(expected = DaoException.class)
     public void testFindByIdFailsIfElementCouldNotBeFounded() throws Exception {
         DaoManager daoManager = getDaoManager();
-        ManagerDao dao = daoManager.getDao(Manager.class);
-        Manager manager = dao.findById(100000000);
+        daoManager.executeTx(daoManager1 -> {
+            ManagerDao dao = daoManager.getDao(Manager.class);
+            return dao.findById(100000000);
+        });
     }
 
     @Test
     public void testFindByIdSuccessIfValidId() throws Exception {
         DaoManager daoManager = getDaoManager();
-        ManagerDao dao = daoManager.getDao(Manager.class);
+        Manager manager = daoManager.executeTx(daoManager1 -> {
+            ManagerDao dao = daoManager.getDao(Manager.class);
+            return dao.findById(1);
+        });
 
         Connection connection = getDataSource().getConnection();
-        Manager manager = dao.findById(1);
-
         PreparedStatement pst = connection.prepareStatement("SELECT id, uuid, deleted, firstName, lastName, " +
                 "email, password, company " +
                 "FROM Manager WHERE id = ?");
@@ -318,7 +330,8 @@ public class JdbcManagerDaoTest extends TestConfig {
         if (resultSet.next()) {
             mapResultSetToManager(resultSet, managerFromDatabase);
         }
-
+        resultSet.close();
+        pst.close();
         connection.close();
 
         assertManagersEqual(manager, managerFromDatabase);
@@ -328,13 +341,12 @@ public class JdbcManagerDaoTest extends TestConfig {
     public void testFindByEmailSuccess() throws Exception {
         DaoManager daoManager = getDaoManager();
 
-        Connection connection = getDataSource().getConnection();
-
         Manager manager = daoManager.executeTx(daoManager1 -> {
             ManagerDao dao = daoManager1.getDao(Manager.class);
             return dao.findByEmail("pg@gmail.com");
         });
 
+        Connection connection = getDataSource().getConnection();
         PreparedStatement pst = connection.prepareStatement("SELECT id, uuid, deleted, firstName, lastName, " +
                 "email, password, company " +
                 "FROM Manager WHERE email = ?");
@@ -345,7 +357,8 @@ public class JdbcManagerDaoTest extends TestConfig {
         if (resultSet.next()) {
             mapResultSetToManager(resultSet, managerFromDatabase);
         }
-
+        resultSet.close();
+        pst.close();
         connection.close();
 
         assertManagersEqual(manager, managerFromDatabase);
@@ -354,13 +367,14 @@ public class JdbcManagerDaoTest extends TestConfig {
     @Test
     public void testFindPhoneNumberIds() throws Exception {
         DaoManager daoManager = getDaoManager();
-        ManagerDao dao = daoManager.getDao(Manager.class);
+        Manager manager = new Manager();
+        List<Integer> phoneNumberIds = daoManager.executeTx(daoManager1 -> {
+            ManagerDao dao = daoManager.getDao(Manager.class);
+            manager.setId(2);
+            return dao.findPhoneNumberIds(manager);
+        });
 
         Connection connection = getDataSource().getConnection();
-        Manager manager = new Manager();
-        manager.setId(2);
-        List<Integer> phoneNumberIds = dao.findPhoneNumberIds(manager);
-
         PreparedStatement pst = connection.prepareStatement("SELECT phoneNumber_id, manager_id " +
                 "FROM Manager_PhoneNumber WHERE manager_id = ?");
         pst.setInt(1, manager.getId());
