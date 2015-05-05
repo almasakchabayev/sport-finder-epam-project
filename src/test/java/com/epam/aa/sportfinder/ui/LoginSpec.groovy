@@ -1,12 +1,10 @@
 package com.epam.aa.sportfinder.ui
 
-import com.codeborne.selenide.Condition
 import spock.lang.Specification
 
-import static com.codeborne.selenide.Condition.*
+import static com.codeborne.selenide.Condition.visible
 import static com.codeborne.selenide.Selenide.$
 import static com.codeborne.selenide.Selenide.open
-import static com.codeborne.selenide.WebDriverRunner.url
 
 class LoginSpec extends Specification {
     def setupSpec() {
