@@ -13,10 +13,10 @@
                     <hr>
                     <div>
                         <a href="<c:url value="/customer/register" />">
-                            <h2 class="page-title">Customer</h2>
+                            <h2>Customer</h2>
                         </a>
                         <a href="<c:url value="/manager/register" />">
-                            <h2 class="page-title">Manager</h2>
+                            <h2>Manager</h2>
                         </a>
                     </div><!-- /.form-group -->
                 </div>

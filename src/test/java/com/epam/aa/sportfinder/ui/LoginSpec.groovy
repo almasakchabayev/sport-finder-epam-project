@@ -1,7 +1,9 @@
 package com.epam.aa.sportfinder.ui
 
+import com.codeborne.selenide.Condition
 import spock.lang.Specification
 
+import static com.codeborne.selenide.Condition.*
 import static com.codeborne.selenide.Selenide.$
 import static com.codeborne.selenide.Selenide.open
 import static com.codeborne.selenide.WebDriverRunner.url
@@ -23,7 +25,7 @@ class LoginSpec extends Specification {
             $("#account-submit").click()
 
         then:
-            $(".error").displayed
+            $(".error").shouldBe(visible)
     }
 
     def "when user types in correct credentials and he is a manager should be redirected to /manager/items page"() {
@@ -33,6 +35,6 @@ class LoginSpec extends Specification {
             $("#account-submit").click()
 
         then:
-            url().contains("/manager/items")
+            $("#items").shouldBe(visible)
     }
 }
