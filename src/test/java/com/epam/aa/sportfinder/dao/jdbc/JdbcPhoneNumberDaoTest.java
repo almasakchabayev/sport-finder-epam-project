@@ -23,40 +23,43 @@ public class JdbcPhoneNumberDaoTest extends TestConfig {
     @Test(expected = DaoException.class)
     public void testInsertFailsIfIdNotNull() throws Exception {
         DaoManager daoManager = getDaoManager();
-        PhoneNumberDao dao = daoManager.getDao(PhoneNumber.class);
+        daoManager.executeTx(daoManager1 -> {
+            PhoneNumberDao dao = daoManager.getDao(PhoneNumber.class);
 
-        PhoneNumber phoneNumber = new PhoneNumber();
-        phoneNumber.setId(1);
+            PhoneNumber phoneNumber = new PhoneNumber();
+            phoneNumber.setId(1);
 
-        dao.insert(phoneNumber);
+            return dao.insert(phoneNumber);
+        });
     }
 
     @Test(expected = DaoException.class)
     public void testInsertFailsIfUuidAlreadyExists() throws Exception {
         DaoManager daoManager = getDaoManager();
-        PhoneNumberDao dao = daoManager.getDao(PhoneNumber.class);
+        daoManager.executeTx(daoManager1 -> {
+            PhoneNumberDao dao = daoManager.getDao(PhoneNumber.class);
 
-        PhoneNumber phoneNumber = new PhoneNumber();
-        dao.insert(phoneNumber);
+            PhoneNumber phoneNumber = new PhoneNumber();
+            dao.insert(phoneNumber);
 
-        PhoneNumber phoneNumberWithSameUuid = new PhoneNumber();
-        phoneNumberWithSameUuid.setUuid(phoneNumber.getUuid());
+            PhoneNumber phoneNumberWithSameUuid = new PhoneNumber();
+            phoneNumberWithSameUuid.setUuid(phoneNumber.getUuid());
 
-        dao.insert(phoneNumberWithSameUuid);
+            return dao.insert(phoneNumberWithSameUuid);
+        });
     }
 
     @Test
     public void testInsertSuccessWithoutIdAndUuid() throws Exception {
         DaoManager daoManager = getDaoManager();
-        PhoneNumberDao dao = daoManager.getDao(PhoneNumber.class);
+        PhoneNumber phoneNumber = new PhoneNumber();
+        daoManager.executeTx(daoManager1 -> {
+            PhoneNumberDao dao = daoManager.getDao(PhoneNumber.class);
+            phoneNumber.setNumber("87017654321");
+            return dao.insert(phoneNumber);
+        });
 
         Connection connection = getDataSource().getConnection();
-
-        PhoneNumber phoneNumber = new PhoneNumber();
-        phoneNumber.setNumber("87017654321");
-
-        dao.insert(phoneNumber);
-
         Statement st = connection.createStatement();
         ResultSet resultSet = st.executeQuery("SELECT id, uuid, deleted, number " +
                 "FROM PhoneNumber ORDER BY id DESC LIMIT 1");
@@ -78,27 +81,30 @@ public class JdbcPhoneNumberDaoTest extends TestConfig {
     @Test(expected = DaoException.class)
     public void testUpdateFailsIfIdIsNull() throws Exception {
         DaoManager daoManager = getDaoManager();
-        PhoneNumberDao dao = daoManager.getDao(PhoneNumber.class);
+        daoManager.executeTx(daoManager1 -> {
+            PhoneNumberDao dao = daoManager.getDao(PhoneNumber.class);
 
-        PhoneNumber phoneNumber = new PhoneNumber();
-        phoneNumber.setNumber("1234567890");
+            PhoneNumber phoneNumber = new PhoneNumber();
+            phoneNumber.setNumber("1234567890");
 
-        dao.update(phoneNumber);
+            dao.update(phoneNumber);
+            return null;
+        });
     }
 
     @Test
     public void testUpdateSuccessIfIdNotNull() throws Exception {
         DaoManager daoManager = getDaoManager();
-        PhoneNumberDao dao = daoManager.getDao(PhoneNumber.class);
+        PhoneNumber phoneNumber = new PhoneNumber();
+        daoManager.executeTx(daoManager1 -> {
+            PhoneNumberDao dao = daoManager.getDao(PhoneNumber.class);
+            phoneNumber.setId(2);
+            phoneNumber.setNumber("00000000000");
+            dao.update(phoneNumber);
+            return null;
+        });
 
         Connection connection = getDataSource().getConnection();
-
-        PhoneNumber phoneNumber = new PhoneNumber();
-        phoneNumber.setId(2);
-        phoneNumber.setNumber("lenoleum");
-
-        dao.update(phoneNumber);
-
         PreparedStatement pst = connection.prepareStatement("SELECT id, uuid, deleted, number " +
                 "FROM PhoneNumber WHERE id = ?");
         pst.setInt(1, phoneNumber.getId());
@@ -121,14 +127,14 @@ public class JdbcPhoneNumberDaoTest extends TestConfig {
     @Test
     public void testDeleteInDbAndAssignTrueToObject() throws Exception {
         DaoManager daoManager = getDaoManager();
-        PhoneNumberDao dao = daoManager.getDao(PhoneNumber.class);
+        PhoneNumber phoneNumber = new PhoneNumber();
+        daoManager.executeTx(daoManager1 -> {
+            PhoneNumberDao dao = daoManager.getDao(PhoneNumber.class);
+            phoneNumber.setId(1);
+            return dao.delete(phoneNumber);
+        });
 
         Connection connection = getDataSource().getConnection();
-
-        PhoneNumber phoneNumber = new PhoneNumber();
-        phoneNumber.setId(1);
-        dao.delete(phoneNumber);
-
         PreparedStatement pst = connection.prepareStatement("SELECT id, uuid, deleted, number " +
                 "FROM PhoneNumber WHERE id = ?");
         pst.setInt(1, phoneNumber.getId());
@@ -152,35 +158,40 @@ public class JdbcPhoneNumberDaoTest extends TestConfig {
     @Test(expected = DaoException.class)
     public void testFindByIdFailsIfIdIsNull() throws Exception {
         DaoManager daoManager = getDaoManager();
-        PhoneNumberDao dao = daoManager.getDao(PhoneNumber.class);
-
-        PhoneNumber dummyphoneNumber = new PhoneNumber();
-        PhoneNumber phoneNumber = dao.findById(dummyphoneNumber.getId());
+        PhoneNumber phoneNumber = daoManager.executeTx(daoManager1 -> {
+            PhoneNumberDao dao = daoManager.getDao(PhoneNumber.class);
+            PhoneNumber dummyphoneNumber = new PhoneNumber();
+            return dao.findById(dummyphoneNumber.getId());
+        });
     }
 
     @Test(expected = DaoException.class)
     public void testFindByIdFailsIfIdIsNegative() throws Exception {
         DaoManager daoManager = getDaoManager();
-        PhoneNumberDao dao = daoManager.getDao(PhoneNumber.class);
-
-        PhoneNumber phoneNumber = dao.findById(-1);
+        PhoneNumber phoneNumber = daoManager.executeTx(daoManager1 -> {
+            PhoneNumberDao dao = daoManager.getDao(PhoneNumber.class);
+            return dao.findById(-1);
+        });
     }
 
     @Test(expected = DaoException.class)
     public void testFindByIdFailsIfElementCouldNotBeFounded() throws Exception {
         DaoManager daoManager = getDaoManager();
-        PhoneNumberDao dao = daoManager.getDao(PhoneNumber.class);
-        PhoneNumber phoneNumber = dao.findById(100000000);
+        PhoneNumber phoneNumber = daoManager.executeTx(daoManager1 -> {
+            PhoneNumberDao dao = daoManager.getDao(PhoneNumber.class);
+            return dao.findById(100000000);
+        });
     }
 
     @Test
     public void testFindByIdSuccessIfValidId() throws Exception {
         DaoManager daoManager = getDaoManager();
-        PhoneNumberDao dao = daoManager.getDao(PhoneNumber.class);
+        PhoneNumber phoneNumber = daoManager.executeTx(daoManager1 -> {
+            PhoneNumberDao dao = daoManager.getDao(PhoneNumber.class);
+            return dao.findById(1);
+        });
 
         Connection connection = getDataSource().getConnection();
-        PhoneNumber phoneNumber = dao.findById(1);
-
         PreparedStatement pst = connection.prepareStatement("SELECT id, uuid, deleted, number " +
                 "FROM PhoneNumber WHERE id = ?");
         pst.setInt(1, phoneNumber.getId());
@@ -191,8 +202,10 @@ public class JdbcPhoneNumberDaoTest extends TestConfig {
             phoneNumberFromDatabase.setId(resultSet.getInt("id"));
             phoneNumberFromDatabase.setUuid((UUID) resultSet.getObject("uuid"));
             phoneNumberFromDatabase.setDeleted(resultSet.getBoolean("deleted"));
-            phoneNumberFromDatabase.setNumber(resultSet.getString("number"));}
-
+            phoneNumberFromDatabase.setNumber(resultSet.getString("number"));
+        }
+        resultSet.close();
+        pst.close();
         connection.close();
 
         assertPhoneNumbersEqual(phoneNumber, phoneNumberFromDatabase);
@@ -201,8 +214,6 @@ public class JdbcPhoneNumberDaoTest extends TestConfig {
     @Test
     public void testFindByIdsSuccessIfValidId() throws Exception {
         DaoManager daoManager = getDaoManager();
-
-        Connection connection = getDataSource().getConnection();
 
         List<Integer> ids = new ArrayList<>();
         ids.add(1);
@@ -213,6 +224,7 @@ public class JdbcPhoneNumberDaoTest extends TestConfig {
             return dao.findByIds(ids);
         });
 
+        Connection connection = getDataSource().getConnection();
         String sql = "SELECT id, uuid, deleted, number " +
                 "FROM PhoneNumber WHERE ";
 
@@ -234,7 +246,8 @@ public class JdbcPhoneNumberDaoTest extends TestConfig {
             phoneNumberFromDatabase.setNumber(resultSet.getString("number"));
             phoneNumbersFromDatabase.add(phoneNumberFromDatabase);
         }
-
+        resultSet.close();
+        pst.close();
         connection.close();
 
         assertEquals(phoneNumbers.size(), phoneNumbersFromDatabase.size());
