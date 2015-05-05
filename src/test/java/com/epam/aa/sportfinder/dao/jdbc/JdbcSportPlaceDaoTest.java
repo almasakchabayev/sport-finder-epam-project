@@ -20,94 +20,106 @@ public class JdbcSportPlaceDaoTest extends TestConfig {
     @Test(expected = DaoException.class)
     public void testInsertFailsIfIdNotNull() throws Exception {
         DaoManager daoManager = getDaoManager();
-        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+        daoManager.executeTx(daoManager1 -> {
+            SportPlaceDao dao = daoManager.getDao(SportPlace.class);
 
-        SportPlace sportPlace = new SportPlace();
-        sportPlace.setId(1);
+            SportPlace sportPlace = new SportPlace();
+            sportPlace.setId(1);
 
-        dao.insert(sportPlace);
+            return dao.insert(sportPlace);
+        });
     }
 
     @Test(expected = DaoException.class)
     public void testInsertFailsIfUuidAlreadyExists() throws Exception {
         DaoManager daoManager = getDaoManager();
-        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+        daoManager.executeTx(daoManager1 -> {
+            SportPlaceDao dao = daoManager.getDao(SportPlace.class);
 
-        SportPlace sportPlace = new SportPlace();
-        dao.insert(sportPlace);
+            SportPlace sportPlace = new SportPlace();
+            dao.insert(sportPlace);
 
-        SportPlace sportPlaceWithSameUuid = new SportPlace();
-        sportPlaceWithSameUuid.setUuid(sportPlace.getUuid());
+            SportPlace sportPlaceWithSameUuid = new SportPlace();
+            sportPlaceWithSameUuid.setUuid(sportPlace.getUuid());
 
-        dao.insert(sportPlaceWithSameUuid);
+            return dao.insert(sportPlaceWithSameUuid);
+        });
+
     }
 
     @Test(expected = DaoException.class)
     public void testInsertFailsIfAddressIsNull() throws Exception {
         DaoManager daoManager = getDaoManager();
-        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+        daoManager.executeTx(daoManager1 -> {
+            SportPlaceDao dao = daoManager.getDao(SportPlace.class);
 
-        SportPlace sportPlace = new SportPlace();
-        FloorCoverage floorCoverage = new FloorCoverage();
-        floorCoverage.setId(1);
-        sportPlace.setFloorCoverage(floorCoverage);
+            SportPlace sportPlace = new SportPlace();
+            FloorCoverage floorCoverage = new FloorCoverage();
+            floorCoverage.setId(1);
+            sportPlace.setFloorCoverage(floorCoverage);
 
-        dao.insert(sportPlace);
+            return dao.insert(sportPlace);
+        });
     }
 
     @Test(expected = DaoException.class)
     public void testInsertFailsIfFloorCoverageIsNull() throws Exception {
         DaoManager daoManager = getDaoManager();
-        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+        daoManager.executeTx(daoManager1 -> {
+            SportPlaceDao dao = daoManager.getDao(SportPlace.class);
 
-        SportPlace sportPlace = new SportPlace();
-        Address address = new Address();
-        address.setId(1);
-        sportPlace.setAddress(address);
+            SportPlace sportPlace = new SportPlace();
+            Address address = new Address();
+            address.setId(1);
+            sportPlace.setAddress(address);
 
-        dao.insert(sportPlace);
+            return dao.insert(sportPlace);
+        });
     }
 
     @Test(expected = DaoException.class)
     public void testInsertFailsIfAddressIdIsNull() throws Exception {
         DaoManager daoManager = getDaoManager();
-        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+        daoManager.executeTx(daoManager1 -> {
+            SportPlaceDao dao = daoManager.getDao(SportPlace.class);
 
-        SportPlace sportPlace = new SportPlace();
-        FloorCoverage floorCoverage = new FloorCoverage();
-        floorCoverage.setId(1);
-        sportPlace.setFloorCoverage(floorCoverage);
-        sportPlace.setAddress(new Address());
+            SportPlace sportPlace = new SportPlace();
+            FloorCoverage floorCoverage = new FloorCoverage();
+            floorCoverage.setId(1);
+            sportPlace.setFloorCoverage(floorCoverage);
+            sportPlace.setAddress(new Address());
 
-        dao.insert(sportPlace);
+            return dao.insert(sportPlace);
+        });
     }
 
     @Test(expected = DaoException.class)
     public void testInsertFailsIfFloorCoverageIdIsNull() throws Exception {
         DaoManager daoManager = getDaoManager();
-        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+        daoManager.executeTx(daoManager1 -> {
+            SportPlaceDao dao = daoManager.getDao(SportPlace.class);
 
-        SportPlace sportPlace = new SportPlace();
-        Address address = new Address();
-        address.setId(1);
-        sportPlace.setAddress(address);
-        sportPlace.setFloorCoverage(new FloorCoverage());
+            SportPlace sportPlace = new SportPlace();
+            Address address = new Address();
+            address.setId(1);
+            sportPlace.setAddress(address);
+            sportPlace.setFloorCoverage(new FloorCoverage());
 
-        dao.insert(sportPlace);
+            return dao.insert(sportPlace);
+        });
     }
 
     @Test
     public void testInsertSuccessWithoutSports() throws Exception {
         DaoManager daoManager = getDaoManager();
-        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+        SportPlace sportPlace =  new SportPlace();
+        daoManager.executeTx(daoManager1 -> {
+            SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+            initSportPlaceWithoutSports(sportPlace);
+            return dao.insert(sportPlace);
+        });
 
         Connection connection = getDataSource().getConnection();
-
-        SportPlace sportPlace = new SportPlace();
-        initSportPlaceWithoutSports(sportPlace);
-
-        dao.insert(sportPlace);
-
         Statement st = connection.createStatement();
         ResultSet resultSet = st.executeQuery("SELECT id, uuid, deleted, size, floorcoverage,  " +
                 "capacity, indoor, changingRoom, shower, lightening, tribuneCapacity, " +
@@ -128,24 +140,25 @@ public class JdbcSportPlaceDaoTest extends TestConfig {
     @Test
     public void testInsertSportsSuccess() throws Exception {
         DaoManager daoManager = getDaoManager();
-        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+        SportPlace sportPlace = new SportPlace();
+        daoManager.executeTx(daoManager1 -> {
+            SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+
+            initSportPlaceWithoutSports(sportPlace);
+            sportPlace.setId(1);
+            ArrayList<Sport> sportArrayList = new ArrayList<>();
+            Sport sport1 = new Sport();
+            sport1.setId(1);
+            sportArrayList.add(sport1);
+            Sport sport2 = new Sport();
+            sport2.setId(2);
+            sportArrayList.add(sport2);
+            sportPlace.setSports(sportArrayList);
+
+            return dao.insertCorrespondingSports(sportPlace);
+        });
 
         Connection connection = getDataSource().getConnection();
-
-        SportPlace sportPlace = new SportPlace();
-        initSportPlaceWithoutSports(sportPlace);
-        sportPlace.setId(1);
-        ArrayList<Sport> sportArrayList = new ArrayList<>();
-        Sport sport1 = new Sport();
-        sport1.setId(1);
-        sportArrayList.add(sport1);
-        Sport sport2 = new Sport();
-        sport2.setId(2);
-        sportArrayList.add(sport2);
-        sportPlace.setSports(sportArrayList);
-
-        dao.insertCorrespondingSports(sportPlace);
-
         Statement st = connection.createStatement();
         ResultSet resultSet = st.executeQuery("SELECT sport_id, sportPlace_id " +
                 "FROM SportPlace_Sport WHERE sportPlace_id = " + sportPlace.getId());
@@ -170,83 +183,98 @@ public class JdbcSportPlaceDaoTest extends TestConfig {
     @Test(expected = DaoException.class)
     public void testUpdateFailsIfIdIsNull() throws Exception {
         DaoManager daoManager = getDaoManager();
-        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+        daoManager.executeTx(daoManager1 -> {
+            SportPlaceDao dao = daoManager.getDao(SportPlace.class);
 
-        SportPlace sportPlace = new SportPlace();
+            SportPlace sportPlace = new SportPlace();
 
-        dao.update(sportPlace);
+            dao.update(sportPlace);
+            return null;
+        });
     }
 
     @Test(expected = DaoException.class)
     public void testUpdateFailsIfAddressIsNull() throws Exception {
         DaoManager daoManager = getDaoManager();
-        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+        daoManager.executeTx(daoManager1 -> {
+            SportPlaceDao dao = daoManager.getDao(SportPlace.class);
 
-        SportPlace sportPlace = new SportPlace();
-        sportPlace.setId(1);
-        FloorCoverage floorCoverage = new FloorCoverage();
-        floorCoverage.setId(1);
-        sportPlace.setFloorCoverage(floorCoverage);
+            SportPlace sportPlace = new SportPlace();
+            sportPlace.setId(1);
+            FloorCoverage floorCoverage = new FloorCoverage();
+            floorCoverage.setId(1);
+            sportPlace.setFloorCoverage(floorCoverage);
 
-        dao.update(sportPlace);
+            dao.update(sportPlace);
+            return null;
+        });
     }
 
     @Test(expected = DaoException.class)
     public void testUpdateFailsIfFloorCoverageIsNull() throws Exception {
         DaoManager daoManager = getDaoManager();
-        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+        daoManager.executeTx(daoManager1 -> {
+            SportPlaceDao dao = daoManager.getDao(SportPlace.class);
 
-        SportPlace sportPlace = new SportPlace();
-        sportPlace.setId(1);
-        Address address = new Address();
-        address.setId(1);
-        sportPlace.setAddress(address);
+            SportPlace sportPlace = new SportPlace();
+            sportPlace.setId(1);
+            Address address = new Address();
+            address.setId(1);
+            sportPlace.setAddress(address);
 
-        dao.update(sportPlace);
+            dao.update(sportPlace);
+            return null;
+        });
     }
 
     @Test(expected = DaoException.class)
     public void testUpdateFailsIfAddressIdIsNull() throws Exception {
         DaoManager daoManager = getDaoManager();
-        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+        daoManager.executeTx(daoManager1 -> {
+            SportPlaceDao dao = daoManager.getDao(SportPlace.class);
 
-        SportPlace sportPlace = new SportPlace();
-        sportPlace.setId(1);
-        FloorCoverage floorCoverage = new FloorCoverage();
-        floorCoverage.setId(1);
-        sportPlace.setFloorCoverage(floorCoverage);
-        sportPlace.setAddress(new Address());
+            SportPlace sportPlace = new SportPlace();
+            sportPlace.setId(1);
+            FloorCoverage floorCoverage = new FloorCoverage();
+            floorCoverage.setId(1);
+            sportPlace.setFloorCoverage(floorCoverage);
+            sportPlace.setAddress(new Address());
 
-        dao.update(sportPlace);
+            dao.update(sportPlace);
+            return null;
+        });
     }
 
     @Test(expected = DaoException.class)
     public void testUpdateFailsIfFloorCoverageIdIsNull() throws Exception {
         DaoManager daoManager = getDaoManager();
-        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+        daoManager.executeTx(daoManager1 -> {
+            SportPlaceDao dao = daoManager.getDao(SportPlace.class);
 
-        SportPlace sportPlace = new SportPlace();
-        sportPlace.setId(1);
-        Address address = new Address();
-        address.setId(1);
-        sportPlace.setAddress(address);
-        sportPlace.setFloorCoverage(new FloorCoverage());
+            SportPlace sportPlace = new SportPlace();
+            sportPlace.setId(1);
+            Address address = new Address();
+            address.setId(1);
+            sportPlace.setAddress(address);
+            sportPlace.setFloorCoverage(new FloorCoverage());
 
-        dao.update(sportPlace);
+            dao.update(sportPlace);
+            return null;
+        });
     }
     @Test
     public void testUpdateSuccessIfIdNotNullWithoutSports() throws Exception {
         DaoManager daoManager = getDaoManager();
-        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+        SportPlace sportPlace = new SportPlace();
+        daoManager.executeTx(daoManager1 -> {
+            SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+            initSportPlaceWithoutSports(sportPlace);
+            sportPlace.setId(2);
+            dao.update(sportPlace);
+            return null;
+        });
 
         Connection connection = getDataSource().getConnection();
-
-        SportPlace sportPlace = new SportPlace();
-        initSportPlaceWithoutSports(sportPlace);
-        sportPlace.setId(2);
-
-        dao.update(sportPlace);
-
         PreparedStatement pst = connection.prepareStatement("SELECT id, uuid, deleted, size, floorcoverage, " +
                 "capacity, indoor, changingRoom, shower, lightening, tribuneCapacity, " +
                 "otherInfrastructureFeatures, pricePerHour, description, address, manager " +
@@ -268,40 +296,44 @@ public class JdbcSportPlaceDaoTest extends TestConfig {
     @Test(expected = DaoException.class)
     public void testAddSportFailsIfSportIdIsNull() throws Exception {
         DaoManager daoManager = getDaoManager();
-        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+        daoManager.executeTx(daoManager1 -> {
+            SportPlaceDao dao = daoManager.getDao(SportPlace.class);
 
-        SportPlace sportPlace = new SportPlace();
-        initSportPlaceWithoutSports(sportPlace);
-        sportPlace.setId(2);
+            SportPlace sportPlace = new SportPlace();
+            initSportPlaceWithoutSports(sportPlace);
+            sportPlace.setId(2);
 
-        dao.addSportToCorrespondingSports(sportPlace, new Sport());
+            return dao.addSportToCorrespondingSports(sportPlace, new Sport());
+        });
     }
 
     @Test(expected = DaoException.class)
     public void testAddSportFailsIfSportPlaceIdIsNull() throws Exception {
         DaoManager daoManager = getDaoManager();
-        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
-
-        Sport sport = new Sport();
-        sport.setId(1);
-        dao.addSportToCorrespondingSports(new SportPlace(), sport);
+        daoManager.executeTx(daoManager1 -> {
+            SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+            Sport sport = new Sport();
+            sport.setId(1);
+            return dao.addSportToCorrespondingSports(new SportPlace(), sport);
+        });
     }
 
     @Test
     public void testAddSportSuccess() throws Exception {
         DaoManager daoManager = getDaoManager();
-        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+        SportPlace sportPlace = new SportPlace();
+        daoManager.executeTx(daoManager1 -> {
+            SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+
+            initSportPlaceWithoutSports(sportPlace);
+            sportPlace.setId(2);
+            Sport sport = new Sport();
+            sport.setId(1);
+
+            return dao.addSportToCorrespondingSports(sportPlace, sport);
+        });
 
         Connection connection = getDataSource().getConnection();
-
-        SportPlace sportPlace = new SportPlace();
-        initSportPlaceWithoutSports(sportPlace);
-        sportPlace.setId(2);
-        Sport sport = new Sport();
-        sport.setId(1);
-
-        dao.addSportToCorrespondingSports(sportPlace, sport);
-
         Statement st = connection.createStatement();
         ResultSet resultSet = st.executeQuery("SELECT sport_id, sportPlace_id " +
                 "FROM SportPlace_Sport WHERE sportPlace_id = " + sportPlace.getId());
@@ -311,7 +343,6 @@ public class JdbcSportPlaceDaoTest extends TestConfig {
         while (resultSet.next()) {
             sportIdsFromDatabase.add(resultSet.getInt("sport_id"));
         }
-
         resultSet.close();
         st.close();
         connection.close();
@@ -322,40 +353,43 @@ public class JdbcSportPlaceDaoTest extends TestConfig {
     @Test(expected = DaoException.class)
     public void testRemoveSportFailsIfSportIdIsNull() throws Exception {
         DaoManager daoManager = getDaoManager();
-        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+        daoManager.executeTx(daoManager1 -> {
+            SportPlaceDao dao = daoManager.getDao(SportPlace.class);
 
-        SportPlace sportPlace = new SportPlace();
-        initSportPlaceWithoutSports(sportPlace);
-        sportPlace.setId(2);
+            SportPlace sportPlace = new SportPlace();
+            initSportPlaceWithoutSports(sportPlace);
+            sportPlace.setId(2);
 
-        dao.removeSportFromCorrespondingSports(sportPlace, new Sport());
+            return dao.removeSportFromCorrespondingSports(sportPlace, new Sport());
+        });
     }
 
     @Test(expected = DaoException.class)
     public void testRemoveSportFailsIfSportPlaceIdIsNull() throws Exception {
         DaoManager daoManager = getDaoManager();
-        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+        daoManager.executeTx(daoManager1 -> {
+            SportPlaceDao dao = daoManager.getDao(SportPlace.class);
 
-        Sport sport = new Sport();
-        sport.setId(1);
-        dao.removeSportFromCorrespondingSports(new SportPlace(), sport);
+            Sport sport = new Sport();
+            sport.setId(1);
+            return dao.removeSportFromCorrespondingSports(new SportPlace(), sport);
+        });
     }
 
     @Test
     public void testRemoveSportSuccess() throws Exception {
         DaoManager daoManager = getDaoManager();
-        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+        SportPlace sportPlace = new SportPlace();
+        daoManager.executeTx(daoManager1 -> {
+            SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+            initSportPlaceWithoutSports(sportPlace);
+            sportPlace.setId(2);
+            Sport sport = new Sport();
+            sport.setId(2);
+            return dao.removeSportFromCorrespondingSports(sportPlace, sport);
+        });
 
         Connection connection = getDataSource().getConnection();
-
-        SportPlace sportPlace = new SportPlace();
-        initSportPlaceWithoutSports(sportPlace);
-        sportPlace.setId(2);
-        Sport sport = new Sport();
-        sport.setId(2);
-
-        dao.removeSportFromCorrespondingSports(sportPlace, sport);
-
         Statement st = connection.createStatement();
         ResultSet resultSet = st.executeQuery("SELECT sport_id, sportPlace_id " +
                 "FROM SportPlace_Sport WHERE sportPlace_id = " + sportPlace.getId());
@@ -381,15 +415,15 @@ public class JdbcSportPlaceDaoTest extends TestConfig {
     @Test
     public void testDeleteInDbAndAssignTrueToObject() throws Exception {
         DaoManager daoManager = getDaoManager();
-        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+        SportPlace sportPlace = new SportPlace();
+        daoManager.executeTx(daoManager1 -> {
+            SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+            initSportPlaceWithoutSports(sportPlace);
+            sportPlace.setId(1);
+            return dao.delete(sportPlace);
+        });
 
         Connection connection = getDataSource().getConnection();
-
-        SportPlace sportPlace = new SportPlace();
-        initSportPlaceWithoutSports(sportPlace);
-        sportPlace.setId(1);
-        dao.delete(sportPlace);
-
         PreparedStatement pst = connection.prepareStatement("SELECT id, uuid, deleted, size, floorcoverage, " +
                 "capacity, indoor, changingRoom, shower, lightening, tribuneCapacity, " +
                 "otherInfrastructureFeatures, pricePerHour, description, address, manager " +
@@ -412,36 +446,41 @@ public class JdbcSportPlaceDaoTest extends TestConfig {
     @Test(expected = DaoException.class)
     public void testFindByIdFailsIfIdIsNull() throws Exception {
         DaoManager daoManager = getDaoManager();
-        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+        daoManager.executeTx(daoManager1 -> {
+            SportPlaceDao dao = daoManager.getDao(SportPlace.class);
 
-        SportPlace dummysportPlace = new SportPlace();
-        SportPlace sportPlace = dao.findById(dummysportPlace.getId());
+            SportPlace dummysportPlace = new SportPlace();
+            return dao.findById(dummysportPlace.getId());
+        });
     }
 
     @Test(expected = DaoException.class)
     public void testFindByIdFailsIfIdIsNegative() throws Exception {
         DaoManager daoManager = getDaoManager();
-        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
-
-        SportPlace sportPlace = dao.findById(-1);
+        daoManager.executeTx(daoManager1 -> {
+            SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+            return dao.findById(-1);
+        });
     }
 
     @Test(expected = DaoException.class)
     public void testFindByIdFailsIfElementCouldNotBeFounded() throws Exception {
         DaoManager daoManager = getDaoManager();
-        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
-
-        SportPlace sportPlace = dao.findById(100000000);
+        daoManager.executeTx(daoManager1 -> {
+            SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+            return dao.findById(100000000);
+        });
     }
 
     @Test
     public void testFindByIdSuccessIfValidId() throws Exception {
         DaoManager daoManager = getDaoManager();
-        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+        SportPlace sportPlace = daoManager.executeTx(daoManager1 -> {
+            SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+            return dao.findById(1);
+        });
 
         Connection connection = getDataSource().getConnection();
-        SportPlace sportPlace = dao.findById(1);
-
         PreparedStatement pst = connection.prepareStatement("SELECT id, uuid, deleted, size, floorcoverage, " +
                 "capacity, indoor, changingRoom, shower, lightening, tribuneCapacity, " +
                 "otherInfrastructureFeatures, pricePerHour, description, address, manager " +
@@ -463,22 +502,25 @@ public class JdbcSportPlaceDaoTest extends TestConfig {
     @Test(expected = DaoException.class)
     public void testFindCorrespondingSportIdsFailsIfIdIsNull() throws Exception {
         DaoManager daoManager = getDaoManager();
-        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+        daoManager.executeTx(daoManager1 -> {
+            SportPlaceDao dao = daoManager.getDao(SportPlace.class);
 
-        SportPlace sportPlace = new SportPlace();
-        dao.findCorrespondingSportIds(sportPlace);
+            SportPlace sportPlace = new SportPlace();
+            return dao.findCorrespondingSportIds(sportPlace);
+        });
     }
 
     @Test
     public void testFindCorrespondingSportIds() throws Exception {
         DaoManager daoManager = getDaoManager();
-        SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+        SportPlace sportPlace = new SportPlace();
+        List<Integer> correspondingSportIds = daoManager.executeTx(daoManager1 -> {
+            SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+            sportPlace.setId(2);
+            return dao.findCorrespondingSportIds(sportPlace);
+        });
 
         Connection connection = getDataSource().getConnection();
-        SportPlace sportPlace = new SportPlace();
-        sportPlace.setId(2);
-        List<Integer> correspondingSportIds = dao.findCorrespondingSportIds(sportPlace);
-
         PreparedStatement pst = connection.prepareStatement("SELECT sport_id, sportPlace_id " +
                 "FROM SportPlace_Sport WHERE sportPlace_id = ?");
         pst.setInt(1, sportPlace.getId());
@@ -493,6 +535,39 @@ public class JdbcSportPlaceDaoTest extends TestConfig {
         connection.close();
 
         assertEquals(correspondingSportIds, IdsFromDatabase);
+    }
+
+    @Test
+    public void testFindByManager() throws Exception {
+        DaoManager daoManager = getDaoManager();
+        Manager m = new Manager();
+        List<SportPlace> sportPlaces = daoManager.executeTx(daoManager1 -> {
+            SportPlaceDao dao = daoManager.getDao(SportPlace.class);
+            m.setId(1);
+            return dao.findByManager(m);
+        });
+
+        Connection connection = getDataSource().getConnection();
+        PreparedStatement pst = connection.prepareStatement("SELECT id, uuid, deleted, size, floorcoverage, " +
+                "capacity, indoor, changingRoom, shower, lightening, tribuneCapacity, " +
+                "otherInfrastructureFeatures, pricePerHour, description, address, manager " +
+                "FROM SportPlace WHERE manager = ?");
+        pst.setInt(1, m.getId());
+        ResultSet resultSet = pst.executeQuery();
+        List<SportPlace> sportPlacesFromDatabase = new ArrayList<>();
+
+        while (resultSet.next()) {
+            SportPlace sportPlace = getSportPlaceFromResultSet(resultSet);
+            sportPlacesFromDatabase.add(sportPlace);
+        }
+        resultSet.close();
+        pst.close();
+        connection.close();
+
+        assertEquals(sportPlaces.size(), sportPlacesFromDatabase.size());
+        for (int i = 0; i < sportPlaces.size(); i++) {
+            assertSportPlacesEqual(sportPlaces.get(i), sportPlacesFromDatabase.get(i));
+        }
     }
 
     public void assertSportPlacesEqual(SportPlace sportPlace, SportPlace sportPlaceFromDatabase) {
