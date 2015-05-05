@@ -1,6 +1,6 @@
 package com.epam.aa.sportfinder.controller;
 
-import com.epam.aa.sportfinder.config.ControllerActionLoader;
+import com.epam.aa.sportfinder.config.ControllerActionsLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,22 +16,14 @@ public class ActionFactory {
 
     public static Action getAction(HttpServletRequest request) {
         logger.debug("Retrieving action according to {}{}", request.getMethod(), request.getRequestURI());
-        String path = request.getRequestURI().replace("/controller", "");
-        if (path.contains(";")) {
-            int i = path.indexOf(";");
-            path = path.substring(0, i);
-        }
-        if (path.contains("?")) {
-            int i = path.indexOf("?");
-            path = path.substring(0, i);
-        }
+        String path = getPath(request);
         return actions.get(request.getMethod() + path);
     }
 
     private static Map<String, Action> initActionFactory() {
         Map<String, Action> actions = new HashMap<>();
 
-        Set<Class<?>> annotated = ControllerActionLoader.getClassesAnnotatedWithControllerAction();
+        Set<Class<?>> annotated = ControllerActionsLoader.getClassesAnnotatedWithControllerAction();
         for (Class<?> action : annotated) {
             ControllerAction annotation = action.getAnnotation(ControllerAction.class);
             String path = annotation.path();
@@ -49,5 +41,18 @@ public class ActionFactory {
         //TODO: add logout
 //        actions.put("GET/logout", new LogoutAction());
         return actions;
+    }
+
+    public static String getPath(HttpServletRequest request) {
+        String path = request.getRequestURI().replace("/controller", "");
+        if (path.contains(";")) {
+            int i = path.indexOf(";");
+            path = path.substring(0, i);
+        }
+        if (path.contains("?")) {
+            int i = path.indexOf("?");
+            path = path.substring(0, i);
+        }
+        return path;
     }
 }

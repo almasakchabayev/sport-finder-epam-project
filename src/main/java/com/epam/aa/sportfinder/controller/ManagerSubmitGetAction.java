@@ -15,7 +15,7 @@ import static com.epam.aa.sportfinder.controller.ControllerAction.*;
 
 @ControllerAction(path = "/manager/submit",
         httpMethod = HttpMethod.GET,
-        accessAllowedTo = {AuthenticatedAs.MANAGER})
+        accessDeniedTo = {Permission.GUEST, Permission.CUSTOMER})
 public class ManagerSubmitGetAction extends AuthorizedManagerAction {
     private static final Logger logger = LoggerFactory.getLogger(ManagerSubmitGetAction.class);
 

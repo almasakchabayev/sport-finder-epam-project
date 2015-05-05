@@ -14,14 +14,14 @@ public @interface ControllerAction {
 
     String httpMethod();
 
-    String[] accessAllowedTo();
+    String[] accessDeniedTo() default {};
 
     class HttpMethod {
         public static final String POST = "POST";
         public static final String GET = "GET";
     }
 
-    class AuthenticatedAs {
+    class Permission {
         public static final String GUEST = "guest";
         public static final String CUSTOMER = "customer";
         public static final String MANAGER = "manager";

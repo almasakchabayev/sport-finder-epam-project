@@ -5,7 +5,7 @@ import org.reflections.Reflections;
 
 import java.util.Set;
 
-public class ControllerActionLoader {
+public class ControllerActionsLoader {
     private static Set<Class<?>> annotatedClasses = loadClassesAnnotatedAsControllerAction();
 
     private static Set<Class<?>> loadClassesAnnotatedAsControllerAction() {

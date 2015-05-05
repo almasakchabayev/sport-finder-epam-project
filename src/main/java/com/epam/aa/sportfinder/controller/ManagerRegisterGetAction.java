@@ -6,7 +6,7 @@ import static com.epam.aa.sportfinder.controller.ControllerAction.*;
 
 @ControllerAction(path = "/manager/register",
         httpMethod = HttpMethod.GET,
-        accessAllowedTo = {AuthenticatedAs.GUEST, AuthenticatedAs.CUSTOMER})
+        accessDeniedTo = {Permission.MANAGER})
 public class ManagerRegisterGetAction implements Action {
     @Override
     public String execute(HttpServletRequest request) {

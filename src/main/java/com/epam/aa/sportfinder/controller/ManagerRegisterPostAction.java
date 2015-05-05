@@ -22,7 +22,7 @@ import static com.epam.aa.sportfinder.controller.ControllerAction.*;
 
 @ControllerAction(path = "/manager/register",
         httpMethod = HttpMethod.POST,
-        accessAllowedTo = {AuthenticatedAs.GUEST, AuthenticatedAs.CUSTOMER})
+        accessDeniedTo = {Permission.MANAGER})
 public class ManagerRegisterPostAction implements Action {
     private static final Logger logger = LoggerFactory.getLogger(ManagerRegisterPostAction.class);
 
