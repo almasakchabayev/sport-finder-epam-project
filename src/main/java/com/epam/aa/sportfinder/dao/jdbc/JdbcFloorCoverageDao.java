@@ -19,7 +19,7 @@ public class JdbcFloorCoverageDao extends JdbcBaseDao<FloorCoverage> implements 
     @Override
     public List<FloorCoverage> findAllNonDeleted() {
         String sql = "SELECT id, uuid, deleted, name " +
-                "FROM FloorCoverage WHERE deleted = false";
+                "FROM FloorCoverage WHERE deleted = FALSE";
 
         List<FloorCoverage> floorCoverages = new ArrayList<>();
         try (Statement st = getConnection().createStatement()) {

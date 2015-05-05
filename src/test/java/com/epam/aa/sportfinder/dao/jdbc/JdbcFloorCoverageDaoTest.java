@@ -240,7 +240,7 @@ public class JdbcFloorCoverageDaoTest extends TestConfig {
 
         Connection connection = getDataSource().getConnection();
         PreparedStatement pst = connection.prepareStatement("SELECT id, uuid, deleted, name " +
-                "FROM FloorCoverage WHERE deleted = false");
+                "FROM FloorCoverage WHERE deleted = FALSE");
         ResultSet resultSet = pst.executeQuery();
 
         List<FloorCoverage> floorCoveragesFromDatabase = new ArrayList<>();
