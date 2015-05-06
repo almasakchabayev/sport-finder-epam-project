@@ -16,12 +16,11 @@ import static com.epam.aa.sportfinder.controller.ControllerAction.*;
 @ControllerAction(path = "/manager/submit",
         httpMethod = HttpMethod.GET,
         accessDeniedTo = {Permission.GUEST, Permission.CUSTOMER})
-public class ManagerSubmitGetAction extends AuthorizedManagerAction {
+public class ManagerSubmitGetAction implements Action {
     private static final Logger logger = LoggerFactory.getLogger(ManagerSubmitGetAction.class);
 
     @Override
-    public String executeIfAuthorizedAsManager(HttpServletRequest request) {
-        Manager manager = (Manager) request.getSession().getAttribute("user");
+    public String execute(HttpServletRequest request) {
         List<FloorCoverage> floorCoverages = FloorCoverageService.findAll();
         request.setAttribute("floorCoverages", floorCoverages);
         List<Sport> sports = SportService.findAll();

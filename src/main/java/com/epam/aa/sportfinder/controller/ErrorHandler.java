@@ -13,8 +13,8 @@ public class ErrorHandler extends HttpServlet {
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 //        Throwable throwable = (Throwable)
 //                req.getAttribute("javax.servlet.error.exception");
-//        Integer statusCode = (Integer)
-//                req.getAttribute("javax.servlet.error.status_code");
+        Integer statusCode = (Integer)
+                req.getAttribute("javax.servlet.error.status_code");
 //        String servletName = (String)
 //                req.getAttribute("javax.servlet.error.servlet_name");
 //        if (servletName == null){

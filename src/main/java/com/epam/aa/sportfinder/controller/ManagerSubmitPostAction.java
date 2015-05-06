@@ -26,11 +26,11 @@ import static com.epam.aa.sportfinder.controller.ControllerAction.*;
 @ControllerAction(path = "/manager/submit",
         httpMethod = HttpMethod.POST,
         accessDeniedTo = {Permission.GUEST, Permission.CUSTOMER})
-public class ManagerSubmitPostAction extends AuthorizedManagerAction {
+public class ManagerSubmitPostAction implements Action {
     private static final Logger logger = LoggerFactory.getLogger(ManagerSubmitPostAction.class);
 
     @Override
-    public String executeIfAuthorizedAsManager(HttpServletRequest request) {
+    public String execute(HttpServletRequest request) {
         Manager manager = (Manager) request.getSession().getAttribute("user");
         String description = request.getParameter("description");
         String country = request.getParameter("country");

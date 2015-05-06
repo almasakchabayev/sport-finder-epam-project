@@ -55,7 +55,6 @@
     </filter>
     <filter-mapping>
         <filter-name>AuthorizationCheckFilter</filter-name>
-        <!--<url-pattern>/*</url-pattern>-->
         <servlet-name>FrontController</servlet-name>
         <dispatcher>FORWARD</dispatcher>
     </filter-mapping>

@@ -14,11 +14,11 @@ import static com.epam.aa.sportfinder.controller.ControllerAction.*;
 @ControllerAction(path = "/manager/items",
         httpMethod = HttpMethod.GET,
         accessDeniedTo = {Permission.GUEST, Permission.CUSTOMER})
-public class ManagerItemsGetAction extends AuthorizedManagerAction {
+public class ManagerItemsGetAction implements Action {
     private static final Logger logger = LoggerFactory.getLogger(ManagerItemsGetAction.class);
 
     @Override
-    public String executeIfAuthorizedAsManager(HttpServletRequest request) {
+    public String execute(HttpServletRequest request) {
         Manager manager = (Manager) request.getSession().getAttribute("user");
         List<SportPlace> sportPlaces = SportPlaceService.findByManager(manager);
         request.setAttribute("sportPlaces", sportPlaces);
