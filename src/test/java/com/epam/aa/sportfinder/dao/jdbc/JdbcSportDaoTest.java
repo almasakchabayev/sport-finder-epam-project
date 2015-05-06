@@ -2,9 +2,7 @@ package com.epam.aa.sportfinder.dao.jdbc;
 
 import com.epam.aa.sportfinder.dao.DaoException;
 import com.epam.aa.sportfinder.dao.DaoManager;
-import com.epam.aa.sportfinder.dao.FloorCoverageDao;
 import com.epam.aa.sportfinder.dao.SportDao;
-import com.epam.aa.sportfinder.model.FloorCoverage;
 import com.epam.aa.sportfinder.model.Sport;
 import org.junit.Test;
 
@@ -234,7 +232,7 @@ public class JdbcSportDaoTest extends TestConfig {
         DaoManager daoManager = getDaoManager();
         List<Sport> sports = daoManager.executeTx(daoManager1 -> {
             SportDao dao = daoManager.getDao(Sport.class);
-            return dao.findAllNonDeleted();
+            return dao.findAll();
         });
 
         Connection connection = getDataSource().getConnection();

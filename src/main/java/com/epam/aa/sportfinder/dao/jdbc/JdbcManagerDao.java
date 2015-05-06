@@ -114,7 +114,7 @@ public class JdbcManagerDao extends JdbcBaseDao<Manager> implements ManagerDao {
     public Manager findByEmail(String email) throws DaoException {
         String sql = "SELECT id, uuid, deleted, firstName, lastName, " +
                 "email, password, company " +
-                "FROM Manager WHERE email = ?";
+                "FROM Manager WHERE deleted = FALSE AND email = ?";
 
         Manager manager = null;
         try (PreparedStatement pst = getConnection().prepareStatement(sql)) {

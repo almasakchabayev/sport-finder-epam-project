@@ -18,7 +18,7 @@ public class JdbcSportDao extends JdbcBaseDao<Sport> implements SportDao {
     }
 
     @Override
-    public List<Sport> findAllNonDeleted() throws DaoException {
+    public List<Sport> findAll() throws DaoException {
         String sql = "SELECT id, uuid, deleted, name " +
                 "FROM Sport WHERE deleted = FALSE";
 
@@ -44,7 +44,7 @@ public class JdbcSportDao extends JdbcBaseDao<Sport> implements SportDao {
         }
 
         String sql = "SELECT id, uuid, deleted, name " +
-                "FROM Sport WHERE name = " + "'" + name + "'";
+                "FROM Sport WHERE deleted = FALSE AND name = " + "'" + name + "'";
 
         try (Statement st = getConnection().createStatement()) {
             try (ResultSet rs = st.executeQuery(sql)) {

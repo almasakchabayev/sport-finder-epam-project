@@ -235,7 +235,7 @@ public class JdbcFloorCoverageDaoTest extends TestConfig {
         DaoManager daoManager = getDaoManager();
         List<FloorCoverage> floorCoverages = daoManager.executeTx(daoManager1 -> {
             FloorCoverageDao dao = daoManager.getDao(FloorCoverage.class);
-            return dao.findAllNonDeleted();
+            return dao.findAll();
         });
 
         Connection connection = getDataSource().getConnection();

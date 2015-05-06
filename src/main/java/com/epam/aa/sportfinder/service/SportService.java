@@ -12,7 +12,7 @@ public class SportService extends BaseService {
         DaoManager daoManager = createDaoManager();
         return daoManager.executeTx(manager -> {
             SportDao sportDao = manager.getDao(Sport.class);
-            return sportDao.findAllNonDeleted();
+            return sportDao.findAll();
         });
     }
 }

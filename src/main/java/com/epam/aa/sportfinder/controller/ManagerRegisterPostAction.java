@@ -100,6 +100,8 @@ public class ManagerRegisterPostAction implements Action {
                 errors.put("email", message);
             return returnError(request, manager, errors);
         }
+
+        //todo Show success page and instead of calling LoginPostAction just setAttribute to session
         return LoginPostAction.loginUser(request, manager);
     }
 

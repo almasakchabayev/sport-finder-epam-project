@@ -23,7 +23,7 @@ public class JdbcPhoneNumberDao extends JdbcBaseDao<PhoneNumber> implements Phon
             throw new DaoException("Could not find phoneNumbers, list is null");
 
         StringBuffer sqlBuffer = new StringBuffer("SELECT id, uuid, deleted, number FROM PhoneNumber " +
-                "WHERE");
+                "WHERE deleted = FALSE AND");
         String prefix = "";
         for (Integer phoneNumberId : phoneNumberIds) {
             sqlBuffer.append(prefix);

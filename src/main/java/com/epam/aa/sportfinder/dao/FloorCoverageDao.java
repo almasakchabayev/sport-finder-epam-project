@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface FloorCoverageDao extends GenericDao<FloorCoverage> {
 
-    List<FloorCoverage> findAllNonDeleted() throws DaoException;
+    List<FloorCoverage> findAll() throws DaoException;
 
     FloorCoverage findByName(FloorCoverage floorCoverage);
 }

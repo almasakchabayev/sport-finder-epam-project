@@ -107,7 +107,7 @@ public class JdbcSportPlaceDao extends JdbcBaseDao<SportPlace> implements SportP
         String sql = "SELECT id, uuid, deleted, size, floorcoverage,  " +
                 "capacity, indoor, changingRoom, shower, lightening, tribuneCapacity, " +
                 "otherInfrastructureFeatures, pricePerHour, description, address, manager " +
-                "FROM SportPlace WHERE manager = " + manager.getId();
+                "FROM SportPlace WHERE deleted = FALSE AND manager = " + manager.getId();
 
         List<SportPlace> sportPlaces = new ArrayList<>();
         try (Statement st = getConnection().createStatement()) {

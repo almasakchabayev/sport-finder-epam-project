@@ -21,7 +21,7 @@ public class ErrorHandler extends HttpServlet {
 
         req.setAttribute("statusCode", statusCode);
 
-        logger.info("error during page load with errorStatus {}", statusCode);
+        logger.info("error during page load with errorStatus {} and requestUri:", statusCode, req.getRequestURI());
         req.getRequestDispatcher("/WEB-INF/views/error.jsp").forward(req, resp);
     }
 }

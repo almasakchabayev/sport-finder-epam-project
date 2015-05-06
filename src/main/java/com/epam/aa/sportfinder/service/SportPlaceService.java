@@ -31,6 +31,7 @@ public class SportPlaceService extends BaseService {
             sportPlace.setFloorCoverage(floorCoverage);
 
             List<Sport> sports = new ArrayList<>();
+            // todo change names to ids
             for (Sport sport : sportPlace.getSports()) {
                 Sport fullSport = sportDao.findByName(sport);
                 sports.add(fullSport);

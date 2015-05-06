@@ -119,7 +119,7 @@ public class Query {
         }
         queryBuilder.append(" FROM ");
         queryBuilder.append(daoBean.getClazz().getSimpleName());
-        queryBuilder.append(" WHERE id = ?");
+        queryBuilder.append(" WHERE deleted = FALSE AND id = ?");
         return queryBuilder.toString();
     }
 

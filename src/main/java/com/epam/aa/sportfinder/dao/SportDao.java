@@ -5,7 +5,7 @@ import com.epam.aa.sportfinder.model.Sport;
 import java.util.List;
 
 public interface SportDao extends GenericDao<Sport> {
-    List<Sport> findAllNonDeleted();
+    List<Sport> findAll();
 
     Sport findByName(Sport sport);
     //TODO:
