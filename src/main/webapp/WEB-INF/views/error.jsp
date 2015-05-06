@@ -3,11 +3,11 @@
 <t:base>
     <jsp:body>
         <header>
-            <h1 class="page-title">404</h1>
+            <h1 class="page-title">${statusCode}</h1>
         </header>
         <div class="block">
             <div id="title-404">
-                <aside>404
+                <aside>${statusCode}
                     <img src="../../assets/img/scissors.png" alt="">
                 </aside>
                 <h2>Page Not Found</h2>

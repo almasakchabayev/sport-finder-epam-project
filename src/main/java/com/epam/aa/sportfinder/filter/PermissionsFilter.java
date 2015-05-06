@@ -21,7 +21,6 @@ import static com.epam.aa.sportfinder.controller.ControllerAction.*;
 public class PermissionsFilter implements Filter {
     private static final Logger logger = LoggerFactory.getLogger(PermissionsFilter.class);
 
-
     Map<String, String[]> pathPermissions = new HashMap<>();
 
     @Override
@@ -53,6 +52,7 @@ public class PermissionsFilter implements Filter {
                 if (notAllowedPermission.equals(Permission.GUEST)) {
                     if (session == null || session.getAttribute("user") == null) {
                         response.sendError(HttpServletResponse.SC_FORBIDDEN);
+                        return;
                     }
                 } else if (notAllowedPermission.equals(Permission.CUSTOMER)) {
                     //todo add customer handler
@@ -63,6 +63,7 @@ public class PermissionsFilter implements Filter {
                     Object user = session.getAttribute("user");
                     if (user instanceof Manager) {
                         response.sendError(HttpServletResponse.SC_FORBIDDEN);
+                        return;
                     }
                 }
             }
