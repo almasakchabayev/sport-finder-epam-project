@@ -26,7 +26,7 @@
                     </c:otherwise>
                 </c:choose>
 
-                <a href="<c:url value="/manager/submit" />" class="submit-item">
+                <a href="<c:url value="/manager/item/submit" />" class="submit-item">
                     <div class="content"><span>Submit Your Item</span></div>
                     <div class="icon">
                         <i class="fa fa-plus"></i>

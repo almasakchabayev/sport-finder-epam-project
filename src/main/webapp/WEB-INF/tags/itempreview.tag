@@ -64,7 +64,7 @@
     </div>
     <div class="description">
         <ul class="list-unstyled actions">
-            <li><a href="<c:url value="manager/items/${item.id}" />"><i class="fa fa-pencil"></i></a></li>
+            <li><a href="<c:url value="manager/item/update" />"><i class="fa fa-pencil"></i></a></li>
             <li><a href="#" class="hide-item"><i class="fa fa-eye"></i></a></li>
             <li><a href="#"><i class="fa fa-trash"></i></a></li>
         </ul>

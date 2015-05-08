@@ -10,7 +10,7 @@
                 <header>
                     <h1 class="page-title">Submit Sport Place</h1>
                 </header>
-                <form id="form-submit" role="form" method="post" action="<c:url value="/manager/submit"/>" enctype="multipart/form-data">
+                <form id="form-submit" role="form" method="post" action="<c:url value="/manager/item/submit"/>" enctype="multipart/form-data">
                     <%--<section>--%>
                         <%--<div class="form-group large">--%>
                             <%--<label for="title">Title</label>--%>

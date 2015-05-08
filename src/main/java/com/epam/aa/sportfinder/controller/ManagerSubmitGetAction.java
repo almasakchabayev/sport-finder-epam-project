@@ -13,7 +13,7 @@ import java.util.List;
 
 import static com.epam.aa.sportfinder.controller.ControllerAction.*;
 
-@ControllerAction(path = "/manager/submit",
+@ControllerAction(path = "/manager/item/submit",
         httpMethod = HttpMethod.GET,
         accessDeniedTo = {Permission.GUEST, Permission.CUSTOMER})
 public class ManagerSubmitGetAction implements Action {
@@ -25,6 +25,6 @@ public class ManagerSubmitGetAction implements Action {
         request.setAttribute("floorCoverages", floorCoverages);
         List<Sport> sports = SportService.findAll();
         request.setAttribute("sports", sports);
-        return "manager/submit";
+        return "manager/item/submit";
     }
 }
