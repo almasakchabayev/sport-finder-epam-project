@@ -22,9 +22,9 @@ public class ManagerSubmitGetAction implements Action {
     @Override
     public String execute(HttpServletRequest request) {
         List<FloorCoverage> floorCoverages = FloorCoverageService.findAll();
-        request.setAttribute("floorCoverages", floorCoverages);
+        request.setAttribute("nonSelectedFloorCoverages", floorCoverages);
         List<Sport> sports = SportService.findAll();
-        request.setAttribute("sports", sports);
+        request.setAttribute("nonSelectedSports", sports);
         return "manager/item/submit";
     }
 }

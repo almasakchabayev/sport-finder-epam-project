@@ -1,13 +1,11 @@
 package com.epam.aa.sportfinder.ui
 
-import com.codeborne.selenide.Condition
 import org.openqa.selenium.By
 import org.openqa.selenium.JavascriptExecutor
 import org.openqa.selenium.WebDriver
 import spock.lang.Specification
 
-import static com.codeborne.selenide.Condition.*
-import static com.codeborne.selenide.Condition.visible
+import static com.codeborne.selenide.Condition.cssClass
 import static com.codeborne.selenide.Selectors.byText
 import static com.codeborne.selenide.Selenide.$
 import static com.codeborne.selenide.Selenide.open
@@ -73,7 +71,7 @@ class ManagerSubmitSpec extends Specification {
         $("#items").shouldBe(visible)
     }
 
-    def "when errors ex‰ist fields must be populated with previously submitted values"() {
+    def "when errors exist fields must be populated with previously submitted values"() {
         when:
         $("#description").val("Awesome sport place")
         $("#city").val("Almaty")
@@ -111,6 +109,7 @@ class ManagerSubmitSpec extends Specification {
         $(By.xpath("/html/body/div/div/div[2]/div/section/div/div[1]/form/section[4]/div[1]/div[2]/div/div[1]/div/div/button/span[1]")).shouldHave("artificial grass")
         $("#capacity").shouldHave("1")
         $("#price").shouldHave("10000")
+        // todo fix test
         $(By.xpath("/html/body/div/div/div[2]/div/section/div/div[1]/form/section[4]/div[2]/div[1]/div/div/div/ul/li[1]")).shouldHave(cssClass("selected"))
         $(By.xpath("/html/body/div/div/div[2]/div/section/div/div[1]/form/section[4]/div[2]/div[1]/div/div/div/ul/li[2]")).shouldHave(cssClass("selected"))
         $("#tribune-capacity").shouldHave("10000")

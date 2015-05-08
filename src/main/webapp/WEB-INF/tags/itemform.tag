@@ -118,7 +118,10 @@
                         </c:if>
                         <select name="floor-coverage" id="floor-coverage" required>
                             <%-- todo prepopulate if have been submitted--%>
-                            <c:forEach items="${floorCoverages}" var="floorCoverage">
+                            <c:if test="${selectedFloorCoverage != null}">
+                                <option value="${selectedFloorCoverage.id}" selected>${selectedFloorCoverage.name}</option>
+                            </c:if>
+                            <c:forEach items="${nonSelectedFloorCoverages}" var="floorCoverage">
                                 <option value="${floorCoverage.id}">${floorCoverage.name}</option>
                             </c:forEach>
                         </select>
@@ -159,7 +162,10 @@
                     <span class="error">${errors.get('sports')}</span>
                 </c:if>
                 <select multiple name="sport" id="sport" required>
-                    <c:forEach items="${sports}" var="sport">
+                    <c:forEach items="${selectedSports}" var="sport">
+                        <option value="${sport.id}" selected>${sport.name}</option>
+                    </c:forEach>
+                    <c:forEach items="${nonSelectedSports}" var="sport">
                         <option value="${sport.id}">${sport.name}</option>
                     </c:forEach>
                 </select>

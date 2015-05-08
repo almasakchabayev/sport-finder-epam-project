@@ -16,10 +16,7 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParsePosition;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static com.epam.aa.sportfinder.controller.ControllerAction.*;
 
@@ -110,10 +107,33 @@ public class ManagerSubmitPostAction implements Action {
             request.setAttribute("item", sportPlace);
             logger.debug("errors found during validation, redirecting to manager/submit.jsp");
             //TODO: load these to context once and for all
-            List<FloorCoverage> floorCoverages = FloorCoverageService.findAll();
-            request.setAttribute("floorCoverages", floorCoverages);
+            List<FloorCoverage> floorCoveragesToDisplay = FloorCoverageService.findAll();
+            FloorCoverage selectedFloorCoverage = null;
+            List<FloorCoverage> nonSelectedFloorCoverages = new ArrayList<>();
+            for (FloorCoverage coverage : floorCoveragesToDisplay) {
+                if (coverage.getId().toString().equals(floorCoverageId)) {
+                    selectedFloorCoverage = coverage;
+                } else {
+                    nonSelectedFloorCoverages.add(coverage);
+                }
+            }
+
             List<Sport> sportsToDisplay = SportService.findAll();
-            request.setAttribute("sportIds", sportsToDisplay);
+            List<String> selectedSportIds = Arrays.asList(sportIds);
+            List<Sport> selectedSports = new ArrayList<>();
+            List<Sport> nonSelectedSports = new ArrayList<>();
+            for (Sport sport : sportsToDisplay) {
+                if(selectedSportIds.contains(sport.getId().toString())) {
+                    selectedSports.add(sport);
+                } else {
+                    nonSelectedSports.add(sport);
+                }
+            }
+
+            request.setAttribute("nonSelectedFloorCoverages", nonSelectedFloorCoverages);
+            request.setAttribute("selectedFloorCoverage", selectedFloorCoverage);
+            request.setAttribute("selectedSports", selectedSports);
+            request.setAttribute("nonSelectedSports", nonSelectedSports);
             return "manager/item/submit";
         }
 
