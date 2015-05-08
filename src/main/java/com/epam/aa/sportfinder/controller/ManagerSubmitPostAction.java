@@ -39,10 +39,10 @@ public class ManagerSubmitPostAction implements Action {
         String addressLine1 = request.getParameter("address-line-1");
         String addressLine2 = request.getParameter("address-line-2");
         String size = request.getParameter("size");
-        String floorCoverageName = request.getParameter("floor-coverage");
+        String floorCoverageId = request.getParameter("floor-coverage");
         String capacity = request.getParameter("capacity");
         String price = request.getParameter("price");
-        String[] sports = request.getParameterValues("sport");
+        String[] sportIds = request.getParameterValues("sport");
         String tribuneCapacity = request.getParameter("tribune-capacity");
         boolean changingRoom = request.getParameter("changing-room")  != null ;
         boolean shower = request.getParameter("shower") != null;
@@ -76,7 +76,7 @@ public class ManagerSubmitPostAction implements Action {
         }
 
         FloorCoverage floorCoverage = new FloorCoverage();
-        floorCoverage.setName(floorCoverageName);
+        floorCoverage.setId(Integer.valueOf(floorCoverageId));
         sportPlace.setFloorCoverage(floorCoverage);
 
         Address address = new Address();
@@ -89,10 +89,10 @@ public class ManagerSubmitPostAction implements Action {
 
 
         Map<String, String> errors = new HashMap<>();
-        if (sports != null) {
-            for (String sport : sports) {
+        if (sportIds != null) {
+            for (String sportId : sportIds) {
                 Sport s = new Sport();
-                s.setName(sport);
+                s.setId(Integer.valueOf(sportId));
                 sportPlace.addSport(s);
             }
         }
@@ -113,7 +113,7 @@ public class ManagerSubmitPostAction implements Action {
             List<FloorCoverage> floorCoverages = FloorCoverageService.findAll();
             request.setAttribute("floorCoverages", floorCoverages);
             List<Sport> sportsToDisplay = SportService.findAll();
-            request.setAttribute("sports", sportsToDisplay);
+            request.setAttribute("sportIds", sportsToDisplay);
             return "manager/submit";
         }
 

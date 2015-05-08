@@ -126,7 +126,7 @@
                                             </c:if>
                                             <select name="floor-coverage" id="floor-coverage" required>
                                                 <c:forEach items="${floorCoverages}" var="floorCoverage">
-                                                    <option value="${floorCoverage.name}">${floorCoverage.name}</option>
+                                                    <option value="${floorCoverage.id}">${floorCoverage.name}</option>
                                                 </c:forEach>
                                             </select>
                                         </div>
@@ -167,7 +167,7 @@
                                     </c:if>
                                     <select multiple name="sport" id="sport" required>
                                         <c:forEach items="${sports}" var="sport">
-                                            <option value="${sport.name}">${sport.name}</option>
+                                            <option value="${sport.id}">${sport.name}</option>
                                         </c:forEach>
                                     </select>
                                 </div>

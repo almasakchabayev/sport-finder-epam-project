@@ -3,6 +3,7 @@ package com.epam.aa.sportfinder.filter;
 import com.epam.aa.sportfinder.config.ControllerActionsLoader;
 import com.epam.aa.sportfinder.controller.ActionFactory;
 import com.epam.aa.sportfinder.controller.ControllerAction;
+import com.epam.aa.sportfinder.model.Customer;
 import com.epam.aa.sportfinder.model.Manager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,7 +56,14 @@ public class PermissionsFilter implements Filter {
                         return;
                     }
                 } else if (notAllowedPermission.equals(Permission.CUSTOMER)) {
-                    //todo add customer handler
+                    if (session == null)
+                        continue;
+
+                    Object user = session.getAttribute("user");
+                    if (user instanceof Customer) {
+                        response.sendError(HttpServletResponse.SC_FORBIDDEN);
+                        return;
+                    }
                 } else if (notAllowedPermission.equals(Permission.MANAGER)) {
                     if (session == null)
                         continue;
@@ -68,7 +76,6 @@ public class PermissionsFilter implements Filter {
                 }
             }
         }
-
         chain.doFilter(req, resp);
     }
 

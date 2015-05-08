@@ -27,16 +27,16 @@ public class SportPlaceService extends BaseService {
             Address address = addressDao.insert(sportPlace.getAddress());
             sportPlace.setAddress(address);
 
-            FloorCoverage floorCoverage = floorCoverageDao.findByName(sportPlace.getFloorCoverage());
-            sportPlace.setFloorCoverage(floorCoverage);
-
-            List<Sport> sports = new ArrayList<>();
-            // todo change names to ids
-            for (Sport sport : sportPlace.getSports()) {
-                Sport fullSport = sportDao.findByName(sport);
-                sports.add(fullSport);
-            }
-            sportPlace.setSports(sports);
+//            FloorCoverage floorCoverage = floorCoverageDao.findByName(sportPlace.getFloorCoverage());
+//            sportPlace.setFloorCoverage(floorCoverage);
+//
+//            List<Sport> sports = new ArrayList<>();
+//            // todo change names to ids
+//            for (Sport sport : sportPlace.getSports()) {
+//                Sport fullSport = sportDao.findByName(sport);
+//                sports.add(fullSport);
+//            }
+//            sportPlace.setSports(sports);
 
             result = sportPlaceDao.insert(sportPlace);
             result = sportPlaceDao.insertCorrespondingSports(sportPlace);

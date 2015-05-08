@@ -17,7 +17,6 @@ public class SportPlace extends BaseEntity {
     private String size;
     @NotNull(message = "please specify capacity")
     private Integer capacity;
-    @Valid
     private FloorCoverage floorCoverage;
     private boolean indoor;
 
@@ -35,7 +34,6 @@ public class SportPlace extends BaseEntity {
     @Valid
     private Address address;
     @NotEmpty(message = "Please specify at least one sport")
-    @Valid
     private List<Sport> sports;
 
     @NotNull(message = "only managers can create sport places")
