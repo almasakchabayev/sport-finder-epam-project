@@ -1,10 +1,12 @@
 package com.epam.aa.sportfinder.ui
 
+import com.codeborne.selenide.Condition
 import org.openqa.selenium.By
 import org.openqa.selenium.JavascriptExecutor
 import org.openqa.selenium.WebDriver
 import spock.lang.Specification
 
+import static com.codeborne.selenide.Condition.*
 import static com.codeborne.selenide.Condition.visible
 import static com.codeborne.selenide.Selectors.byText
 import static com.codeborne.selenide.Selenide.$
@@ -41,33 +43,78 @@ class ManagerSubmitSpec extends Specification {
 
     def "when form is valid manager must be redirected to /manager/items"() {
         when:
-            $("#description").val("Awesome sport place")
-            $("#country").val("Kazakhstan")
-            $("#city").val("Almaty")
-            $("#address-line-1").val("Amangeldy 72")
-            $("#address-line-2").val("1")
-            $("#zipcode").val("050012")
-            $("#size").val("100x100 sq. m")
-            $(By.xpath("/html/body/div/div/div[2]/div/section/div/div[1]/form/section[4]/div[1]/div[2]/div/div[1]/div/div/button")).click()
-            $(By.xpath("/html/body/div/div/div[2]/div/section/div/div[1]/form/section[4]/div[1]/div[2]/div/div[1]/div/div/div/ul/li[1]/a")).click()
-            $("#capacity").val("22")
-            $("#price").val("10000")
-            $(By.xpath("/html/body/div/div/div[2]/div/section/div/div[1]/form/section[4]/div[2]/div[1]/div/div/button")).click()
-            $(By.xpath("/html/body/div/div/div[2]/div/section/div/div[1]/form/section[4]/div[2]/div[1]/div/div/div/ul/li[1]/a")).click()
-            $(By.xpath("/html/body/div/div/div[2]/div/section/div/div[1]/form/section[4]/div[2]/div[1]/div/div/div/ul/li[2]/a")).click()
-            $(By.xpath("/html/body/div/div/div[2]/div/section/div/div[1]/form/section[4]/div[2]/div[1]/div/div/button")).click()
-            $("#tribune-capacity").val("1000")
+        $("#description").val("Awesome sport place")
+        $("#country").val("Kazakhstan")
+        $("#city").val("Almaty")
+        $("#address-line-1").val("Amangeldy 72")
+        $("#address-line-2").val("1")
+        $("#zipcode").val("050012")
+        $("#size").val("100x100 sq. m")
+        $(By.xpath("/html/body/div/div/div[2]/div/section/div/div[1]/form/section[4]/div[1]/div[2]/div/div[1]/div/div/button")).click()
+        $(By.xpath("/html/body/div/div/div[2]/div/section/div/div[1]/form/section[4]/div[1]/div[2]/div/div[1]/div/div/div/ul/li[1]/a")).click()
+        $("#capacity").val("22")
+        $("#price").val("10000")
+        $(By.xpath("/html/body/div/div/div[2]/div/section/div/div[1]/form/section[4]/div[2]/div[1]/div/div/button")).click()
+        $(By.xpath("/html/body/div/div/div[2]/div/section/div/div[1]/form/section[4]/div[2]/div[1]/div/div/div/ul/li[1]/a")).click()
+        $(By.xpath("/html/body/div/div/div[2]/div/section/div/div[1]/form/section[4]/div[2]/div[1]/div/div/div/ul/li[2]/a")).click()
+        $(By.xpath("/html/body/div/div/div[2]/div/section/div/div[1]/form/section[4]/div[2]/div[1]/div/div/button")).click()
+        $("#tribune-capacity").val("1000")
 //            $(By.name("changing-room")).click()
-            $(By.xpath("/html/body/div/div/div[2]/div/section/div/div[1]/form/section[5]/ul/li[1]/div/label/div")).click()
+        $(By.xpath("/html/body/div/div/div[2]/div/section/div/div[1]/form/section[5]/ul/li[1]/div/label/div")).click()
 //            $(By.name("shower")).click()
-            $(By.xpath("/html/body/div/div/div[2]/div/section/div/div[1]/form/section[5]/ul/li[2]/div/label/div")).click()
+        $(By.xpath("/html/body/div/div/div[2]/div/section/div/div[1]/form/section[5]/ul/li[2]/div/label/div")).click()
 //            $(By.name("lightening")).click()
-            $(By.xpath("/html/body/div/div/div[2]/div/section/div/div[1]/form/section[5]/ul/li[3]/div/label/div")).click()
-            $("#other-infrastructure-features").val("Parking available")
-            $("#submit").click()
+        $(By.xpath("/html/body/div/div/div[2]/div/section/div/div[1]/form/section[5]/ul/li[3]/div/label/div")).click()
+        $("#other-infrastructure-features").val("Parking available")
+        $("#submit").click()
 
         then:
-            //todo add check that this item appeared in manager/items
-            $("#items").shouldBe(visible)
+        //todo add check that this item appeared in manager/items
+        $("#items").shouldBe(visible)
+    }
+
+    def "when errors ex‰ist fields must be populated with previously submitted values"() {
+        when:
+        $("#description").val("Awesome sport place")
+        $("#city").val("Almaty")
+        $("#address-line-1").val("Amangeldy 72")
+        $("#address-line-2").val("1")
+        $("#zipcode").val("050012")
+        $("#size").val("100x100 sq. m")
+        $(By.xpath("/html/body/div/div/div[2]/div/section/div/div[1]/form/section[4]/div[1]/div[2]/div/div[1]/div/div/button")).click()
+        $(By.xpath("/html/body/div/div/div[2]/div/section/div/div[1]/form/section[4]/div[1]/div[2]/div/div[1]/div/div/div/ul/li[1]/a")).click()
+        $("#capacity").val("22")
+        $("#price").val("10000")
+        $(By.xpath("/html/body/div/div/div[2]/div/section/div/div[1]/form/section[4]/div[2]/div[1]/div/div/button")).click()
+        $(By.xpath("/html/body/div/div/div[2]/div/section/div/div[1]/form/section[4]/div[2]/div[1]/div/div/div/ul/li[1]/a")).click()
+        $(By.xpath("/html/body/div/div/div[2]/div/section/div/div[1]/form/section[4]/div[2]/div[1]/div/div/div/ul/li[2]/a")).click()
+        $(By.xpath("/html/body/div/div/div[2]/div/section/div/div[1]/form/section[4]/div[2]/div[1]/div/div/button")).click()
+        $("#tribune-capacity").val("1000")
+//            $(By.name("changing-room")).click()
+        $(By.xpath("/html/body/div/div/div[2]/div/section/div/div[1]/form/section[5]/ul/li[1]/div/label/div")).click()
+//            $(By.name("shower")).click()
+        $(By.xpath("/html/body/div/div/div[2]/div/section/div/div[1]/form/section[5]/ul/li[2]/div/label/div")).click()
+//            $(By.name("lightening")).click()
+        $(By.xpath("/html/body/div/div/div[2]/div/section/div/div[1]/form/section[5]/ul/li[3]/div/label/div")).click()
+        $("#other-infrastructure-features").val("Parking available")
+        WebDriver webdriver = getAndCheckWebDriver()
+        JavascriptExecutor js = (JavascriptExecutor) webdriver
+        js.executeScript("document.getElementById('form-submit').setAttribute('novalidate', 'novalidate')")
+        $("#submit").click()
+
+        then:
+        $("#description").shouldHave("Awesome sport place")
+        $("#city").shouldHave("Almaty")
+        $("#address-line-2").shouldHave("1")
+        $("#zipcode").shouldHave("050012")
+        $("#size").shouldHave("100x100 sq. m")
+        $(By.xpath("/html/body/div/div/div[2]/div/section/div/div[1]/form/section[4]/div[1]/div[2]/div/div[1]/div/div/button/span[1]")).shouldHave("artificial grass")
+        $("#capacity").shouldHave("1")
+        $("#price").shouldHave("10000")
+        $(By.xpath("/html/body/div/div/div[2]/div/section/div/div[1]/form/section[4]/div[2]/div[1]/div/div/div/ul/li[1]")).shouldHave(cssClass("selected"))
+        $(By.xpath("/html/body/div/div/div[2]/div/section/div/div[1]/form/section[4]/div[2]/div[1]/div/div/div/ul/li[2]")).shouldHave(cssClass("selected"))
+        $("#tribune-capacity").shouldHave("10000")
+        $("#other-infrastructure-features").shouldHave("Parking available")
+        $(byText("country name cannot be blank")).shouldBe(visible)
     }
 }
