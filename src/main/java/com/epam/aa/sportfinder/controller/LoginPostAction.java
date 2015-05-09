@@ -16,7 +16,8 @@ public class LoginPostAction implements Action {
         String password = request.getParameter("form-login-password");
         User manager = ManagerService.findByCredentials(email, password);
         if (manager != null) {
-            return loginUser(request, manager);
+            request.getSession().setAttribute("user", manager);
+            return "redirect:/manager/items";
         }
 
         //TODO; add login for customer
@@ -24,11 +25,5 @@ public class LoginPostAction implements Action {
 
         request.setAttribute("error", "Unknown username/password. Please retry.");
         return "login";
-    }
-
-    protected static String loginUser(HttpServletRequest request, User user) {
-        request.getSession().setAttribute("user", user);
-        // TODO: add referer or something to the url like ?...
-        return "redirect:/manager/items";
     }
 }

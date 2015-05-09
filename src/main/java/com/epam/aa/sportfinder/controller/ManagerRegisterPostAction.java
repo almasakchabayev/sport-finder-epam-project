@@ -88,8 +88,9 @@ public class ManagerRegisterPostAction implements Action {
 
         logger.debug("Validation finished successfully");
 
+        Manager newManager;
         try {
-            ManagerService.create(manager);
+            newManager = ManagerService.create(manager);
             logger.info("New manager with email {} and id {} has been created",
                     manager.getEmail(), manager.getId());
         } catch (ServiceException e) {
@@ -102,7 +103,8 @@ public class ManagerRegisterPostAction implements Action {
         }
 
         //todo Show success page and instead of calling LoginPostAction just setAttribute to session
-        return LoginPostAction.loginUser(request, manager);
+        request.getSession().setAttribute("user", newManager);
+        return "manager/success";
     }
 
     private String returnError(HttpServletRequest request, Manager manager, Map<String, String> errors) {
