@@ -5,42 +5,29 @@ import com.epam.aa.sportfinder.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SportPlaceService extends BaseService {
     private static final Logger LOGGER = LoggerFactory.getLogger(SportPlaceService.class);
 
     public static SportPlace create(SportPlace sportPlace) {
-
-
         DaoManager daoManager = createDaoManager();
-
         return daoManager.executeTx(manager -> {
             SportPlaceDao sportPlaceDao = manager.getDao(SportPlace.class);
-            FloorCoverageDao floorCoverageDao = manager.getDao(FloorCoverage.class);
-            SportDao sportDao = manager.getDao(Sport.class);
             AddressDao addressDao = manager.getDao(Address.class);
             // no need for manager as manager was extracted previously
             SportPlace result = null;
 
-            Address address = addressDao.insert(sportPlace.getAddress());
-            sportPlace.setAddress(address);
+            try {
+                Address address = addressDao.insert(sportPlace.getAddress());
+                sportPlace.setAddress(address);
 
-//            FloorCoverage floorCoverage = floorCoverageDao.findByName(sportPlace.getFloorCoverage());
-//            sportPlace.setFloorCoverage(floorCoverage);
-//
-//            List<Sport> sports = new ArrayList<>();
-//            // todo change names to ids
-//            for (Sport sport : sportPlace.getSports()) {
-//                Sport fullSport = sportDao.findByName(sport);
-//                sports.add(fullSport);
-//            }
-//            sportPlace.setSports(sports);
-
-            result = sportPlaceDao.insert(sportPlace);
-            result = sportPlaceDao.insertCorrespondingSports(sportPlace);
-            return result;
+                result = sportPlaceDao.insert(sportPlace);
+                result = sportPlaceDao.insertCorrespondingSports(sportPlace);
+                return result;
+            } catch (DaoException e) {
+                throw new ServiceException("error during sport place creation", e);
+            }
         });
     }
 
@@ -67,6 +54,23 @@ public class SportPlaceService extends BaseService {
                 retrieveRelatedEntities(daoMng, sportPlaceDao, sportPlace);
             }
             return sportPlaces;
+        });
+    }
+
+    public static void update(SportPlace sportPlace) {
+        DaoManager daoManager = createDaoManager();
+        daoManager.executeTx(manager -> {
+            SportPlaceDao sportPlaceDao = manager.getDao(SportPlace.class);
+            AddressDao addressDao = manager.getDao(Address.class);
+            try {
+                addressDao.update(sportPlace.getAddress());
+                sportPlaceDao.update(sportPlace);
+                sportPlaceDao.deleteCorrespondingSports(sportPlace);
+                sportPlaceDao.insertCorrespondingSports(sportPlace);
+                return null;
+            } catch (DaoException e) {
+                throw new ServiceException("error during sport place update", e);
+            }
         });
     }
 

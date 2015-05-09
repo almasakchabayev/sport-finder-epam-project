@@ -27,4 +27,20 @@ public class Sport extends BaseEntity {
         Sport sport = new Sport();
         sport.setName(null);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Sport sport = (Sport) o;
+
+        return !(name != null ? !name.equals(sport.name) : sport.name != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return name != null ? name.hashCode() : 0;
+    }
 }

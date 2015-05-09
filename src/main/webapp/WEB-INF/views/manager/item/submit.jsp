@@ -10,6 +10,7 @@
                 <header>
                     <h1 class="page-title">Submit Sport Place</h1>
                 </header>
+                <%--todo put ?id=$id} in here , then in the hidden input in the form--%>
                 <form id="form-submit" role="form" method="post" action="<c:url value="/manager/item/submit"/>" enctype="multipart/form-data">
                     <t:itemform />
                     <hr>

@@ -49,10 +49,6 @@ public class ActionFactory {
             int i = path.indexOf(";");
             path = path.substring(0, i);
         }
-        if (path.contains("?")) {
-            int i = path.indexOf("?");
-            path = path.substring(0, i);
-        }
         return path;
     }
 }

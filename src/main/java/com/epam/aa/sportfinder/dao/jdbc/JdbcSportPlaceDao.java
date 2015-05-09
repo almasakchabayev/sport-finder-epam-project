@@ -123,6 +123,20 @@ public class JdbcSportPlaceDao extends JdbcBaseDao<SportPlace> implements SportP
         return sportPlaces;
     }
 
+    @Override
+    public void deleteCorrespondingSports(SportPlace sportPlace) {
+        if(sportPlace.getId() == null)
+            throw new DaoException("Could not remove sports, sportPlace id is null");
+
+        String sql = "DELETE FROM SportPlace_Sport WHERE sportPlace_id = " + sportPlace.getId();
+        try (Statement st = getConnection().createStatement()){
+            st.execute(sql);
+        } catch (SQLException e) {
+            throw new DaoException("Removal failed", e);
+        }
+        // not removing
+    }
+
 
     private String getSqlForJoinTable(SportPlace sportPlace) {
         StringBuffer insertSportPlaceWithSportsBuffer = new StringBuffer("INSERT INTO SportPlace_Sport " +

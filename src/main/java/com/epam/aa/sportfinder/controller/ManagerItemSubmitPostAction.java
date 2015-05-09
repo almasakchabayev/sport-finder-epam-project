@@ -18,18 +18,21 @@ import java.text.NumberFormat;
 import java.text.ParsePosition;
 import java.util.*;
 
-import static com.epam.aa.sportfinder.controller.ControllerAction.*;
+import static com.epam.aa.sportfinder.controller.ControllerAction.HttpMethod;
+import static com.epam.aa.sportfinder.controller.ControllerAction.Permission;
 
 @ControllerAction(path = "/manager/item/submit",
         httpMethod = HttpMethod.POST,
         accessDeniedTo = {Permission.GUEST, Permission.CUSTOMER})
-public class ManagerSubmitPostAction implements Action {
-    private static final Logger logger = LoggerFactory.getLogger(ManagerSubmitPostAction.class);
+public class ManagerItemSubmitPostAction implements Action {
+    private static final Logger logger = LoggerFactory.getLogger(ManagerItemSubmitPostAction.class);
 
     @Override
     public String execute(HttpServletRequest request) {
         Manager manager = (Manager) request.getSession().getAttribute("user");
+        String id = request.getParameter("id");
         String description = request.getParameter("description");
+        String addressId = request.getParameter("address-id");
         String country = request.getParameter("country");
         String city = request.getParameter("city");
         String zipcode = request.getParameter("zipcode");
@@ -41,13 +44,17 @@ public class ManagerSubmitPostAction implements Action {
         String price = request.getParameter("price");
         String[] sportIds = request.getParameterValues("sport");
         String tribuneCapacity = request.getParameter("tribune-capacity");
-        boolean changingRoom = request.getParameter("changing-room")  != null ;
+        boolean changingRoom = request.getParameter("changing-room") != null;
         boolean shower = request.getParameter("shower") != null;
         boolean lightening = request.getParameter("lightening") != null;
         boolean indoor = request.getParameter("indoor") != null;
         String otherInfrastructureFeatures = request.getParameter("other-infrastructure-features");
 
         SportPlace sportPlace = new SportPlace();
+        if (id != null && !id.equals("")) {
+            sportPlace.setId(Integer.valueOf(id));
+        }
+
         sportPlace.setDescription(description);
         if (!capacity.equals(""))
             sportPlace.setCapacity(Integer.valueOf(capacity));
@@ -77,6 +84,9 @@ public class ManagerSubmitPostAction implements Action {
         sportPlace.setFloorCoverage(floorCoverage);
 
         Address address = new Address();
+        if (addressId != null && !addressId.equals("")) {
+            address.setId(Integer.valueOf(addressId));
+        }
         address.setCountry(country);
         address.setCity(city);
         address.setAddressLine1(addressLine1);
@@ -97,7 +107,7 @@ public class ManagerSubmitPostAction implements Action {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
         Set<ConstraintViolation<SportPlace>> violations = validator.validate(sportPlace);
-        if (violations.size() > 0 ) {
+        if (violations.size() > 0) {
             for (ConstraintViolation<SportPlace> violation : violations) {
                 errors.put(violation.getPropertyPath().toString(), violation.getMessage());
             }
@@ -119,11 +129,11 @@ public class ManagerSubmitPostAction implements Action {
             }
 
             List<Sport> sportsToDisplay = SportService.findAll();
-            List<String> selectedSportIds = Arrays.asList(sportIds);
+            List<String> selectedSportIds = Arrays.asList(sportIds != null ? sportIds : new String[0]);
             List<Sport> selectedSports = new ArrayList<>();
             List<Sport> nonSelectedSports = new ArrayList<>();
             for (Sport sport : sportsToDisplay) {
-                if(selectedSportIds.contains(sport.getId().toString())) {
+                if (selectedSportIds.contains(sport.getId().toString())) {
                     selectedSports.add(sport);
                 } else {
                     nonSelectedSports.add(sport);
@@ -137,7 +147,12 @@ public class ManagerSubmitPostAction implements Action {
             return "manager/item/submit";
         }
 
-        SportPlaceService.create(sportPlace);
+        if (id != null && !id.equals("")) {
+            SportPlaceService.update(sportPlace);
+        } else {
+            SportPlaceService.create(sportPlace);
+        }
+
         return "redirect:/manager/items";
     }
 }

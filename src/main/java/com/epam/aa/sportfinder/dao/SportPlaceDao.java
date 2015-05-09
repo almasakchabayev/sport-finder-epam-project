@@ -13,4 +13,6 @@ public interface SportPlaceDao extends GenericDao<SportPlace> {
     List<Integer> findCorrespondingSportIds(SportPlace sportPlace) throws DaoException;
 
     List<SportPlace> findByManager(Manager manager) throws DaoException;
+
+    void deleteCorrespondingSports(SportPlace sportPlace);
 }

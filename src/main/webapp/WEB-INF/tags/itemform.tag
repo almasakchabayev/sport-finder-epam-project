@@ -9,6 +9,7 @@
 <%--<input type="text" class="form-control" id="title" name="title">--%>
 <%--</div>--%>
 <%--</section>--%>
+<input hidden value="${item.id}" name="id" />
 <section>
     <div class="form-group large">
         <label for="description">Description</label>
@@ -32,6 +33,7 @@
             <div class="row">
                 <div class="col-md-8 col-sm-8">
                     <div class="form-group">
+                        <input hidden value="${item.address.id}" name="address-id" />
                         <label for="city">City</label>
                         <c:if test="${errors.containsKey('address.city')}">
                             <span class="error">${errors.get('address.city')}</span>
@@ -145,7 +147,7 @@
                 <c:if test="${errors.containsKey('pricePerHour')}">
                     <span class="error">${errors.get('pricePerHour')}</span>
                 </c:if>
-                <input type="text" class="form-control" id="price" name="price" value="${item.pricePerHour}" pattern="\d*" required>
+                <input type="text" class="form-control" id="price" name="price" value="${item.pricePerHour}" pattern="\d*(.\d+)?" required>
             </div>
         </div>
         <!--/.col-md-4-->
