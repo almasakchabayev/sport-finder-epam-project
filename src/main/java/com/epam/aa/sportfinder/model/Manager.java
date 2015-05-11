@@ -10,6 +10,8 @@ import java.util.List;
 public class Manager extends User {
     @Valid
     private Company company;
+    private Image image;
+
     @NotEmpty(message = "Please specify at least one phone number")
     @Valid
     private List<PhoneNumber> phoneNumbers;
@@ -56,5 +58,13 @@ public class Manager extends User {
 
     public void addPhoneNumber(PhoneNumber phoneNumber) {
         phoneNumbers.add(phoneNumber);
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
     }
 }

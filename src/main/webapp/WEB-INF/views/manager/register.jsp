@@ -10,7 +10,7 @@
                         <h1 class="page-title">Register</h1>
                     </header>
                     <hr>
-                    <form role="form" id="form-register" method="post" action="<c:url value="/manager/register"/>">
+                    <form role="form" id="form-register" method="post" action="<c:url value="/manager/register"/>" enctype="multipart/form-data">
                         <div class="form-group">
                             <label for="form-register-first-name">First Name*:</label>
                             <c:if test="${errors.containsKey('firstName')}">
@@ -101,6 +101,13 @@
                                 <span class="error">${errors.get('company.address.zipcode')}</span>
                             </c:if>
                             <input type="text" class="form-control" id="form-register-company-zipcode" name="form-register-company-zipcode" value="${manager.company.address.zipcode}" required>
+                        </div><!-- /.form-group -->
+                        <div class="form-group">
+                            <label for="form-register-image">Image:</label>
+                            <c:if test="${errors.containsKey('image')}">
+                                <span class="error">${errors.get('image')}</span>
+                            </c:if>
+                            <input type="file" class="form-control" id="form-register-image" name="form-register-image" value="${manager.company.address.zipcode}">
                         </div><!-- /.form-group -->
                         <div class="checkbox pull-left">
                             <label>

@@ -1,22 +1,26 @@
 package com.epam.aa.sportfinder.controller;
 
-import com.epam.aa.sportfinder.model.Address;
-import com.epam.aa.sportfinder.model.Company;
-import com.epam.aa.sportfinder.model.Manager;
-import com.epam.aa.sportfinder.model.PhoneNumber;
+import com.epam.aa.sportfinder.model.*;
 import com.epam.aa.sportfinder.service.ManagerService;
 import com.epam.aa.sportfinder.service.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import sun.misc.IOUtils;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import static com.epam.aa.sportfinder.controller.ControllerAction.*;
 
@@ -62,6 +66,7 @@ public class ManagerRegisterPostAction implements Action {
         manager.setLastName(lastName);
         manager.setEmail(email);
         PhoneNumber phoneNumber = new PhoneNumber(number);
+
         manager.addPhoneNumber(phoneNumber);
         if (number2 != null && !number2.equals("")) {
             PhoneNumber phoneNumber2 = new PhoneNumber(number2);
@@ -72,8 +77,32 @@ public class ManagerRegisterPostAction implements Action {
         if (!password.equals(confirmPassword)) {
             errors.put("password", "password and confirm password are not the same");
         }
-
         manager.setPassword(password);
+
+        Image image = null;
+        try {
+            Part filePart = request.getPart("form-register-image");
+            if (filePart != null && filePart.getSize() > 0) {
+                String type = filePart.getContentType();
+                if (type.matches("image/(jpg|png|gif)")) {
+                    InputStream inputStream = filePart.getInputStream();
+                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                    byte[] tmp = new byte[4096];
+                    int ret;
+                    while((ret = inputStream.read(tmp)) > 0) {
+                        bos.write(tmp, 0, ret);
+                    }
+
+                    image = new Image();
+                    image.setImageArray(bos.toByteArray());
+                } else {
+                    errors.put("image", "image is of not appropriate format, the allowed formats are jpg, png, gif");
+                }
+            }
+        } catch (IOException | ServletException e) {
+            throw new ServiceException("error when processing part form-register-image");
+        }
+        manager.setImage(image);
 
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
@@ -87,6 +116,7 @@ public class ManagerRegisterPostAction implements Action {
             return returnError(request, manager, errors);
 
         logger.debug("Validation finished successfully");
+
 
         Manager newManager;
         try {
@@ -102,7 +132,6 @@ public class ManagerRegisterPostAction implements Action {
             return returnError(request, manager, errors);
         }
 
-        //todo Show success page and instead of calling LoginPostAction just setAttribute to session
         request.getSession().setAttribute("user", newManager);
         return "manager/success";
     }

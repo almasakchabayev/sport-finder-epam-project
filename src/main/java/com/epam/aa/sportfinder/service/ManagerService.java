@@ -1,10 +1,7 @@
 package com.epam.aa.sportfinder.service;
 
 import com.epam.aa.sportfinder.dao.*;
-import com.epam.aa.sportfinder.model.Address;
-import com.epam.aa.sportfinder.model.Company;
-import com.epam.aa.sportfinder.model.Manager;
-import com.epam.aa.sportfinder.model.PhoneNumber;
+import com.epam.aa.sportfinder.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,11 +43,12 @@ public class ManagerService extends BaseService{
     public static Manager create(Manager manager) {
         DaoManager daoManager = createDaoManager();
 
-        return daoManager.executeTx(thisDaoManager -> {
-            ManagerDao managerDao = thisDaoManager.getDao(Manager.class);
-            CompanyDao companyDao = thisDaoManager.getDao(Company.class);
-            PhoneNumberDao phoneNumberDao = thisDaoManager.getDao(PhoneNumber.class);
-            AddressDao addressDao = thisDaoManager.getDao(Address.class);
+        return daoManager.executeTx(m -> {
+            ManagerDao managerDao = m.getDao(Manager.class);
+            CompanyDao companyDao = m.getDao(Company.class);
+            PhoneNumberDao phoneNumberDao = m.getDao(PhoneNumber.class);
+            AddressDao addressDao = m.getDao(Address.class);
+            ImageDao imageDao = m.getDao(Image.class);
 
             Address address = addressDao.insert(manager.getCompany().getAddress());
             Company company;
@@ -61,6 +59,9 @@ public class ManagerService extends BaseService{
             }
             company.setAddress(address);
             manager.setCompany(company);
+
+            Image image = imageDao.insert(manager.getImage());
+            manager.setImage(image);
 
             List<PhoneNumber> phoneNumbers = new ArrayList<>();
             //TODO: create bulk insert for PhoneNumbers

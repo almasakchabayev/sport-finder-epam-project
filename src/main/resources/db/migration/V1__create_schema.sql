@@ -57,7 +57,14 @@ CREATE TABLE Manager (
   lastName TEXT,
   email TEXT UNIQUE,
   password TEXT,
+  image INT,
   company INT
+);
+CREATE TABLE Image (
+  id SERIAL NOT NULL PRIMARY KEY,
+  uuid UUID UNIQUE,
+  deleted BOOLEAN DEFAULT FALSE,
+  imageArray BYTEA
 );
 CREATE TABLE Manager_PhoneNumber (
   manager_id INT NOT NULL,
