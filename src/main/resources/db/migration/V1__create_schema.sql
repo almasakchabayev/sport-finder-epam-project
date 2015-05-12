@@ -43,6 +43,11 @@ CREATE TABLE SportPlace_Sport (
   sportPlace_id INT NOT NULL,
   PRIMARY KEY (sport_id, sportPlace_id)
 );
+CREATE TABLE SportPlace_Image (
+  image_id INT NOT NULL,
+  sportPlace_id INT NOT NULL,
+  PRIMARY KEY (image_id, sportPlace_id)
+);
 CREATE TABLE PhoneNumber (
   id SERIAL NOT NULL PRIMARY KEY,
   uuid UUID UNIQUE,
@@ -96,6 +101,14 @@ ALTER TABLE SportPlace_Sport
    REFERENCES  Sport;
 ALTER TABLE SportPlace_Sport
     ADD CONSTRAINT SportPlace_Sport_SportPlace_fkey
+    FOREIGN KEY (sportPlace_id)
+    REFERENCES  SportPlace;
+ALTER TABLE SportPlace_Image
+    ADD CONSTRAINT SportPlace_Image_Image_fkey
+    FOREIGN KEY (image_id)
+    REFERENCES  Image;
+ALTER TABLE SportPlace_Image
+    ADD CONSTRAINT SportPlace_Image_SportPlace_fkey
     FOREIGN KEY (sportPlace_id)
     REFERENCES  SportPlace;
 ALTER TABLE Manager

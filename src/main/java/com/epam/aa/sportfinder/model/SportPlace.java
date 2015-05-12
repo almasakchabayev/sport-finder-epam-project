@@ -36,6 +36,8 @@ public class SportPlace extends BaseEntity {
     @NotEmpty(message = "Please specify at least one sport")
     private List<Sport> sports;
 
+    private List<Image> images;
+
     @NotNull(message = "only managers can create sport places")
     private Manager manager;
 
@@ -169,5 +171,14 @@ public class SportPlace extends BaseEntity {
 
     public void setManager(Manager manager) {
         this.manager = manager;
+    }
+
+    @Transient
+    public List<Image> getImages() {
+        return images;
+    }
+
+    public void setImages(List<Image> images) {
+        this.images = images;
     }
 }

@@ -180,7 +180,7 @@
                 <c:if test="${errors.containsKey('tribuneCapacity')}">
                     <span class="error">${errors.get('tribuneCapacity')}</span>
                 </c:if>
-                <input type="text" class="form-control" id="tribune-capacity" name="tribune-capacity" value="${item.tribuneCapacity}" pattern="\d*" required>
+                <input type="text" class="form-control" id="tribune-capacity" name="tribune-capacity" value="${item.tribuneCapacity}" pattern="\d*">
             </div>
         </div>
         <!--/.col-md-4-->
@@ -358,9 +358,13 @@
 <!--Gallery-->
 <section>
     <h3>Gallery</h3>
-    <div id="file-submit" class="dropzone">
-        <input name="file" type="file" multiple>
-        <div class="dz-default dz-message"><span>Click or Drop Images Here</span></div>
+    <%--todo <div id="file-submit" class="dropzone">--%>
+    <div id="file-submit">
+        <c:if test="${errors.containsKey('image')}">
+            <span class="error">${errors.get('image')}</span>
+        </c:if>
+        <input name="images" type="file" multiple accept="image/jpeg,image/gif,image/png">
+        <%--<div class="dz-default dz-message"><span>Click or Drop Images Here</span></div>--%>
     </div>
 </section>
 <!--end Gallery-->

@@ -12,9 +12,10 @@ public class SportPlaceService extends BaseService {
 
     public static SportPlace create(SportPlace sportPlace) {
         DaoManager daoManager = createDaoManager();
-        return daoManager.executeTx(manager -> {
-            SportPlaceDao sportPlaceDao = manager.getDao(SportPlace.class);
-            AddressDao addressDao = manager.getDao(Address.class);
+        return daoManager.executeTx(m -> {
+            SportPlaceDao sportPlaceDao = m.getDao(SportPlace.class);
+            AddressDao addressDao = m.getDao(Address.class);
+            ImageDao imageDao = m.getDao(Image.class);
             // no need for manager as manager was extracted previously
             SportPlace result = null;
 
@@ -23,7 +24,12 @@ public class SportPlaceService extends BaseService {
                 sportPlace.setAddress(address);
 
                 result = sportPlaceDao.insert(sportPlace);
-                result = sportPlaceDao.insertCorrespondingSports(sportPlace);
+
+                if (sportPlace.getImages().size() > 0) {
+                    sportPlace.getImages().forEach(imageDao::insert);
+                    sportPlaceDao.insertImages(result);
+                }
+                result = sportPlaceDao.insertCorrespondingSports(result);
                 return result;
             } catch (DaoException e) {
                 throw new ServiceException("error during sport place creation", e);

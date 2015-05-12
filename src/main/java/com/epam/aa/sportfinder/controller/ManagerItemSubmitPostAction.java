@@ -2,16 +2,22 @@ package com.epam.aa.sportfinder.controller;
 
 import com.epam.aa.sportfinder.model.*;
 import com.epam.aa.sportfinder.service.FloorCoverageService;
+import com.epam.aa.sportfinder.service.ServiceException;
 import com.epam.aa.sportfinder.service.SportPlaceService;
 import com.epam.aa.sportfinder.service.SportService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -30,6 +36,7 @@ public class ManagerItemSubmitPostAction implements Action {
     @Override
     public String execute(HttpServletRequest request) {
         Manager manager = (Manager) request.getSession().getAttribute("user");
+        // todo mb change parameter to query string?
         String id = request.getParameter("id");
         String description = request.getParameter("description");
         String addressId = request.getParameter("address-id");
@@ -94,8 +101,41 @@ public class ManagerItemSubmitPostAction implements Action {
         address.setZipcode(zipcode);
         sportPlace.setAddress(address);
 
-
         Map<String, String> errors = new HashMap<>();
+        List<Image> images = null;
+        try {
+            Collection<Part> parts = request.getParts();
+            if (parts.size() > 0)
+                images = new ArrayList<>();
+
+            for (Part part : parts) {
+                if (part != null && part.getSize() > 0) {
+                    String type = part.getContentType();
+                    if (type == null)
+                        continue;
+
+                    if (type.matches("image/(jpeg|jpg|png|gif)")) {
+                        InputStream inputStream = part.getInputStream();
+                        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                        byte[] tmp = new byte[4096];
+                        int ret;
+                        while((ret = inputStream.read(tmp)) > 0) {
+                            bos.write(tmp, 0, ret);
+                        }
+
+                        Image image = new Image();
+                        image.setImageArray(bos.toByteArray());
+                        images.add(image);
+                    } else {
+                        errors.put("image", "image is of not appropriate format, the allowed formats are jpg, png, gif");
+                    }
+                }
+            }
+        } catch (IOException | ServletException e) {
+            throw new ServiceException("error when processing part form-register-image");
+        }
+        sportPlace.setImages(images);
+
         if (sportIds != null) {
             for (String sportId : sportIds) {
                 Sport s = new Sport();

@@ -3,11 +3,7 @@ package com.epam.aa.sportfinder.dao.jdbc;
 import com.epam.aa.sportfinder.dao.DaoException;
 import com.epam.aa.sportfinder.dao.SportPlaceDao;
 import com.epam.aa.sportfinder.model.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
@@ -23,7 +19,7 @@ public class JdbcSportPlaceDao extends JdbcBaseDao<SportPlace> implements SportP
         if (sportPlace.getSports() == null)
             throw new DaoException("List of Sports is null, cannot be inserted");
 
-        String sql = getSqlForJoinTable(sportPlace);
+        String sql = getSqlForSportPlaceSportTable(sportPlace);
 
         try (Statement st = getConnection().createStatement()){
             st.execute(sql);
@@ -137,8 +133,23 @@ public class JdbcSportPlaceDao extends JdbcBaseDao<SportPlace> implements SportP
         // not removing
     }
 
+    @Override
+    public SportPlace insertImages(SportPlace sportPlace) throws DaoException {
+        if (sportPlace.getImages() == null)
+            throw new DaoException("List of Images is null, cannot be inserted");
 
-    private String getSqlForJoinTable(SportPlace sportPlace) {
+        String sql = getSqlForSportPlaceImageTable(sportPlace);
+
+        try (Statement st = getConnection().createStatement()){
+            st.execute(sql);
+        } catch (SQLException e) {
+            throw new DaoException("Insertion failed", e);
+        }
+        return sportPlace;
+    }
+
+
+    private String getSqlForSportPlaceSportTable(SportPlace sportPlace) {
         StringBuffer insertSportPlaceWithSportsBuffer = new StringBuffer("INSERT INTO SportPlace_Sport " +
                 "(sport_id, sportPlace_id) VALUES ");
 
@@ -149,6 +160,25 @@ public class JdbcSportPlaceDao extends JdbcBaseDao<SportPlace> implements SportP
             prefix = ", ";
             insertSportPlaceWithSportsBuffer.append("(");
             insertSportPlaceWithSportsBuffer.append(sport.getId());
+            insertSportPlaceWithSportsBuffer.append(", ");
+            insertSportPlaceWithSportsBuffer.append(sportPlaceId);
+            insertSportPlaceWithSportsBuffer.append(")");
+        }
+
+        return insertSportPlaceWithSportsBuffer.append(";").toString();
+    }
+
+    private String getSqlForSportPlaceImageTable(SportPlace sportPlace) {
+        StringBuffer insertSportPlaceWithSportsBuffer = new StringBuffer("INSERT INTO SportPlace_Image " +
+                "(image_id, sportPlace_id) VALUES ");
+
+        Integer sportPlaceId = sportPlace.getId();
+        String prefix = "";
+        for (Image image : sportPlace.getImages()) {
+            insertSportPlaceWithSportsBuffer.append(prefix);
+            prefix = ", ";
+            insertSportPlaceWithSportsBuffer.append("(");
+            insertSportPlaceWithSportsBuffer.append(image.getId());
             insertSportPlaceWithSportsBuffer.append(", ");
             insertSportPlaceWithSportsBuffer.append(sportPlaceId);
             insertSportPlaceWithSportsBuffer.append(")");

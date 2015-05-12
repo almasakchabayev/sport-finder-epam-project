@@ -84,7 +84,7 @@ public class ManagerRegisterPostAction implements Action {
             Part filePart = request.getPart("form-register-image");
             if (filePart != null && filePart.getSize() > 0) {
                 String type = filePart.getContentType();
-                if (type.matches("image/(jpg|png|gif)")) {
+                if (type.matches("image/(jpeg|jpg|png|gif)")) {
                     InputStream inputStream = filePart.getInputStream();
                     ByteArrayOutputStream bos = new ByteArrayOutputStream();
                     byte[] tmp = new byte[4096];

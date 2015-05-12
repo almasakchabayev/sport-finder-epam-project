@@ -107,7 +107,7 @@
                             <c:if test="${errors.containsKey('image')}">
                                 <span class="error">${errors.get('image')}</span>
                             </c:if>
-                            <input type="file" class="form-control" id="form-register-image" name="form-register-image" value="${manager.company.address.zipcode}">
+                            <input type="file" class="form-control" id="form-register-image" name="form-register-image" accept="image/jpeg,image/gif,image/png">
                         </div><!-- /.form-group -->
                         <div class="checkbox pull-left">
                             <label>
