@@ -4,6 +4,9 @@ import com.epam.aa.sportfinder.dao.DaoManager;
 import com.epam.aa.sportfinder.dao.GenericDao;
 import com.epam.aa.sportfinder.dao.ImageDao;
 import com.epam.aa.sportfinder.model.Image;
+import com.epam.aa.sportfinder.model.SportPlace;
+
+import java.util.List;
 
 public class ImageService extends BaseService {
 

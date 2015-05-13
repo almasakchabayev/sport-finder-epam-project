@@ -3,6 +3,8 @@ package com.epam.aa.sportfinder.dao.jdbc;
 import com.epam.aa.sportfinder.dao.DaoException;
 import com.epam.aa.sportfinder.dao.SportPlaceDao;
 import com.epam.aa.sportfinder.model.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.sql.*;
@@ -11,6 +13,8 @@ import java.util.List;
 import java.util.UUID;
 
 public class JdbcSportPlaceDao extends JdbcBaseDao<SportPlace> implements SportPlaceDao {
+    private static final Logger logger = LoggerFactory.getLogger(JdbcSportPlaceDao.class);
+
     public JdbcSportPlaceDao(Connection connection) {
         super(connection);
     }
@@ -121,12 +125,14 @@ public class JdbcSportPlaceDao extends JdbcBaseDao<SportPlace> implements SportP
 
     @Override
     public void deleteCorrespondingSports(SportPlace sportPlace) {
-        if(sportPlace.getId() == null)
+        Integer id = sportPlace.getId();
+        if(id == null)
             throw new DaoException("Could not remove sports, sportPlace id is null");
 
-        String sql = "DELETE FROM SportPlace_Sport WHERE sportPlace_id = " + sportPlace.getId();
+        String sql = "DELETE FROM SportPlace_Sport WHERE sportPlace_id = " + id;
         try (Statement st = getConnection().createStatement()){
             st.execute(sql);
+            logger.info("deleted sport ids from sportPlace_sport table, where sportPlace_id = {}", id);
         } catch (SQLException e) {
             throw new DaoException("Removal failed", e);
         }
@@ -134,7 +140,7 @@ public class JdbcSportPlaceDao extends JdbcBaseDao<SportPlace> implements SportP
     }
 
     @Override
-    public SportPlace insertImages(SportPlace sportPlace) throws DaoException {
+    public SportPlace insertCorrespondingImages(SportPlace sportPlace) throws DaoException {
         if (sportPlace.getImages() == null)
             throw new DaoException("List of Images is null, cannot be inserted");
 
@@ -146,6 +152,44 @@ public class JdbcSportPlaceDao extends JdbcBaseDao<SportPlace> implements SportP
             throw new DaoException("Insertion failed", e);
         }
         return sportPlace;
+    }
+
+    @Override
+    public List<Integer> findCorrespondingImageIds(SportPlace sportPlace) throws DaoException {
+        Integer sportPlaceId = sportPlace.getId();
+        if (sportPlaceId == null)
+            throw new DaoException("Could not find images, id is null");
+
+        String sql = "SELECT image_id, sportPlace_id FROM SportPlace_Image " +
+                "WHERE sportPlace_id = " + sportPlaceId;
+
+        List<Integer> imageIds = new ArrayList<>();
+        try (Statement st = getConnection().createStatement()) {
+            try (ResultSet rs = st.executeQuery(sql)) {
+                while (rs.next()) {
+                    imageIds.add(rs.getInt("image_id"));
+                }
+            }
+        } catch (SQLException e) {
+            throw new DaoException("Cannot find corresponding images", e);
+        }
+        return imageIds;
+    }
+
+    @Override
+    public void deleteCorrespondingImages(SportPlace sportPlace) {
+        Integer id = sportPlace.getId();
+        if(id == null)
+            throw new DaoException("Could not remove images, sportPlace id is null");
+
+        String sql = "DELETE FROM SportPlace_Image WHERE sportPlace_id = " + id;
+        try (Statement st = getConnection().createStatement()){
+            st.execute(sql);
+            logger.info("deleted image ids from sportPlace_Image table, where sportPlace_id = {}", id);
+        } catch (SQLException e) {
+            throw new DaoException("Removal failed", e);
+        }
+        // not removing
     }
 
 

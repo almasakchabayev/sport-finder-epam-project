@@ -358,6 +358,23 @@
 <!--Gallery-->
 <section>
     <h3>Gallery</h3>
+    <article class="item-gallery">
+        <!-- /.item-slider -->
+        <div class="thumbnails">
+            <span class="expand-content btn framed icon" data-expand="#gallery-thumbnails">More<i class="fa fa-plus"></i></span>
+            <div class="expandable-content height collapsed show-70" id="gallery-thumbnails">
+                <div class="content">
+                    <c:if test="${item.images.size() > 0}">
+                        <c:forEach items="${item.images}" var="image">
+                            <a href="<c:url value="/image?id=${image.id}" />" id="thumbnail-${image.id}" class="active">
+                                <img src="<c:url value="/image?id=${image.id}" />" />
+                            </a>
+                        </c:forEach>
+                    </c:if>
+                </div>
+            </div>
+        </div>
+    </article>
     <%--todo <div id="file-submit" class="dropzone">--%>
     <div id="file-submit">
         <c:if test="${errors.containsKey('image')}">

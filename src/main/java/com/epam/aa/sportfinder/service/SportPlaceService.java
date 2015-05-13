@@ -27,7 +27,7 @@ public class SportPlaceService extends BaseService {
 
                 if (sportPlace.getImages().size() > 0) {
                     sportPlace.getImages().forEach(imageDao::insert);
-                    sportPlaceDao.insertImages(result);
+                    sportPlaceDao.insertCorrespondingImages(result);
                 }
                 result = sportPlaceDao.insertCorrespondingSports(result);
                 return result;
@@ -52,12 +52,12 @@ public class SportPlaceService extends BaseService {
     public static List<SportPlace> findByManager(Manager manager) {
         DaoManager daoManager = createDaoManager();
 
-        return daoManager.executeTx(daoMng -> {
-            SportPlaceDao sportPlaceDao = daoMng.getDao(SportPlace.class);
+        return daoManager.executeTx(m -> {
+            SportPlaceDao sportPlaceDao = m.getDao(SportPlace.class);
             List<SportPlace> sportPlaces = sportPlaceDao.findByManager(manager);
 
             for (SportPlace sportPlace : sportPlaces) {
-                retrieveRelatedEntities(daoMng, sportPlaceDao, sportPlace);
+                retrieveRelatedEntities(m, sportPlaceDao, sportPlace);
             }
             return sportPlaces;
         });
@@ -67,12 +67,21 @@ public class SportPlaceService extends BaseService {
         DaoManager daoManager = createDaoManager();
         daoManager.executeTx(manager -> {
             SportPlaceDao sportPlaceDao = manager.getDao(SportPlace.class);
+            ImageDao imageDao = manager.getDao(Image.class);
             AddressDao addressDao = manager.getDao(Address.class);
             try {
                 addressDao.update(sportPlace.getAddress());
                 sportPlaceDao.update(sportPlace);
                 sportPlaceDao.deleteCorrespondingSports(sportPlace);
                 sportPlaceDao.insertCorrespondingSports(sportPlace);
+                sportPlaceDao.deleteCorrespondingImages(sportPlace);
+                for (Image image : sportPlace.getImages()) {
+                    if (image.getId() != null)
+                        continue;
+
+                    image = imageDao.insert(image);
+                }
+                sportPlaceDao.insertCorrespondingImages(sportPlace);
                 return null;
             } catch (DaoException e) {
                 throw new ServiceException("error during sport place update", e);
@@ -94,6 +103,13 @@ public class SportPlaceService extends BaseService {
         for (Integer correspondingSportId : correspondingSportIds) {
             Sport sport = sportDao.findById(correspondingSportId);
             sportPlace.addSport(sport);
+        }
+
+        List<Integer> imageIds = sportPlaceDao.findCorrespondingImageIds(sportPlace);
+        ImageDao imageDao = manager.getDao(Image.class);
+        for (Integer imageId : imageIds) {
+            Image image = imageDao.findById(imageId);
+            sportPlace.addImage(image);
         }
     }
 }

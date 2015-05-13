@@ -16,5 +16,9 @@ public interface SportPlaceDao extends GenericDao<SportPlace> {
 
     void deleteCorrespondingSports(SportPlace sportPlace);
 
-    SportPlace insertImages(SportPlace sportPlace) throws DaoException;
+    SportPlace insertCorrespondingImages(SportPlace sportPlace) throws DaoException;
+
+    List<Integer> findCorrespondingImageIds(SportPlace sportPlace);
+
+    void deleteCorrespondingImages(SportPlace sportPlace);
 }

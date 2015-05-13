@@ -1,10 +1,7 @@
 package com.epam.aa.sportfinder.controller;
 
 import com.epam.aa.sportfinder.model.*;
-import com.epam.aa.sportfinder.service.FloorCoverageService;
-import com.epam.aa.sportfinder.service.ServiceException;
-import com.epam.aa.sportfinder.service.SportPlaceService;
-import com.epam.aa.sportfinder.service.SportService;
+import com.epam.aa.sportfinder.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,7 +56,7 @@ public class ManagerItemSubmitPostAction implements Action {
 
         SportPlace sportPlace = new SportPlace();
         if (id != null && !id.equals("")) {
-            sportPlace.setId(Integer.valueOf(id));
+            sportPlace = SportPlaceService.findById(Integer.valueOf(id));
         }
 
         sportPlace.setDescription(description);
@@ -102,12 +99,8 @@ public class ManagerItemSubmitPostAction implements Action {
         sportPlace.setAddress(address);
 
         Map<String, String> errors = new HashMap<>();
-        List<Image> images = null;
         try {
             Collection<Part> parts = request.getParts();
-            if (parts.size() > 0)
-                images = new ArrayList<>();
-
             for (Part part : parts) {
                 if (part != null && part.getSize() > 0) {
                     String type = part.getContentType();
@@ -125,7 +118,7 @@ public class ManagerItemSubmitPostAction implements Action {
 
                         Image image = new Image();
                         image.setImageArray(bos.toByteArray());
-                        images.add(image);
+                        sportPlace.addImage(image);
                     } else {
                         errors.put("image", "image is of not appropriate format, the allowed formats are jpg, png, gif");
                     }
@@ -134,9 +127,9 @@ public class ManagerItemSubmitPostAction implements Action {
         } catch (IOException | ServletException e) {
             throw new ServiceException("error when processing part form-register-image");
         }
-        sportPlace.setImages(images);
 
         if (sportIds != null) {
+            sportPlace.setSports(new ArrayList<>());
             for (String sportId : sportIds) {
                 Sport s = new Sport();
                 s.setId(Integer.valueOf(sportId));
@@ -189,8 +182,10 @@ public class ManagerItemSubmitPostAction implements Action {
 
         if (id != null && !id.equals("")) {
             SportPlaceService.update(sportPlace);
+            logger.info("Updating sport place with id " + id);
         } else {
-            SportPlaceService.create(sportPlace);
+            SportPlace newSportPlace = SportPlaceService.create(sportPlace);
+            logger.info("Updating sport place with id " + newSportPlace.getId());
         }
 
         return "redirect:/manager/items";

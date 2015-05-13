@@ -43,6 +43,7 @@ public class SportPlace extends BaseEntity {
 
     public SportPlace() {
         this.sports = new ArrayList<>();
+        this.images = new ArrayList<>();
     }
 
 
@@ -180,5 +181,9 @@ public class SportPlace extends BaseEntity {
 
     public void setImages(List<Image> images) {
         this.images = images;
+    }
+
+    public void addImage(Image image) {
+        images.add(image);
     }
 }
