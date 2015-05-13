@@ -14,13 +14,13 @@
       <div class="col-md-3 col-sm-3">
         <aside id="sidebar">
           <ul class="navigation-sidebar list-unstyled">
-            <li class="active">
+            <li>
               <a href="<c:url value="/manager/items" />">
                 <i class="fa fa-folder"></i>
                 <span>All Items</span>
               </a>
             </li>
-            <li>
+            <li class="active">
               <a href="<c:url value="/manager/deleted" />">
                 <i class="fa fa-check"></i>
                 <span>Deleted</span>
@@ -40,7 +40,7 @@
             </c:when>
             <c:otherwise>
               <c:forEach items="${sportPlaces}" var="sportPlace">
-                <t:itempreview item="${sportPlace}" deleted="false" />
+                <t:itempreview item="${sportPlace}" deleted="true" />
               </c:forEach>
             </c:otherwise>
           </c:choose>

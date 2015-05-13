@@ -21,4 +21,8 @@ public interface SportPlaceDao extends GenericDao<SportPlace> {
     List<Integer> findCorrespondingImageIds(SportPlace sportPlace);
 
     void deleteCorrespondingImages(SportPlace sportPlace);
+
+    List<SportPlace> findDeletedByManager(Manager manager);
+
+    void undelete(SportPlace sportPlace);
 }

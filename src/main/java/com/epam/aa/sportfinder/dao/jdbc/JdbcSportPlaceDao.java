@@ -192,6 +192,47 @@ public class JdbcSportPlaceDao extends JdbcBaseDao<SportPlace> implements SportP
         // not removing
     }
 
+    @Override
+    public List<SportPlace> findDeletedByManager(Manager manager) {
+        Integer managerId = manager.getId();
+        if (managerId == null)
+            throw new DaoException("Could not find sportPlaces, Manager id is null");
+
+        String sql = "SELECT id, uuid, deleted, size, floorcoverage,  " +
+                "capacity, indoor, changingRoom, shower, lightening, tribuneCapacity, " +
+                "otherInfrastructureFeatures, pricePerHour, description, address, manager " +
+                "FROM SportPlace WHERE deleted = TRUE AND manager = " + manager.getId();
+
+        List<SportPlace> sportPlaces = new ArrayList<>();
+        try (Statement st = getConnection().createStatement()) {
+            try (ResultSet rs = st.executeQuery(sql)) {
+                while (rs.next()) {
+                    SportPlace sportPlace = getSportPlaceFromResultSet(rs);
+                    sportPlaces.add(sportPlace);
+                }
+            }
+        } catch (SQLException e) {
+            throw new DaoException("Cannot find SportPlaces given Manager with email  " + manager.getEmail(), e);
+        }
+        return sportPlaces;
+    }
+
+    @Override
+    public void undelete(SportPlace sportPlace) {
+        Integer id = sportPlace.getId();
+        if(id == null)
+            throw new DaoException("Could not undelete sport place, sportPlace id is null");
+
+        String sql = "UPDATE SportPlace SET deleted = FALSE WHERE id = " + id;
+        try (Statement st = getConnection().createStatement()){
+            st.execute(sql);
+            logger.info("performed undeleted on sportPlace, where sportPlace_id = {}", id);
+        } catch (SQLException e) {
+            throw new DaoException("Undelete failed", e);
+        }
+        // not removing
+    }
+
 
     private String getSqlForSportPlaceSportTable(SportPlace sportPlace) {
         StringBuffer insertSportPlaceWithSportsBuffer = new StringBuffer("INSERT INTO SportPlace_Sport " +

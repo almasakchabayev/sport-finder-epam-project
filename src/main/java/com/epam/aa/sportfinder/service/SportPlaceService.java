@@ -112,4 +112,48 @@ public class SportPlaceService extends BaseService {
             sportPlace.addImage(image);
         }
     }
+
+    public static void delete(Integer id) {
+        DaoManager daoManager = createDaoManager();
+        daoManager.executeTx(manager -> {
+            SportPlaceDao sportPlaceDao = manager.getDao(SportPlace.class);
+            try {
+                SportPlace sportPlace = new SportPlace();
+                sportPlace.setId(id);
+                sportPlaceDao.delete(sportPlace);
+                return null;
+            } catch (DaoException e) {
+                throw new ServiceException("error during sport place update", e);
+            }
+        });
+    }
+
+    public static List<SportPlace> findDeletedByManager(Manager manager) {
+        DaoManager daoManager = createDaoManager();
+
+        return daoManager.executeTx(m -> {
+            SportPlaceDao sportPlaceDao = m.getDao(SportPlace.class);
+            List<SportPlace> sportPlaces = sportPlaceDao.findDeletedByManager(manager);
+
+            for (SportPlace sportPlace : sportPlaces) {
+                retrieveRelatedEntities(m, sportPlaceDao, sportPlace);
+            }
+            return sportPlaces;
+        });
+    }
+
+    public static void undelete(Integer id) {
+        DaoManager daoManager = createDaoManager();
+        daoManager.executeTx(manager -> {
+            SportPlaceDao sportPlaceDao = manager.getDao(SportPlace.class);
+            try {
+                SportPlace sportPlace = new SportPlace();
+                sportPlace.setId(id);
+                sportPlaceDao.undelete(sportPlace);
+                return null;
+            } catch (DaoException e) {
+                throw new ServiceException("error during sport place update", e);
+            }
+        });
+    }
 }
