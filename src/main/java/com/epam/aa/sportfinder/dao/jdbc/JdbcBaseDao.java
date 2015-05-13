@@ -39,7 +39,7 @@ public abstract class JdbcBaseDao<T extends BaseEntity> implements GenericDao<T>
 
             try (ResultSet rs = pst.executeQuery()) {
                 if (rs.next()) result = map(rs, query.getDaoBean());
-                else throw new DaoException("Could not find element by id " + id);
+                else return null;
             }
         } catch (SQLException e) {
             throw new DaoException("Could not find element by id " + id, e);

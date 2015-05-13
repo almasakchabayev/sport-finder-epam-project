@@ -34,14 +34,14 @@
                         </div><!-- /.form-group -->
                         <%--TODO: add as many phone numbers as he wants, need javascript for that--%>
                         <div class="form-group">
-                            <label for="form-register-phone-number">Phone number*:</label>
+                            <label for="form-register-phone-number">Mobile*:</label>
                             <c:if test="${errors.containsKey('phoneNumbers[0].number')}">
                                 <span class="error">${errors.get('phoneNumbers[0].number')}</span>
                             </c:if>
                             <input type="tel" class="form-control" id="form-register-phone-number" name="form-register-phone-number" value="${manager.phoneNumbers.get(0).number}" required>
                         </div><!-- /.form-group -->
                         <div class="form-group">
-                            <label for="form-register-phone-number-2">Phone number 2:</label>
+                            <label for="form-register-phone-number-2">Home number:</label>
                                 <input type="tel" class="form-control" id="form-register-phone-number-2" name="form-register-phone-number-2"
                                        value="<c:if test="${manager.phoneNumbers.size() >= 2}">${manager.phoneNumbers.get(1).number}</c:if>" >
                         </div><!-- /.form-group -->

@@ -11,10 +11,17 @@
             <div class="wrapper">
                 <ul class="main-navigation navigation-top-header"></ul>
                 <c:choose>
-                    <c:when test="${sessionScope.user != null}">
+                    <c:when test="${sessionScope.user != null && user['class'].simpleName eq 'Manager'}">
                         <ul class="user-area">
-                            <li><a href="<c:url value="/profile" />"><strong>${user.firstName} ${user.lastName}</strong></a></li>
+                            <li><a href="<c:url value="/manager/profile" />"><strong>${user.firstName} ${user.lastName}</strong></a></li>
                             <li><a href="<c:url value="/manager/items" />">My Items</a></li>
+                            <li><a href="<c:url value="/logout" />"><i class="fa fa-cog"></i></a></li>
+                        </ul>
+                    </c:when>
+                    <c:when test="${sessionScope.user != null && user['class'].simpleName eq 'Customer'}">
+                        <ul class="user-area">
+                            <li><a href="<c:url value="/customer/profile" />"><strong>${user.firstName} ${user.lastName}</strong></a></li>
+                            <li><a href="<c:url value="/customer/items" />">My Items</a></li>
                             <li><a href="<c:url value="/logout" />"><i class="fa fa-cog"></i></a></li>
                         </ul>
                     </c:when>

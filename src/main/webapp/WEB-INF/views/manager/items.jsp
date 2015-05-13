@@ -6,7 +6,7 @@
   <jsp:body>
     <header>
       <ul class="nav nav-pills">
-        <li><a href="<c:url value="/profile" />"><h1 class="page-title">${user.firstName} ${user.lastName}</h1></a></li>
+        <li><a href="<c:url value="/manager/profile" />"><h1 class="page-title">${user.firstName} ${user.lastName}</h1></a></li>
         <li class="active"><a href="<c:url value="/manager/items" />"><h1 class="page-title">My Items</h1></a></li>
       </ul>
     </header>

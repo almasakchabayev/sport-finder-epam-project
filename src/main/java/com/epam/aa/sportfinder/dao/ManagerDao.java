@@ -12,4 +12,6 @@ public interface ManagerDao extends GenericDao<Manager> {
     List<Integer> findPhoneNumberIds(Manager manager) throws DaoException;
 
     Manager findByEmail(String email) throws DaoException;
+
+    void deletePhoneNumbers(Manager manager);
 }

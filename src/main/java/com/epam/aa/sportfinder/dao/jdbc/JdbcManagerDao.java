@@ -3,8 +3,11 @@ package com.epam.aa.sportfinder.dao.jdbc;
 import com.epam.aa.sportfinder.dao.ManagerDao;
 import com.epam.aa.sportfinder.dao.DaoException;
 import com.epam.aa.sportfinder.model.Company;
+import com.epam.aa.sportfinder.model.Image;
 import com.epam.aa.sportfinder.model.Manager;
 import com.epam.aa.sportfinder.model.PhoneNumber;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -12,6 +15,8 @@ import java.util.List;
 import java.util.UUID;
 
 public class JdbcManagerDao extends JdbcBaseDao<Manager> implements ManagerDao {
+    private static final Logger logger = LoggerFactory.getLogger(JdbcSportPlaceDao.class);
+
     public JdbcManagerDao(Connection connection) {
         super(connection);
     }
@@ -113,7 +118,7 @@ public class JdbcManagerDao extends JdbcBaseDao<Manager> implements ManagerDao {
     @Override
     public Manager findByEmail(String email) throws DaoException {
         String sql = "SELECT id, uuid, deleted, firstName, lastName, " +
-                "email, password, company " +
+                "email, password, image, company " +
                 "FROM Manager WHERE deleted = FALSE AND email = ?";
 
         Manager manager = null;
@@ -132,11 +137,32 @@ public class JdbcManagerDao extends JdbcBaseDao<Manager> implements ManagerDao {
                     Company company = new Company();
                     company.setId(rs.getInt("company"));
                     manager.setCompany(company);
+                    if (rs.getInt("image") != 0) {
+                        Image image = new Image();
+                        image.setId(rs.getInt("image"));
+                        manager.setImage(image);
+                    }
                 }
             }
         } catch (SQLException e) {
             throw new DaoException("Cannot find corresponding phoneNumbers", e);
         }
         return manager;
+    }
+
+    @Override
+    public void deletePhoneNumbers(Manager manager) {
+        Integer id = manager.getId();
+        if(id == null)
+            throw new DaoException("Could not remove phone numbers, manager id is null");
+
+        String sql = "DELETE FROM Manager_PhoneNumber WHERE manager_id = " + id;
+        try (Statement st = getConnection().createStatement()) {
+            st.execute(sql);
+            logger.info("deleted phone number ids from sportPlace_sport table, where manager_id = {}", id);
+        } catch (SQLException e) {
+            throw new DaoException("Removal failed", e);
+        }
+        // not removing
     }
 }
