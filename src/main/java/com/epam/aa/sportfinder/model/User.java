@@ -22,6 +22,9 @@ public abstract class User extends BaseEntity {
     @Size(min = 4, message = "password must contain at least 4 characters")
     private String password;
 
+    private Image image;
+
+
     public String getFirstName() {
         return firstName;
     }
@@ -53,4 +56,13 @@ public abstract class User extends BaseEntity {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public Image getImage() {
+        return image;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
+    }
+
 }
