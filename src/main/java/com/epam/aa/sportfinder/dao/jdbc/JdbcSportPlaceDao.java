@@ -233,6 +233,28 @@ public class JdbcSportPlaceDao extends JdbcBaseDao<SportPlace> implements SportP
         // not removing
     }
 
+    @Override
+    public SportPlace findDeletedOrNonDeletedById(Integer id) {
+        if (id == null)
+            throw new DaoException("Could not find sportPlaces, Manager id is null");
+
+        String sql = "SELECT id, uuid, deleted, size, floorcoverage,  " +
+                "capacity, indoor, changingRoom, shower, lightening, tribuneCapacity, " +
+                "otherInfrastructureFeatures, pricePerHour, description, address, manager " +
+                "FROM SportPlace WHERE id = " + id;
+
+        try (Statement st = getConnection().createStatement()) {
+            try (ResultSet rs = st.executeQuery(sql)) {
+                if (rs.next()) {
+                    return getSportPlaceFromResultSet(rs);
+                }
+            }
+        } catch (SQLException e) {
+            throw new DaoException("Cannot find SportPlace given id " + id, e);
+        }
+        return null;
+    }
+
 
     private String getSqlForSportPlaceSportTable(SportPlace sportPlace) {
         StringBuffer insertSportPlaceWithSportsBuffer = new StringBuffer("INSERT INTO SportPlace_Sport " +

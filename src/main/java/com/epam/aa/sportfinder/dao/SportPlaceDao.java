@@ -25,4 +25,6 @@ public interface SportPlaceDao extends GenericDao<SportPlace> {
     List<SportPlace> findDeletedByManager(Manager manager);
 
     void undelete(SportPlace sportPlace);
+
+    SportPlace findDeletedOrNonDeletedById(Integer id);
 }

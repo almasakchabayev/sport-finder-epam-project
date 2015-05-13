@@ -32,19 +32,17 @@ public abstract class JdbcBaseDao<T extends BaseEntity> implements GenericDao<T>
         if (id < 1)
             throw new DaoException(new IllegalArgumentException("Could not find element by id, id cannot be less than 1"));
 
-        T result;
         Query query = Query.getQuery(entityClass, Query.Type.FIND_BY_ID);
         try (PreparedStatement pst = getConnection().prepareStatement(query.getQueryString())){
             pst.setObject(1, id);
 
             try (ResultSet rs = pst.executeQuery()) {
-                if (rs.next()) result = map(rs, query.getDaoBean());
+                if (rs.next()) return map(rs, query.getDaoBean());
                 else return null;
             }
         } catch (SQLException e) {
             throw new DaoException("Could not find element by id " + id, e);
         }
-        return result;
     }
 
     @Override

@@ -35,12 +35,12 @@ public class ManagerItemDeleteGetAction implements Action {
                 SportPlaceService.delete(id);
                 return "redirect:/manager/items";
             } else {
-                request.setAttribute("statusCode", "403");
-                return "error.jsp";
+                request.setAttribute("statusCode", 403);
+                return "error";
             }
         }
 
-        request.setAttribute("statusCode", "404");
-        return "error.jsp";
+        request.setAttribute("statusCode", 404);
+        return "error";
     }
 }

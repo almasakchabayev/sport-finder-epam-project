@@ -24,17 +24,17 @@ public class ManagerItemUndeleteGetAction implements Action {
         if (queryString != null || queryString.matches("id=\\d+")) {
             Integer id = Integer.valueOf(queryString.substring(queryString.indexOf("=") + 1));
             Manager manager = (Manager) request.getSession().getAttribute("user");
-            SportPlace sportPlace = SportPlaceService.findById(id);
+            SportPlace sportPlace = SportPlaceService.findDeletedOrNonDeletedById(id);
             if (sportPlace.getManager().getId().equals(manager.getId())) {
                 SportPlaceService.undelete(id);
                 return "redirect:/manager/deleted";
             } else {
-                request.setAttribute("statusCode", "403");
-                return "error.jsp";
+                request.setAttribute("statusCode", 403);
+                return "error";
             }
         }
 
-        request.setAttribute("statusCode", "404");
-        return "error.jsp";
+        request.setAttribute("statusCode", 404);
+        return "error";
     }
 }

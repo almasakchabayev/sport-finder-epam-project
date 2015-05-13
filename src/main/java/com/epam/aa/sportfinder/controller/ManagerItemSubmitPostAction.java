@@ -56,10 +56,10 @@ public class ManagerItemSubmitPostAction implements Action {
 
         SportPlace sportPlace = new SportPlace();
         if (id != null && !id.equals("")) {
-            sportPlace = SportPlaceService.findById(Integer.valueOf(id));
+            sportPlace = SportPlaceService.findDeletedOrNonDeletedById(Integer.valueOf(id));
         }
-        if (sportPlace.getManager().getId().equals(manager.getId())) {
-            request.setAttribute("statusCode", "403");
+        if (!sportPlace.getManager().getId().equals(manager.getId())) {
+            request.setAttribute("statusCode", 403);
             return "error";
         }
 

@@ -44,7 +44,9 @@ public class SportPlaceService extends BaseService {
             SportPlaceDao sportPlaceDao = manager.getDao(SportPlace.class);
             SportPlace sportPlace = sportPlaceDao.findById(id);
 
-            retrieveRelatedEntities(manager, sportPlaceDao, sportPlace);
+            if (sportPlace != null) {
+                retrieveRelatedEntities(manager, sportPlaceDao, sportPlace);
+            }
             return sportPlace;
         });
     }
@@ -154,6 +156,20 @@ public class SportPlaceService extends BaseService {
             } catch (DaoException e) {
                 throw new ServiceException("error during sport place update", e);
             }
+        });
+    }
+
+    public static SportPlace findDeletedOrNonDeletedById(Integer id) {
+        DaoManager daoManager = createDaoManager();
+
+        return daoManager.executeTx(manager -> {
+            SportPlaceDao sportPlaceDao = manager.getDao(SportPlace.class);
+            SportPlace sportPlace = sportPlaceDao.findDeletedOrNonDeletedById(id);
+
+            if (sportPlace != null) {
+                retrieveRelatedEntities(manager, sportPlaceDao, sportPlace);
+            }
+            return sportPlace;
         });
     }
 }
