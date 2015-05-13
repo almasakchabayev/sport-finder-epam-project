@@ -11,6 +11,9 @@
         </header>
         <div class="row">
             <div class="col-md-9">
+                <c:if test="${success != null}">
+                    <div><span>${success}</span></div>
+                </c:if>
                 <form id="form-profile" role="form" method="post" action="<c:url value="/manager/profile" />" enctype="multipart/form-data">
                     <div class="row">
                         <!--Profile Picture-->

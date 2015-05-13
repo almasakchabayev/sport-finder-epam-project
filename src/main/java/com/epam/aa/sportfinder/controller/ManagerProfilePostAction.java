@@ -25,7 +25,7 @@ import static com.epam.aa.sportfinder.controller.ControllerAction.Permission;
 
 @ControllerAction(path = "/manager/profile",
         httpMethod = HttpMethod.POST,
-        accessDeniedTo = {Permission.MANAGER})
+        accessDeniedTo = {Permission.GUEST})
 public class ManagerProfilePostAction implements Action {
     private static final Logger logger = LoggerFactory.getLogger(ManagerProfilePostAction.class);
 
