@@ -189,19 +189,28 @@
             <!--Password-->
             <div class="col-md-3 col-sm-9">
                 <h3><i class="fa fa-asterisk"></i>Password Change</h3>
-                <form class="framed" id="form-password" role="form" method="post" action="?" >
+                <form class="framed" id="form-password" role="form" method="post" action="<c:url value="/manager/password" />" >
                     <div class="form-group">
                         <label for="current-password">Current Password</label>
+                        <c:if test="${errors.containsKey('current-password')}">
+                            <span class="error">${errors.get('current-password')}</span>
+                        </c:if>
                         <input type="password" class="form-control" id="current-password" name="current-password">
                     </div>
                     <!--/.form-group-->
                     <div class="form-group">
                         <label for="new-password">New Password</label>
+                        <c:if test="${errors.containsKey('password')}">
+                            <span class="error">${errors.get('password')}</span>
+                        </c:if>
                         <input type="password" class="form-control" id="new-password" name="new-password">
                     </div>
                     <!--/.form-group-->
                     <div class="form-group">
                         <label for="confirm-new-password">Confirm New Password</label>
+                        <c:if test="${errors.containsKey('password')}">
+                            <span class="error">${errors.get('password')}</span>
+                        </c:if>
                         <input type="password" class="form-control" id="confirm-new-password" name="confirm-new-password">
                     </div>
                     <!--/.form-group-->

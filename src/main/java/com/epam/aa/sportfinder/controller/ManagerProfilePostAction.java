@@ -121,6 +121,6 @@ public class ManagerProfilePostAction implements Action {
     private String returnError(HttpServletRequest request, Manager manager, Map<String, String> errors) {
         request.setAttribute("errors", errors);
         request.setAttribute("user", manager);
-        return "manager/register";
+        return "manager/profile";
     }
 }
