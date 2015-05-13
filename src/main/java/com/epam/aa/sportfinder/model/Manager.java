@@ -59,4 +59,13 @@ public class Manager extends User {
         phoneNumbers.add(phoneNumber);
     }
 
+    public boolean containsSportPlaceId(Integer id) {
+        if (sportPlaces.size() == 0) return false;
+        for (SportPlace sportPlace : sportPlaces) {
+            if (sportPlace.getId().equals(id)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

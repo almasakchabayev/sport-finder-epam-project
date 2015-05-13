@@ -58,6 +58,10 @@ public class ManagerItemSubmitPostAction implements Action {
         if (id != null && !id.equals("")) {
             sportPlace = SportPlaceService.findById(Integer.valueOf(id));
         }
+        if (sportPlace.getManager().getId().equals(manager.getId())) {
+            request.setAttribute("statusCode", "403");
+            return "error";
+        }
 
         sportPlace.setDescription(description);
         if (!capacity.equals(""))

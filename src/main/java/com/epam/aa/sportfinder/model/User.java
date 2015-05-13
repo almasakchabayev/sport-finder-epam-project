@@ -65,4 +65,5 @@ public abstract class User extends BaseEntity {
         this.image = image;
     }
 
+
 }

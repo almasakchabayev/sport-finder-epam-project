@@ -2,6 +2,7 @@ package com.epam.aa.sportfinder.controller;
 
 import com.epam.aa.sportfinder.dao.SportPlaceDao;
 import com.epam.aa.sportfinder.model.FloorCoverage;
+import com.epam.aa.sportfinder.model.Manager;
 import com.epam.aa.sportfinder.model.Sport;
 import com.epam.aa.sportfinder.model.SportPlace;
 import com.epam.aa.sportfinder.service.FloorCoverageService;
@@ -29,8 +30,14 @@ public class ManagerItemDeleteGetAction implements Action {
         String queryString = request.getQueryString();
         if (queryString != null || queryString.matches("id=\\d+")) {
             Integer id = Integer.valueOf(queryString.substring(queryString.indexOf("=") + 1));
-            SportPlaceService.delete(id);
-            return "redirect:/manager/items";
+            Manager manager = (Manager) request.getSession().getAttribute("user");
+            if (manager.containsSportPlaceId(id)) {
+                SportPlaceService.delete(id);
+                return "redirect:/manager/items";
+            } else {
+                request.setAttribute("statusCode", "403");
+                return "error.jsp";
+            }
         }
 
         request.setAttribute("statusCode", "404");
