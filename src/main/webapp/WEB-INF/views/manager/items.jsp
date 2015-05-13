@@ -15,27 +15,15 @@
         <aside id="sidebar">
           <ul class="navigation-sidebar list-unstyled">
             <li class="active">
-              <a href="#">
+              <a href="<c:url value="/manager/items" />">
                 <i class="fa fa-folder"></i>
                 <span>All Items</span>
               </a>
             </li>
             <li>
-              <a href="#">
+              <a href="<c:url value="/manager/deleted" />">
                 <i class="fa fa-check"></i>
-                <span>Approved</span>
-              </a>
-            </li>
-            <li>
-              <a href="#">
-                <i class="fa fa-clock-o"></i>
-                <span>In Queue</span>
-              </a>
-            </li>
-            <li>
-              <a href="#">
-                <i class="fa fa-eye-slash"></i>
-                <span>Hidden</span>
+                <span>Deleted</span>
               </a>
             </li>
           </ul>

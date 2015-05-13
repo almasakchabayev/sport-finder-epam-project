@@ -120,7 +120,7 @@ public class ManagerItemSubmitPostAction implements Action {
                         image.setImageArray(bos.toByteArray());
                         sportPlace.addImage(image);
                     } else {
-                        errors.put("image", "image is of not appropriate format, the allowed formats are jpg, png, gif");
+                        errors.put("images", "image is of not appropriate format, the allowed formats are jpg, png, gif");
                     }
                 }
             }

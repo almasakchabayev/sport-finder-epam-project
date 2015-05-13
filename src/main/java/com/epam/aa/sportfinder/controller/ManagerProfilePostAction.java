@@ -57,8 +57,6 @@ public class ManagerProfilePostAction implements Action {
         manager.setFirstName(firstName);
         manager.setLastName(lastName);
         manager.setEmail(email);
-        PhoneNumber phoneNumber = new PhoneNumber(number);
-
         manager.getPhoneNumbers().get(0).setNumber(number);
         if (number2 != null && !number2.equals("")) {
             manager.getPhoneNumbers().get(1).setNumber(number2);

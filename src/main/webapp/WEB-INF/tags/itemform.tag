@@ -377,8 +377,8 @@
     </article>
     <%--todo <div id="file-submit" class="dropzone">--%>
     <div id="file-submit">
-        <c:if test="${errors.containsKey('image')}">
-            <span class="error">${errors.get('image')}</span>
+        <c:if test="${errors.containsKey('images')}">
+            <span class="error">${errors.get('images')}</span>
         </c:if>
         <input name="images" type="file" multiple accept="image/jpeg,image/gif,image/png">
         <%--<div class="dz-default dz-message"><span>Click or Drop Images Here</span></div>--%>

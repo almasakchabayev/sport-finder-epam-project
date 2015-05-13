@@ -36,6 +36,7 @@ public class SportPlace extends BaseEntity {
     @NotEmpty(message = "Please specify at least one sport")
     private List<Sport> sports;
 
+    @NotEmpty(message = "Please add at least one image")
     private List<Image> images;
 
     @NotNull(message = "only managers can create sport places")

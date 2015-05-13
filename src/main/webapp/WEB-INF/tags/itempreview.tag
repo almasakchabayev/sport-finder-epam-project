@@ -33,7 +33,7 @@
             <%--<div class="icon">--%>
                 <%--<i class="fa fa-thumbs-up"></i>--%>
             <%--</div>--%>
-            <img src="assets/img/items/1.jpg" alt="">
+            <img src="<c:if test="${item.images.size() >= 1}"><c:url value="/image?id=${item.images.get(0).id}" /></c:if>" alt="">
         </a>
     </div>
     <div class="wrapper">
