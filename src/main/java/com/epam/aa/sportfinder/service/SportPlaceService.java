@@ -113,6 +113,31 @@ public class SportPlaceService extends BaseService {
             Image image = imageDao.findById(imageId);
             sportPlace.addImage(image);
         }
+
+        CompanyDao companyDao = manager.getDao(Company.class);
+        PhoneNumberDao phoneNumberDao = manager.getDao(PhoneNumber.class);
+        ManagerDao managerDao = manager.getDao(Manager.class);
+        Manager result = null;
+        try {
+            result = managerDao.findById(sportPlace.getManager().getId());
+            if (result != null) {
+                Company company = companyDao.findById(result.getCompany().getId());
+                Address managerAddress = addressDao.findById(company.getAddress().getId());
+                company.setAddress(managerAddress);
+                result.setCompany(company);
+                if (result.getImage() != null && result.getImage().getId() != null) {
+                    result.setImage(imageDao.findById(result.getImage().getId()));
+                }
+                List<Integer> phoneNumberIds = managerDao.findPhoneNumberIds(result);
+                if (phoneNumberIds != null) {
+                    List<PhoneNumber> phoneNumbers = phoneNumberDao.findByIds(phoneNumberIds);
+                    result.setPhoneNumbers(phoneNumbers);
+                }
+            }
+        } catch (DaoException e) {
+            LOGGER.warn("Could not properly fetch manager by id {}", sportPlace.getId(), e);
+        }
+        sportPlace.setManager(result);
     }
 
     public static void delete(Integer id) {

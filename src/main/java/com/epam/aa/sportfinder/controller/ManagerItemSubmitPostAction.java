@@ -33,7 +33,6 @@ public class ManagerItemSubmitPostAction implements Action {
     @Override
     public String execute(HttpServletRequest request) {
         Manager manager = (Manager) request.getSession().getAttribute("user");
-        // todo mb change parameter to query string?
         String id = request.getParameter("id");
         String description = request.getParameter("description");
         String addressId = request.getParameter("address-id");
@@ -60,6 +59,7 @@ public class ManagerItemSubmitPostAction implements Action {
         }
         if (!sportPlace.getManager().getId().equals(manager.getId())) {
             request.setAttribute("statusCode", 403);
+            // todo the same page
             return "error";
         }
 

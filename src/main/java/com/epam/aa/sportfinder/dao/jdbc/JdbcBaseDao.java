@@ -145,9 +145,9 @@ public abstract class JdbcBaseDao<T extends BaseEntity> implements GenericDao<T>
 
         Object id = resultSet.getObject(pd.getName());
         // If id of entity is null
-        if (id == null) {
-            throw new DaoException("FindById Failed due to " + pd.getName() + "'s Id being null in a database");
-        }
+//        if (id == null) {
+//            throw new DaoException("FindById Failed due to " + pd.getName() + "'s Id being null in a database");
+//        }
 
 
         property.setId((Integer) id);

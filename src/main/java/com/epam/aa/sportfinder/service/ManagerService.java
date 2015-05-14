@@ -30,7 +30,7 @@ public class ManagerService extends BaseService{
                 Address address = addressDao.findById(company.getAddress().getId());
                 company.setAddress(address);
                 result.setCompany(company);
-                if (result.getImage() != null) {
+                if (result.getImage() != null && result.getImage().getId() != null) {
                     result.setImage(imageDao.findById(result.getImage().getId()));
                 }
                 List<Integer> phoneNumberIds = managerDao.findPhoneNumberIds(result);

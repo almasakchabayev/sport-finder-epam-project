@@ -6,7 +6,7 @@
 <div class="item list admin-view">
     <div class="image">
         <div class="quick-view" data-toggle="modal" data-target="#modal-bar"><i class="fa fa-eye"></i><span>Quick View</span></div>
-        <a href="item-detail.html">
+        <a href="<c:url value="/item/detail?id=${item.id}" />">
             <div class="overlay">
                 <div class="inner">
                     <div class="content">
@@ -38,7 +38,7 @@
         </a>
     </div>
     <div class="wrapper">
-        <a href="item-detail.html">
+        <a href="<c:url value="/item/detail?id=${item.id}" />">
             <h3><% request.setAttribute("prefix", ""); %>
                 <c:forEach items="${item.sports}" var="sport">
                     ${prefix}
@@ -66,7 +66,7 @@
     <div class="description">
         <ul class="list-unstyled actions">
             <li><a href="<c:url value="/manager/item/submit?id=${item.id}" />"><i class="fa fa-pencil"></i></a></li>
-            <li><a href="#" class="hide-item"><i class="fa fa-eye"></i></a></li>
+            <li><a href="<c:url value="/item/detail?id=${item.id}" />" class="hide-item"><i class="fa fa-eye"></i></a></li>
             <c:choose>
                 <c:when test="${deleted.equals('true')}">
                     <li><a href="<c:url value="/manager/item/undelete?id=${item.id}" />"><i class="fa fa-trash"></i></a></li>
