@@ -23,7 +23,7 @@
 
 </head>
 
-<body onunload="" class="page-subpage navigation-top-header" id="page-top">
+<body onunload="" class="page-subpage" id="page-top">
 
 <!-- Outer Wrapper-->
 <div id="outer-wrapper">
