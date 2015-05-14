@@ -12,8 +12,16 @@ import java.io.IOException;
 
 @WebServlet(name = "ImageServlet", urlPatterns = "/image")
 public class ImageServlet extends HttpServlet {
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+    @Override
+    protected long getLastModified(HttpServletRequest req) {
+        String queryString = req.getQueryString();
+        if (queryString != null || queryString.matches("id=\\d+")) {
+            Integer id = Integer.valueOf(queryString.substring(queryString.indexOf("=") + 1));
+            Long modifiedAt = ImageService.getModifiedAt(id);
+            return modifiedAt != null ? modifiedAt : -1;
+        }
+        return -1;
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

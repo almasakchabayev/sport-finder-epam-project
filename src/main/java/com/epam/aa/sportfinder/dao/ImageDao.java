@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface ImageDao extends GenericDao<Image> {
 
+    Long getModifiedAt(Integer id);
 }

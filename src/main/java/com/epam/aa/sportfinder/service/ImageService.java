@@ -18,4 +18,13 @@ public class ImageService extends BaseService {
             return imageDao.findById(id);
         });
     }
+
+    public static Long getModifiedAt(Integer id) {
+        DaoManager daoManager = createDaoManager();
+
+        return daoManager.executeTx(m -> {
+            ImageDao imageDao = m.getDao(Image.class);
+            return imageDao.getModifiedAt(id);
+        });
+    }
 }

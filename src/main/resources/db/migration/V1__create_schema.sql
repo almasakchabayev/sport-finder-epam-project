@@ -69,6 +69,7 @@ CREATE TABLE Image (
   id SERIAL NOT NULL PRIMARY KEY,
   uuid UUID UNIQUE,
   deleted BOOLEAN DEFAULT FALSE,
+  modifiedAt timestamp DEFAULT current_timestamp,
   imageArray BYTEA
 );
 CREATE TABLE Manager_PhoneNumber (
@@ -127,3 +128,15 @@ ALTER TABLE Manager_PhoneNumber
    ADD CONSTRAINT Manager_PhoneNumber_PhoneNumber_fkey
    FOREIGN KEY (phoneNumber_id)
    REFERENCES  PhoneNumber;
+
+CREATE OR REPLACE FUNCTION update_modifiedAt_column()
+  RETURNS TRIGGER AS $$
+BEGIN
+   NEW.modifiedAt = now();
+   RETURN NEW;
+END;
+$$ language 'plpgsql';
+
+CREATE TRIGGER update_image_modifiedAt BEFORE UPDATE
+ON Image FOR EACH ROW EXECUTE PROCEDURE
+  update_modifiedAt_column();
