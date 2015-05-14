@@ -197,4 +197,18 @@ public class SportPlaceService extends BaseService {
             return sportPlace;
         });
     }
+
+    public static List<SportPlace> findAll() {
+        DaoManager daoManager = createDaoManager();
+
+        return daoManager.executeTx(m -> {
+            SportPlaceDao sportPlaceDao = m.getDao(SportPlace.class);
+            List<SportPlace> sportPlaces = sportPlaceDao.findAll();
+
+            for (SportPlace sportPlace : sportPlaces) {
+                retrieveRelatedEntities(m, sportPlaceDao, sportPlace);
+            }
+            return sportPlaces;
+        });
+    }
 }

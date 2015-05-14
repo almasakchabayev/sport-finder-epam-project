@@ -1,3 +1,4 @@
+<%@ attribute name="admin" %>
 <%@ attribute name="deleted" %>
 <%@ attribute name="item" required ="true" type="com.epam.aa.sportfinder.model.SportPlace"%>
 <%@ tag description="Overall Page template" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
@@ -63,20 +64,22 @@
             </div>
         </div>
     </div>
-    <div class="description">
-        <ul class="list-unstyled actions">
-            <li><a href="<c:url value="/manager/item/submit?id=${item.id}" />"><i class="fa fa-pencil"></i></a></li>
-            <li><a href="<c:url value="/item/detail?id=${item.id}" />" class="hide-item"><i class="fa fa-eye"></i></a></li>
-            <c:choose>
-                <c:when test="${deleted.equals('true')}">
-                    <li><a href="<c:url value="/manager/item/undelete?id=${item.id}" />"><i class="fa fa-trash"></i></a></li>
-                </c:when>
-                <c:otherwise>
-                    <li><a href="<c:url value="/manager/item/delete?id=${item.id}" />"><i class="fa fa-trash"></i></a></li>
-                </c:otherwise>
-            </c:choose>
-        </ul>
-    </div>
+    <c:if test="${admin.equals('true')}">
+        <div class="description">
+            <ul class="list-unstyled actions">
+                <li><a href="<c:url value="/manager/item/submit?id=${item.id}" />"><i class="fa fa-pencil"></i></a></li>
+                <li><a href="<c:url value="/item/detail?id=${item.id}" />" class="hide-item"><i class="fa fa-eye"></i></a></li>
+                <c:choose>
+                    <c:when test="${deleted.equals('true')}">
+                        <li><a href="<c:url value="/manager/item/undelete?id=${item.id}" />"><i class="fa fa-trash"></i></a></li>
+                    </c:when>
+                    <c:otherwise>
+                        <li><a href="<c:url value="/manager/item/delete?id=${item.id}" />"><i class="fa fa-trash"></i></a></li>
+                    </c:otherwise>
+                </c:choose>
+            </ul>
+        </div>
+    </c:if>
     <div class="ribbon approved">
         <i class="fa fa-check"></i>
     </div>

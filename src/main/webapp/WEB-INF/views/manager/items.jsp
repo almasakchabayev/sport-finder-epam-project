@@ -40,7 +40,7 @@
             </c:when>
             <c:otherwise>
               <c:forEach items="${sportPlaces}" var="sportPlace">
-                <t:itempreview item="${sportPlace}" deleted="false" />
+                <t:itempreview item="${sportPlace}" deleted="false" admin="true" />
               </c:forEach>
             </c:otherwise>
           </c:choose>

@@ -36,6 +36,7 @@ public class JdbcDaoFactory extends DaoFactory {
         flyway.setDataSource(ds);
         if (AppProperties.getFlywayProperty("clean").equals("true"))
             flyway.clean();
+            flyway.clean();
         flyway.migrate();
     }
 
