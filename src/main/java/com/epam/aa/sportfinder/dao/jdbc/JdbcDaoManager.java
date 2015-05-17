@@ -2,6 +2,7 @@ package com.epam.aa.sportfinder.dao.jdbc;
 
 import com.epam.aa.sportfinder.dao.*;
 import com.epam.aa.sportfinder.model.BaseEntity;
+import com.epam.aa.sportfinder.service.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,7 +46,7 @@ public class JdbcDaoManager implements DaoManager {
             T result = daoCommand.execute(this);
             connection.commit();
             return result;
-        }  catch (SQLException e) {
+        } catch (SQLException | ServiceException e) {
             try {
                 connection.rollback();
                 //TODO: add more meaningfull log
