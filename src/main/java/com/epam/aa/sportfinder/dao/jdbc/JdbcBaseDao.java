@@ -3,6 +3,8 @@ package com.epam.aa.sportfinder.dao.jdbc;
 import com.epam.aa.sportfinder.dao.DaoException;
 import com.epam.aa.sportfinder.dao.GenericDao;
 import com.epam.aa.sportfinder.model.BaseEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
@@ -11,6 +13,8 @@ import java.sql.*;
 import java.util.List;
 
 public abstract class JdbcBaseDao<T extends BaseEntity> implements GenericDao<T> {
+    private static final Logger logger = LoggerFactory.getLogger(JdbcBaseDao.class);
+
     private final Connection connection;
     private final Class<T> entityClass;
 
@@ -165,8 +169,10 @@ public abstract class JdbcBaseDao<T extends BaseEntity> implements GenericDao<T>
 
         // If invoke is an entity but is null
         if (invoke == null) {
-            throw new DaoException("insert or update on table " + entity.getClass().getSimpleName()
+            pst.setObject(parameterIndex, null);
+            logger.warn("insert or update on table " + entity.getClass().getSimpleName()
                     + "violates foreign key constraint");
+            return;
         }
 
         // if invoke not null cast to BaseEntity
@@ -174,8 +180,10 @@ public abstract class JdbcBaseDao<T extends BaseEntity> implements GenericDao<T>
         Integer id = baseEntity.getId();
 
         if (id == null) {
-            throw new DaoException("insert or update on table " + entity.getClass().getSimpleName()
+            pst.setObject(parameterIndex, null);
+            logger.warn("insert or update on table " + entity.getClass().getSimpleName()
                     + "violates foreign key constraint");
+            return;
         }
 
         // if everything is fine

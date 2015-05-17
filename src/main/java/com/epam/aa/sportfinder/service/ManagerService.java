@@ -48,7 +48,7 @@ public class ManagerService extends BaseService{
         });
     }
 
-    public static Manager create(Manager manager) {
+    public static Manager   create(Manager manager) {
         DaoManager daoManager = createDaoManager();
 
         return daoManager.executeTx(m -> {
@@ -68,8 +68,10 @@ public class ManagerService extends BaseService{
             company.setAddress(address);
             manager.setCompany(company);
 
-            Image image = imageDao.insert(manager.getImage());
-            manager.setImage(image);
+            if(manager.getImage() != null) {
+                Image image = imageDao.insert(manager.getImage());
+                manager.setImage(image);
+            }
 
             List<PhoneNumber> phoneNumbers = new ArrayList<>();
             //TODO: create bulk insert for PhoneNumbers
