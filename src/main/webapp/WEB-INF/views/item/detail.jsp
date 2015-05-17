@@ -110,9 +110,11 @@
                                     <div class="owl-carousel item-slider">
                                         <c:if test="${item.images.size() > 0}">
                                             <c:forEach items="${item.images}" var="image">
+                                                <c:if test="${image != null}">
                                                 <div class="slide">
                                                     <img src="<c:url value="/image?id=${image.id}" />" data-hash="${image.id}" alt="">
                                                 </div>
+                                                </c:if>
                                             </c:forEach>
                                         </c:if>
                                     </div>
@@ -123,9 +125,11 @@
                                             <div class="content">
                                                 <c:if test="${item.images.size() > 0}">
                                                     <c:forEach items="${item.images}" var="image">
+                                                        <c:if test="${image != null}">
                                                         <a href="#${image.id}" id="thumbnail-${image.id}">
                                                             <img src="<c:url value="/image?id=${image.id}" />" alt="">
                                                         </a>
+                                                        </c:if>
                                                     </c:forEach>
                                                 </c:if>
                                             </div>

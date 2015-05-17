@@ -94,10 +94,10 @@
     <!--/.row-->
 </section>
 <!--/#address-contact-->
-<section>
-    <h3>Map</h3>
-    <div id="map-simple" class="map-submit"></div>
-</section>
+<%--<section>--%>
+    <%--<h3>Map</h3>--%>
+    <%--<div id="map-simple" class="map-submit"></div>--%>
+<%--</section>--%>
 <section>
     <div class="row">
         <div class="col-md-4 col-sm-4">
