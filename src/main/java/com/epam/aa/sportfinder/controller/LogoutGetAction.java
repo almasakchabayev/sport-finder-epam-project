@@ -11,6 +11,6 @@ import static com.epam.aa.sportfinder.controller.ControllerAction.HttpMethod;
 public class LogoutGetAction implements Action {
     public String execute(HttpServletRequest request) throws ControllerException {
         request.getSession().invalidate();
-        return "index";
+        return "redirect:/index";
     }
 }
