@@ -5,7 +5,7 @@
 <div class="header">
     <div class="wrapper">
         <div class="brand">
-            <a href="index-directory.html"><img src="../../assets/img/logo.png" alt="logo"></a>
+            <a href="<c:url value="/index" />"><img src="<c:url value="/assets/img/logo.png" />" alt="logo"></a>
         </div>
         <nav class="navigation-items">
             <div class="wrapper">
