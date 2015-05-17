@@ -27,7 +27,7 @@ public class JdbcImageDao extends JdbcBaseDao<Image> implements ImageDao {
         try (Statement st = getConnection().createStatement()){
             try (ResultSet rs = st.executeQuery(sql)) {
                 if (rs.next()) {
-                    return rs.getDate("modifiedAt").getTime();
+                    return rs.getTimestamp("modifiedAt").getTime();
                 }
             }
         } catch (SQLException e) {
