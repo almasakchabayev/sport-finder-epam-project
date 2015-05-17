@@ -366,9 +366,12 @@
                 <div class="content">
                     <c:if test="${item.images.size() > 0}">
                         <c:forEach items="${item.images}" var="image">
+                            <c:if test="${image != null}">
                             <a href="<c:url value="/image?id=${image.id}" />" id="thumbnail-${image.id}">
                                 <img src="<c:url value="/image?id=${image.id}" />" />
                             </a>
+                            <a href="<c:url value="/manager/item/image/delete?id=${image.id}" />"><button>Delete</button></a>
+                            </c:if>
                         </c:forEach>
                     </c:if>
                 </div>

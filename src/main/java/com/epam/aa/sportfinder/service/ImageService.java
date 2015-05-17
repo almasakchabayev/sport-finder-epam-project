@@ -27,4 +27,15 @@ public class ImageService extends BaseService {
             return imageDao.getModifiedAt(id);
         });
     }
+
+    public static void delete(Integer id) {
+        DaoManager daoManager = createDaoManager();
+
+        daoManager.executeTx(m -> {
+            ImageDao imageDao = m.getDao(Image.class);
+            Image image = new Image();
+            image.setId(id);
+            return imageDao.delete(image);
+        });
+    }
 }
