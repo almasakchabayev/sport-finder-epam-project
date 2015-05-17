@@ -15,9 +15,18 @@ import static com.epam.aa.sportfinder.controller.ControllerAction.HttpMethod;
         httpMethod = HttpMethod.GET)
 public class IndexAction implements Action {
     public String execute(HttpServletRequest request) throws ControllerException {
-        List<Sport> sports = SportService.findAll();
-        List<SportPlace> sportPlaces = SportPlaceService.findAll();
+        int page = 1;
+        int recordsPerPage = 1;
+        if(request.getParameter("page") != null)
+            page = Integer.parseInt(request.getParameter("page"));
+
+        List<SportPlace> sportPlaces = SportPlaceService.findAllPaginated(page, recordsPerPage);
+        Integer numberOfPages = SportPlaceService.getNumberOfPages(recordsPerPage);
+        request.setAttribute("numberOfPages", numberOfPages);
+        request.setAttribute("currentPage", page);
         request.setAttribute("sportPlaces", sportPlaces);
+
+        List<Sport> sports = SportService.findAll();
         request.setAttribute("sports", sports);
         return "index";
     }

@@ -211,4 +211,27 @@ public class SportPlaceService extends BaseService {
             return sportPlaces;
         });
     }
+
+    public static List<SportPlace> findAllPaginated(int page, int numberOfRecords) {
+        DaoManager daoManager = createDaoManager();
+
+        return daoManager.executeTx(m -> {
+            SportPlaceDao sportPlaceDao = m.getDao(SportPlace.class);
+            List<SportPlace> sportPlaces = sportPlaceDao.findAllPaginated((page - 1) * numberOfRecords, numberOfRecords);
+
+            for (SportPlace sportPlace : sportPlaces) {
+                retrieveRelatedEntities(m, sportPlaceDao, sportPlace);
+            }
+            return sportPlaces;
+        });
+    }
+
+    public static Integer getNumberOfPages(int recordsPerPage) {
+        DaoManager daoManager = createDaoManager();
+
+        return daoManager.executeTx(m -> {
+            SportPlaceDao sportPlaceDao = m.getDao(SportPlace.class);
+            return sportPlaceDao.getNumberOfRecords(recordsPerPage);
+        });
+    }
 }

@@ -29,4 +29,8 @@ public interface SportPlaceDao extends GenericDao<SportPlace> {
     SportPlace findDeletedOrNonDeletedById(Integer id);
 
     List<SportPlace> findAll();
+
+    List<SportPlace> findAllPaginated(int i, int numberOfRecords);
+
+    Integer getNumberOfRecords(int recordsPerPage);
 }

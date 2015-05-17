@@ -48,11 +48,16 @@
                 <!--Pagination-->
                 <nav>
                     <ul class="pagination pull-right">
-                        <li class="active"><a href="#">1</a></li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#" class="previous"><i class="fa fa-angle-left"></i></a></li>
-                        <li><a href="#" class="next"><i class="fa fa-angle-right"></i></a></li>
+                        <c:forEach begin="1" end="${numberOfPages}" var="i">
+                            <c:choose>
+                                <c:when test="${currentPage eq i}">
+                                    <li class="active"><a href="<c:url value="/index?page=${i}" />">${i}</a></li>
+                                </c:when>
+                                <c:otherwise>
+                                    <li><a href="<c:url value="/index?page=${i}" />">${i}</a></li>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:forEach>
                     </ul>
                 </nav>
                 <!--end Pagination-->

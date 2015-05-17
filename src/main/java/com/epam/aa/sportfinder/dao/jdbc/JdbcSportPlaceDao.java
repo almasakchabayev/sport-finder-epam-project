@@ -276,6 +276,44 @@ public class JdbcSportPlaceDao extends JdbcBaseDao<SportPlace> implements SportP
         return sportPlaces;
     }
 
+    @Override
+    public List<SportPlace> findAllPaginated(int offset, int numberOfRecords) {
+        String sql = "SELECT id, uuid, deleted, size, floorcoverage,  " +
+                "capacity, indoor, changingRoom, shower, lightening, tribuneCapacity, " +
+                "otherInfrastructureFeatures, pricePerHour, description, address, manager " +
+                "FROM SportPlace WHERE deleted = FALSE OFFSET " + offset + " LIMIT " + numberOfRecords;
+
+        List<SportPlace> sportPlaces = new ArrayList<>();
+        try (Statement st = getConnection().createStatement()) {
+            try (ResultSet rs = st.executeQuery(sql)) {
+                while (rs.next()) {
+                    SportPlace sportPlace = getSportPlaceFromResultSet(rs);
+                    sportPlaces.add(sportPlace);
+                }
+            }
+        } catch (SQLException e) {
+            throw new DaoException("Could not fetch all sport places", e);
+        }
+        return sportPlaces;
+    }
+
+    @Override
+    public Integer getNumberOfRecords(int recordsPerPage) {
+        String sql = "SELECT COUNT(*) " +
+                "FROM SportPlace WHERE deleted = FALSE ";
+
+        try (Statement st = getConnection().createStatement()) {
+            try (ResultSet rs = st.executeQuery(sql)) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            throw new DaoException("Could not fetch all sport places", e);
+        }
+        return null;
+    }
+
 
     private String getSqlForSportPlaceSportTable(SportPlace sportPlace) {
         StringBuffer insertSportPlaceWithSportsBuffer = new StringBuffer("INSERT INTO SportPlace_Sport " +
