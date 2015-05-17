@@ -17,15 +17,15 @@
                 </div>
             </div>
             <div class="item-specific">
-                <span title="capacity"><img src="assets/img/bedrooms.png" alt="">${item.capacity}</span>
-                <span title="size"><img src="assets/img/bathrooms.png" alt="">${item.size}</span>
-                <span title="indoor"><img src="assets/img/area.png" alt="">
+                <span title="capacity"><img src="<c:url value="/assets/img/area.png" />" alt="">${item.capacity}</span>
+                <span title="size"><img src="<c:url value="/assets/img/area.png" />"  alt="">${item.size}</span>
+                <span title="indoor"><img src="<c:url value="/assets/img/garages.png" />" alt="">
                     <c:choose>
                         <c:when test="${item.indoor}">+</c:when>
                         <c:otherwise>-</c:otherwise>
                     </c:choose>
                 </span>
-                <span title="changing-room"><img src="assets/img/garages.png" alt="">
+                <span title="changing-room"><img src="<c:url value="/assets/img/bathrooms.png" />" alt="">
                     <c:choose>
                         <c:when test="${item.changingRoom}">+</c:when>
                         <c:otherwise>-</c:otherwise>
@@ -51,7 +51,7 @@
         <figure>${item.address.addressLine2}, ${item.address.addressLine1}</figure>
         <div class="info">
             <div class="type">
-                <i><img src="assets/icons/restaurants-bars/restaurants/restaurant.png" alt=""></i>
+                <%--<i><img src="assets/icons/restaurants-bars/restaurants/restaurant.png" alt=""></i>--%>
                 <span>
                     <c:forEach items="${item.sports}" var="sport">
                         ${sport.name}

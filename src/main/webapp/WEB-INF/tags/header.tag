@@ -15,14 +15,14 @@
                         <ul class="user-area">
                             <li><a href="<c:url value="/manager/profile" />"><strong>${user.firstName} ${user.lastName}</strong></a></li>
                             <li><a href="<c:url value="/manager/items" />">My Items</a></li>
-                            <li><a href="<c:url value="/logout" />"><i class="fa fa-cog"></i></a></li>
+                            <li><a href="<c:url value="/logout" />"><i class="fa fa-sign-out"></i></a></li>
                         </ul>
                     </c:when>
                     <c:when test="${sessionScope.user != null && user['class'].simpleName eq 'Customer'}">
                         <ul class="user-area">
                             <li><a href="<c:url value="/customer/profile" />"><strong>${user.firstName} ${user.lastName}</strong></a></li>
                             <li><a href="<c:url value="/customer/items" />">My Items</a></li>
-                            <li><a href="<c:url value="/logout" />"><i class="fa fa-cog"></i></a></li>
+                            <li><a href="<c:url value="/logout" />"><i class="fa fa-sign-out"></i></a></li>
                         </ul>
                     </c:when>
                     <c:otherwise>
@@ -39,13 +39,13 @@
                         <i class="fa fa-plus"></i>
                     </div>
                 </a>
-                <div class="toggle-navigation">
-                    <div class="icon">
-                        <div class="line"></div>
-                        <div class="line"></div>
-                        <div class="line"></div>
-                    </div>
-                </div>
+                <%--<div class="toggle-navigation">--%>
+                    <%--<div class="icon">--%>
+                        <%--<div class="line"></div>--%>
+                        <%--<div class="line"></div>--%>
+                        <%--<div class="line"></div>--%>
+                    <%--</div>--%>
+                <%--</div>--%>
             </div>
         </nav>
     </div>
