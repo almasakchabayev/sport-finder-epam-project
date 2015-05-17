@@ -15,11 +15,11 @@
                     <t:itemform />
                     <hr>
                     <section>
-                        <figure class="pull-left margin-top-15">
-                            <p>By clicking “Submit & Pay” button you agree with <a href="terms-conditions.html" class="link">Terms & Conditions</a></p>
-                        </figure>
+                        <%--<figure class="pull-left margin-top-15">--%>
+                            <%--<p>By clicking “Submit & Pay” button you agree with <a href="terms-conditions.html" class="link">Terms & Conditions</a></p>--%>
+                        <%--</figure>--%>
                         <div class="form-group">
-                            <button type="submit" class="btn btn-default pull-right" id="submit">Submit & Pay</button>
+                            <button type="submit" class="btn btn-default pull-right" id="submit">Submit</button>
                         </div>
                         <!-- /.form-group -->
                     </section>
