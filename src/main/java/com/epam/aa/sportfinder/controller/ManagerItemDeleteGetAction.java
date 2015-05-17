@@ -31,16 +31,15 @@ public class ManagerItemDeleteGetAction implements Action {
         if (queryString != null || queryString.matches("id=\\d+")) {
             Integer id = Integer.valueOf(queryString.substring(queryString.indexOf("=") + 1));
             Manager manager = (Manager) request.getSession().getAttribute("user");
-            if (manager.containsSportPlaceId(id)) {
+            SportPlace sportPlace = SportPlaceService.findById(id);
+            if (sportPlace.getManager().getId().equals(manager.getId())) {
                 SportPlaceService.delete(id);
                 return "redirect:/manager/items";
             } else {
-                request.setAttribute("statusCode", 403);
-                return "error";
+                return "redirect:/error";
             }
         }
 
-        request.setAttribute("statusCode", 404);
-        return "error";
+        return "redirect:/error";
     }
 }
