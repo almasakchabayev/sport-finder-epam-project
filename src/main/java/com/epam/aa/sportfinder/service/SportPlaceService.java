@@ -232,7 +232,11 @@ public class SportPlaceService extends BaseService {
         return daoManager.executeTx(m -> {
             SportPlaceDao sportPlaceDao = m.getDao(SportPlace.class);
             Integer numberOfRecords = sportPlaceDao.getNumberOfRecords();
-            return numberOfRecords/recordsPerPage + 1;
+            int i = numberOfRecords % recordsPerPage;
+            if (i == 0) {
+                return numberOfRecords / recordsPerPage;
+            }
+            return numberOfRecords / recordsPerPage + 1;
         });
     }
 }
