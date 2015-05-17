@@ -16,7 +16,7 @@ import static com.epam.aa.sportfinder.controller.ControllerAction.HttpMethod;
 public class IndexAction implements Action {
     public String execute(HttpServletRequest request) throws ControllerException {
         int page = 1;
-        int recordsPerPage = 1;
+        int recordsPerPage = 5;
         if(request.getParameter("page") != null)
             page = Integer.parseInt(request.getParameter("page"));
 

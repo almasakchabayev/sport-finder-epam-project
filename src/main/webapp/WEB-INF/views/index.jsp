@@ -9,26 +9,26 @@
                 <header>
                     <h1 class="page-title">Listing</h1>
                 </header>
-                <figure class="filter clearfix">
-                    <div class="pull-right">
-                        <aside class="sorting">
-                            <span>Sport</span>
-                            <div class="form-group">
-                                <select class="framed" name="sort" onchange="window.location.href = '<c:url value="/index?sport=" />' + this.options[this.selectedIndex].value;">
-                                    <option value="${sport.id}">
-                                        All
-                                    </option>
-                                    <c:forEach items="${sports}" var="sport">
-                                        <option value="${sport.id}">
-                                            ${sport.name}
-                                        </option>
-                                    </c:forEach>
-                                </select>
-                            </div>
-                            <!-- /.form-group -->
-                        </aside>
-                    </div>
-                </figure>
+                <%--<figure class="filter clearfix">--%>
+                    <%--<div class="pull-right">--%>
+                        <%--<aside class="sorting">--%>
+                            <%--<span>Sport</span>--%>
+                            <%--<div class="form-group">--%>
+                                <%--<select class="framed" name="sort" onchange="window.location.href = '<c:url value="/index?sport=" />' + this.options[this.selectedIndex].value;">--%>
+                                    <%--<option value="${sport.id}">--%>
+                                        <%--All--%>
+                                    <%--</option>--%>
+                                    <%--<c:forEach items="${sports}" var="sport">--%>
+                                        <%--<option value="${sport.id}">--%>
+                                            <%--${sport.name}--%>
+                                        <%--</option>--%>
+                                    <%--</c:forEach>--%>
+                                <%--</select>--%>
+                            <%--</div>--%>
+                            <%--<!-- /.form-group -->--%>
+                        <%--</aside>--%>
+                    <%--</div>--%>
+                <%--</figure>--%>
 
                 <!--Listing List-->
                 <section class="block listing">

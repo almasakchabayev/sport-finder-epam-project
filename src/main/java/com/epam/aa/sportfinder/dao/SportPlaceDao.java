@@ -32,5 +32,5 @@ public interface SportPlaceDao extends GenericDao<SportPlace> {
 
     List<SportPlace> findAllPaginated(int i, int numberOfRecords);
 
-    Integer getNumberOfRecords(int recordsPerPage);
+    Integer getNumberOfRecords();
 }

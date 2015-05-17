@@ -298,7 +298,7 @@ public class JdbcSportPlaceDao extends JdbcBaseDao<SportPlace> implements SportP
     }
 
     @Override
-    public Integer getNumberOfRecords(int recordsPerPage) {
+    public Integer getNumberOfRecords() {
         String sql = "SELECT COUNT(*) " +
                 "FROM SportPlace WHERE deleted = FALSE ";
 
