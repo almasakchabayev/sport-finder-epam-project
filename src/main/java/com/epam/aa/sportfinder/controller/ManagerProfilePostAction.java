@@ -31,7 +31,7 @@ public class ManagerProfilePostAction implements Action {
 
     @Override
     public String execute(HttpServletRequest request) {
-        logger.debug("CHanging manager info");
+        logger.debug("Changing manager info");
         String firstName = request.getParameter("first-name");
         String lastName = request.getParameter("last-name");
         String email = request.getParameter("email");

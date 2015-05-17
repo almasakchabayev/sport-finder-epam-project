@@ -32,7 +32,7 @@ public class ManagerProfileChangePasswordPostAction implements Action {
 
     @Override
     public String execute(HttpServletRequest request) {
-        logger.debug("CHanging manager info");
+        logger.debug("Changing manager password");
         String currentPassword = request.getParameter("current-password");
         String newPassword = request.getParameter("new-password");
         String confirmNewPassword = request.getParameter("confirm-new-password");
