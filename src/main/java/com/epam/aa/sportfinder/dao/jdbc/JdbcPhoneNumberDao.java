@@ -24,12 +24,14 @@ public class JdbcPhoneNumberDao extends JdbcBaseDao<PhoneNumber> implements Phon
 
         StringBuffer sqlBuffer = new StringBuffer("SELECT id, uuid, deleted, number FROM PhoneNumber " +
                 "WHERE deleted = FALSE AND");
+        sqlBuffer.append(" id in (");
         String prefix = "";
         for (Integer phoneNumberId : phoneNumberIds) {
             sqlBuffer.append(prefix);
-            prefix = " AND";
-            sqlBuffer.append(" id = " + phoneNumberId);
+            prefix = ",";
+            sqlBuffer.append(phoneNumberId);
         }
+        sqlBuffer.append(")");
 
         List<PhoneNumber> phoneNumbers = new ArrayList<>();
         try (Statement st = getConnection().createStatement()) {
