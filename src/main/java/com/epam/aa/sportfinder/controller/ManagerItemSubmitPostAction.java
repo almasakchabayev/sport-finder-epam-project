@@ -112,17 +112,21 @@ public class ManagerItemSubmitPostAction implements Action {
                         continue;
 
                     if (type.matches("image/(jpeg|jpg|png|gif)")) {
-                        InputStream inputStream = part.getInputStream();
-                        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                        byte[] tmp = new byte[4096];
-                        int ret;
-                        while((ret = inputStream.read(tmp)) > 0) {
-                            bos.write(tmp, 0, ret);
-                        }
+                        try(InputStream inputStream = part.getInputStream();
+                            ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
 
-                        Image image = new Image();
-                        image.setImageArray(bos.toByteArray());
-                        sportPlace.addImage(image);
+                            byte[] tmp = new byte[4096];
+                            int ret;
+                            while((ret = inputStream.read(tmp)) > 0) {
+                                bos.write(tmp, 0, ret);
+                            }
+
+                            Image image = new Image();
+                            image.setImageArray(bos.toByteArray());
+                            sportPlace.addImage(image);
+                        } catch (IOException e) {
+                            logger.error("Problem processing image");
+                        }
                     } else {
                         errors.put("images", "image is of not appropriate format, the allowed formats are jpg, png, gif");
                     }
